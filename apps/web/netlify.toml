@@ -1,0 +1,24 @@
+[build]
+  base = "/"
+  command = "pnpm install && pnpm -F @at-directory/web build && pnpm -F @at-directory/web bundle:data"
+  publish = "apps/web/out"
+
+[build.environment]
+  NODE_VERSION = "22"
+  NPM_FLAGS = "--version"
+
+[functions]
+  directory = "apps/web/netlify/functions"
+  node_bundler = "esbuild"
+
+[[redirects]]
+  from = "/SKILL.md"
+  to = "/skill-md/SKILL.md"
+  status = 200
+
+# Maxi's prior scraped feed: audited before launch; load-bearing inbound
+# links (if any) get explicit redirects here before the catch-all.
+[[redirects]]
+  from = "/legacy/*"
+  to = "/legacy/:splat"
+  status = 200
