@@ -11,14 +11,8 @@
   directory = "apps/web/netlify/functions"
   node_bundler = "esbuild"
 
-[[redirects]]
-  from = "/SKILL.md"
-  to = "/skill-md/SKILL.md"
-  status = 200
+# SKILL.md is emitted directly to out/SKILL.md by the bundle:data step,
+# so it is served at /SKILL.md with no redirect needed.
 
 # Maxi's prior scraped feed: audited before launch; load-bearing inbound
-# links (if any) get explicit redirects here before the catch-all.
-[[redirects]]
-  from = "/legacy/*"
-  to = "/legacy/:splat"
-  status = 200
+# links (if any) get explicit redirects added here before any catch-all.

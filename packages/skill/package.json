@@ -1,0 +1,12 @@
+{
+  "name": "@at-directory/skill",
+  "version": "0.0.0",
+  "private": true,
+  "description": "SKILL.md for the Agentic Terminal Directory — teaches an agent to query the directory and complete payment handoff.",
+  "scripts": {
+    "lint": "echo 'skill is markdown; no lint'",
+    "typecheck": "echo 'no types'",
+    "test": "echo 'no tests'",
+    "build": "echo 'no build'"
+  }
+}
