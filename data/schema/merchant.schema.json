@@ -1,0 +1,124 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agenticterminal.ai/schema/merchant.schema.json",
+  "title": "AT Directory Merchant",
+  "description": "A merchant indexed by the Agentic Terminal Directory. One JSON file per merchant under data/merchants/<id>.json.",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "url",
+    "description",
+    "category",
+    "rails",
+    "op_trust_tier",
+    "agent_callable_tier",
+    "accepts_usdc",
+    "accepts_x402",
+    "pricing_model",
+    "source"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]{0,63}$",
+      "description": "Stable slug-form identifier. Filename must match: data/merchants/<id>.json."
+    },
+    "name": { "type": "string", "minLength": 1 },
+    "url": { "type": "string", "format": "uri" },
+    "description": { "type": "string", "minLength": 1 },
+    "category": { "$ref": "#/$defs/Category" },
+    "rails": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/Rail" }
+    },
+    "op_trust_tier": { "enum": [1, 2, 3] },
+    "agent_callable_tier": {
+      "enum": ["full-api", "structured-handoff", "human-checkout"]
+    },
+    "agent_endpoints": { "$ref": "#/$defs/AgentEndpoints" },
+    "accepts_usdc": { "type": "boolean" },
+    "accepts_x402": { "type": "boolean" },
+    "pricing_model": {
+      "enum": ["subscription", "per-product", "per-request", "variable", "free"]
+    },
+    "last_verified_at": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    },
+    "source": { "enum": ["crawled", "self-registered", "integrated"] },
+    "source_attribution": { "type": "string" },
+    "op_attestation_url": {
+      "type": ["string", "null"],
+      "format": "uri"
+    },
+    "logo_url": { "type": "string" },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    }
+  },
+  "$defs": {
+    "Category": {
+      "enum": [
+        "gift-cards",
+        "travel",
+        "vpn-privacy",
+        "hosting-domains",
+        "physical-goods",
+        "content-creator",
+        "marketplace",
+        "compute",
+        "communication",
+        "payment-network",
+        "concierge",
+        "gaming"
+      ]
+    },
+    "Rail": {
+      "type": "object",
+      "required": ["rail", "health"],
+      "additionalProperties": false,
+      "properties": {
+        "rail": { "enum": ["lightning", "bolt12", "l402", "usdt"] },
+        "chain": {
+          "enum": ["tron", "ethereum", "solana", "bsc", "polygon", "arbitrum", "base"],
+          "description": "Required when rail === 'usdt'. Forbidden otherwise."
+        },
+        "payment_endpoint": { "type": ["string", "null"] },
+        "health": { "enum": ["healthy", "degraded", "down", "unknown"] },
+        "last_health_check": {
+          "type": ["string", "null"],
+          "format": "date-time"
+        }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "rail": { "const": "usdt" } } },
+          "then": { "required": ["chain"] },
+          "else": { "not": { "required": ["chain"] } }
+        }
+      ]
+    },
+    "AgentEndpoints": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "mcp_server": {
+          "type": "string",
+          "pattern": "^(npm:|https?:)",
+          "description": "How to install or connect. Prefix: 'npm:' for local install, 'http:'/'https:' for remote MCP endpoint."
+        },
+        "auth_note": {
+          "type": "string",
+          "description": "Short, agent-readable description of how the merchant authenticates — credential type, where to obtain it, how to attach."
+        },
+        "api_docs": { "type": "string", "format": "uri" },
+        "openapi_url": { "type": "string", "format": "uri" }
+      }
+    }
+  }
+}

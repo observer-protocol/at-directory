@@ -1,0 +1,36 @@
+{
+  "id": "bitrefill",
+  "name": "Bitrefill",
+  "url": "https://bitrefill.com",
+  "description": "Gift cards, mobile top-ups, and eSIMs payable with Lightning, on-chain BTC, and USDT.",
+  "category": "gift-cards",
+  "rails": [
+    {
+      "rail": "lightning",
+      "payment_endpoint": null,
+      "health": "unknown",
+      "last_health_check": null
+    },
+    {
+      "rail": "usdt",
+      "chain": "tron",
+      "payment_endpoint": null,
+      "health": "unknown",
+      "last_health_check": null
+    }
+  ],
+  "op_trust_tier": 1,
+  "agent_callable_tier": "full-api",
+  "agent_endpoints": {
+    "mcp_server": "https://api.bitrefill.com/mcp",
+    "auth_note": "Requires Bitrefill API key (bitrefill.com/account/developers); embed as /mcp/<API_KEY>",
+    "api_docs": "https://www.bitrefill.com/api"
+  },
+  "accepts_usdc": false,
+  "accepts_x402": false,
+  "pricing_model": "per-product",
+  "last_verified_at": null,
+  "source": "integrated",
+  "op_attestation_url": null,
+  "tags": ["gift-cards", "mobile-topup", "esim", "lightning", "verified-mcp"]
+}

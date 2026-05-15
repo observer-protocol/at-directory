@@ -1,0 +1,15 @@
+node_modules/
+dist/
+.next/
+out/
+.netlify/
+.turbo/
+.DS_Store
+*.log
+.env
+.env.local
+.env.*.local
+coverage/
+.vitest-cache/
+.pnpm-store/
+*.tsbuildinfo

@@ -1,0 +1,30 @@
+{
+  "name": "at-directory",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Agentic Terminal Directory — agent commerce discovery for OP-verified Lightning, BOLT12, L402, and USDT merchants.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/observer-protocol/at-directory.git"
+  },
+  "homepage": "https://agenticterminal.ai",
+  "packageManager": "pnpm@11.1.2",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "lint": "pnpm -r lint",
+    "typecheck": "pnpm -r typecheck",
+    "test": "pnpm -r test",
+    "build": "pnpm -r build",
+    "validate-data": "tsx scripts/validate-data.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^25.0.0",
+    "prettier": "^3.4.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.7.0",
+    "vitest": "^3.0.0"
+  }
+}

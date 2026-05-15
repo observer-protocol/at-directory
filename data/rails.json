@@ -1,0 +1,20 @@
+{
+  "rails": [
+    { "id": "lightning", "label": "Lightning Network" },
+    { "id": "bolt12", "label": "BOLT12" },
+    { "id": "l402", "label": "L402" },
+    {
+      "id": "usdt",
+      "label": "USDT",
+      "chains": [
+        { "id": "tron", "label": "Tron (TRC-20)" },
+        { "id": "ethereum", "label": "Ethereum (ERC-20)" },
+        { "id": "solana", "label": "Solana" },
+        { "id": "bsc", "label": "BNB Smart Chain" },
+        { "id": "polygon", "label": "Polygon" },
+        { "id": "arbitrum", "label": "Arbitrum" },
+        { "id": "base", "label": "Base" }
+      ]
+    }
+  ]
+}

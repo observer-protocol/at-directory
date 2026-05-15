@@ -1,0 +1,16 @@
+{
+  "categories": [
+    { "id": "gift-cards", "label": "Gift cards & top-ups" },
+    { "id": "travel", "label": "Travel" },
+    { "id": "vpn-privacy", "label": "VPN & privacy" },
+    { "id": "hosting-domains", "label": "Hosting & domains" },
+    { "id": "physical-goods", "label": "Physical goods" },
+    { "id": "content-creator", "label": "Content & creator" },
+    { "id": "marketplace", "label": "Marketplace" },
+    { "id": "compute", "label": "Compute" },
+    { "id": "communication", "label": "Communication" },
+    { "id": "payment-network", "label": "Payment network" },
+    { "id": "concierge", "label": "Concierge" },
+    { "id": "gaming", "label": "Gaming" }
+  ]
+}
