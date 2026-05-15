@@ -46,12 +46,15 @@ jobs:
             ghcr.io/observer-protocol/at-directory-mcp:latest
             ghcr.io/observer-protocol/at-directory-mcp:${{ github.ref_name }}
 
-      # Redeploy on op-vps if the deploy key is configured. Skipped
-      # automatically until the secret exists (DNS/host not ready yet).
+      # Redeploy on op-vps if the deploy key is configured. The secrets
+      # context can't be used in an `if:`; map it to env and test that, so
+      # this step no-ops cleanly until the secret exists (DNS/host not ready).
       - name: Redeploy op-vps
-        if: ${{ secrets.OP_VPS_SSH_KEY != '' }}
+        env:
+          OP_VPS_SSH_KEY: ${{ secrets.OP_VPS_SSH_KEY }}
+        if: ${{ env.OP_VPS_SSH_KEY != '' }}
         run: |
-          install -m600 /dev/stdin "$HOME/k" <<< "${{ secrets.OP_VPS_SSH_KEY }}"
+          install -m600 /dev/stdin "$HOME/k" <<< "$OP_VPS_SSH_KEY"
           ssh -o StrictHostKeyChecking=accept-new -i "$HOME/k" \
             deploy@178.156.249.143 \
             'docker pull ghcr.io/observer-protocol/at-directory-mcp:latest && sudo systemctl restart at-directory-mcp'
