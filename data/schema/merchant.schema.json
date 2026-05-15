@@ -116,6 +116,11 @@
           "type": "string",
           "description": "Short, agent-readable description of how the merchant authenticates — credential type, where to obtain it, how to attach."
         },
+        "rest_api": {
+          "type": "string",
+          "pattern": "^https?:",
+          "description": "Base URL of a parallel REST API surface for agents that prefer REST over MCP. A connection surface like mcp_server (not documentation)."
+        },
         "api_docs": { "type": "string", "format": "uri" },
         "openapi_url": { "type": "string", "format": "uri" }
       }

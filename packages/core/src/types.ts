@@ -36,6 +36,7 @@ export interface Rail {
 
 export interface AgentEndpoints {
   mcp_server?: string;
+  rest_api?: string;
   auth_note?: string;
   api_docs?: string;
   openapi_url?: string;

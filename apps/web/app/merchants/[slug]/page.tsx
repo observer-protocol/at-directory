@@ -71,6 +71,14 @@ export default async function MerchantPage({ params }: { params: Promise<{ slug:
                   </td>
                 </tr>
               )}
+              {m.agent_endpoints.rest_api && (
+                <tr>
+                  <th>REST API</th>
+                  <td>
+                    <code>{m.agent_endpoints.rest_api}</code>
+                  </td>
+                </tr>
+              )}
               {m.agent_endpoints.auth_note && (
                 <tr>
                   <th>Auth</th>
