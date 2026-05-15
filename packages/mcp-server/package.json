@@ -1,0 +1,45 @@
+{
+  "name": "@agenticterminal/mcp-server",
+  "version": "0.0.1",
+  "description": "MCP server for the Agentic Terminal Directory — agent-callable index of OP-verified Lightning, BOLT12, L402, and USDT merchants.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/observer-protocol/at-directory.git",
+    "directory": "packages/mcp-server"
+  },
+  "homepage": "https://agenticterminal.ai",
+  "type": "module",
+  "engines": {
+    "node": ">=23.6"
+  },
+  "bin": {
+    "at-directory-mcp": "./bin/stdio.js"
+  },
+  "files": ["src", "bin"],
+  "main": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./stdio": "./src/stdio.ts",
+    "./http": "./src/http.ts"
+  },
+  "scripts": {
+    "lint": "prettier --check src",
+    "typecheck": "tsc",
+    "test": "vitest run",
+    "build": "echo 'mcp-server consumed in source form; npm publish step handled separately'",
+    "start:stdio": "tsx src/stdio.ts",
+    "start:http": "tsx src/http.ts"
+  },
+  "dependencies": {
+    "@at-directory/core": "workspace:*",
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "zod": "^3.24.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.0.0",
+    "typescript": "^5.7.0",
+    "vitest": "^3.0.0"
+  },
+  "keywords": ["mcp", "agentic-terminal", "observer-protocol", "lightning", "usdt", "agent-commerce"]
+}

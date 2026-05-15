@@ -1,6 +1,5 @@
 import type {
   AgentCallableTier,
-  Category,
   Merchant,
   MerchantSummary,
   OpTrustTier,
@@ -12,7 +11,9 @@ export interface SearchOptions {
   query?: string;
   rail?: RailName;
   chain?: UsdtChain;
-  category?: Category;
+  // String, not Category enum: categories are extensible at runtime (spec §3.5),
+  // so a query for a category added post-compile must still filter correctly.
+  category?: string;
   agent_callable_tier?: AgentCallableTier;
   trust_tier_min?: OpTrustTier;
   accepts_usdc?: boolean;
