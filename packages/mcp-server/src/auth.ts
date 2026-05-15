@@ -76,11 +76,12 @@ export async function verifyCredential(
     return cacheAndReturn(cacheKey, null, NEGATIVE_TTL_MS);
   }
 
+  const subject = (body.credential.credentialSubject ?? {}) as Record<string, unknown>;
   const verified: VerifiedCredential = {
     subjectDid: body.subject_did,
-    tier: normalizeTier(body.tier),
-    issuer: body.issuer,
-    validUntil: body.valid_until,
+    tier: normalizeTier(subject.directory_access_tier as string | undefined),
+    issuer: body.credential.issuer,
+    validUntil: body.credential.validUntil,
     raw: credential,
   };
   return cacheAndReturn(cacheKey, verified, POSITIVE_TTL_MS);
@@ -127,22 +128,28 @@ function cacheAndReturn(
   return result;
 }
 
+// AT verifier contract (shared with the AT issuer route built in the other
+// CC session — see spec §5.2). Request: POST { credential: <VC JSON> }.
+// Success: { verified: true, subject_did, credential: { issuer,
+// credentialSubject: { directory_access_tier }, validUntil? } }.
+// Failure: { verified: false } (any HTTP status).
 interface VerifierSuccessBody {
-  valid: true;
+  verified: true;
   subject_did: string;
-  issuer: string;
-  tier?: string;
-  valid_until?: string;
+  credential: {
+    issuer: string;
+    credentialSubject?: Record<string, unknown>;
+    validUntil?: string;
+  };
 }
 
 function isVerifierSuccess(body: unknown): body is VerifierSuccessBody {
-  return (
-    typeof body === 'object' &&
-    body !== null &&
-    (body as { valid?: unknown }).valid === true &&
-    typeof (body as { subject_did?: unknown }).subject_did === 'string' &&
-    typeof (body as { issuer?: unknown }).issuer === 'string'
-  );
+  if (typeof body !== 'object' || body === null) return false;
+  const b = body as Record<string, unknown>;
+  if (b.verified !== true) return false;
+  if (typeof b.subject_did !== 'string') return false;
+  const cred = b.credential as Record<string, unknown> | undefined;
+  return typeof cred === 'object' && cred !== null && typeof cred.issuer === 'string';
 }
 
 function normalizeTier(tier: string | undefined): AgentIdentityTier {
