@@ -1,0 +1,21 @@
+[Unit]
+Description=AT Directory MCP server (hosted HTTP/SSE)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=deploy
+WorkingDirectory=/opt/at-directory-mcp
+# Container is the deploy unit; systemd supervises it via docker.
+ExecStartPre=-/usr/bin/docker rm -f at-directory-mcp
+ExecStart=/usr/bin/docker run --rm --name at-directory-mcp \
+  -p 127.0.0.1:8099:8099 \
+  --env-file /etc/at-directory-mcp/env \
+  ghcr.io/observer-protocol/at-directory-mcp:latest
+ExecStop=/usr/bin/docker stop at-directory-mcp
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

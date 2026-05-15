@@ -9,21 +9,37 @@ const here = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = resolve(here, '..', '..', '..');
 const DATA_DIR = join(REPO_ROOT, 'data');
 
-const ajv = new Ajv2020({ allErrors: true, strict: true, strictRequired: false });
-addFormats.default(ajv);
+// Lazily compiled so importing this module has no filesystem side effect
+// (it gets bundled into the MCP server, which runs where the schema path
+// does not exist and uses a data snapshot instead).
+let _validate: ReturnType<typeof compileValidator> | null = null;
 
-const schemaPath = join(DATA_DIR, 'schema', 'merchant.schema.json');
-const merchantSchema = JSON.parse(readFileSync(schemaPath, 'utf8'));
-const validateMerchant = ajv.compile<Merchant>(merchantSchema);
+function compileValidator() {
+  const ajv = new Ajv2020({ allErrors: true, strict: true, strictRequired: false });
+  addFormats.default(ajv);
+  const schemaPath = join(DATA_DIR, 'schema', 'merchant.schema.json');
+  const merchantSchema = JSON.parse(readFileSync(schemaPath, 'utf8'));
+  return ajv.compile<Merchant>(merchantSchema);
+}
+
+function validateMerchant(obj: unknown): boolean {
+  if (!_validate) _validate = compileValidator();
+  return _validate(obj) as boolean;
+}
+
+validateMerchant.errorText = (): string[] => {
+  if (!_validate) return [];
+  return (_validate.errors ?? []).map((e) => `${e.instancePath || '/'} ${e.message ?? 'invalid'}`);
+};
 
 export class MerchantLoadError extends Error {
-  constructor(
-    message: string,
-    public readonly file: string,
-    public readonly details?: unknown,
-  ) {
+  readonly file: string;
+  readonly details?: unknown;
+  constructor(message: string, file: string, details?: unknown) {
     super(`${message} (${file})`);
     this.name = 'MerchantLoadError';
+    this.file = file;
+    this.details = details;
   }
 }
 
@@ -37,10 +53,7 @@ export interface ValidationResult {
 // rules (unique id, filename match) — those only make sense on a set.
 export function validateMerchantRecord(obj: unknown): ValidationResult {
   if (validateMerchant(obj)) return { valid: true, errors: [] };
-  const errors = (validateMerchant.errors ?? []).map(
-    (e) => `${e.instancePath || '/'} ${e.message ?? 'invalid'}`,
-  );
-  return { valid: false, errors };
+  return { valid: false, errors: validateMerchant.errorText() };
 }
 
 export function loadMerchant(filePath: string): Merchant {
@@ -52,7 +65,7 @@ export function loadMerchant(filePath: string): Merchant {
     throw new MerchantLoadError('Invalid JSON', filePath, (e as Error).message);
   }
   if (!validateMerchant(parsed)) {
-    throw new MerchantLoadError('Schema validation failed', filePath, validateMerchant.errors);
+    throw new MerchantLoadError('Schema validation failed', filePath, validateMerchant.errorText());
   }
   return parsed as Merchant;
 }

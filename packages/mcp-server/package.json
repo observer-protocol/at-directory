@@ -28,7 +28,8 @@
     "lint": "prettier --check src",
     "typecheck": "tsc",
     "test": "vitest run",
-    "build": "echo 'mcp-server consumed in source form; npm publish step handled separately'",
+    "build": "node scripts/bundle.mjs",
+    "prepublishOnly": "node scripts/bundle.mjs",
     "start:stdio": "tsx src/stdio.ts",
     "start:http": "tsx src/http.ts"
   },
@@ -39,6 +40,7 @@
   },
   "devDependencies": {
     "@types/node": "^25.0.0",
+    "esbuild": "^0.28.0",
     "typescript": "^5.7.0",
     "vitest": "^3.0.0"
   },
