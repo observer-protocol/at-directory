@@ -7,12 +7,13 @@
     "dev": "next dev",
     "build": "next build",
     "bundle:data": "tsx scripts/bundle-data.ts",
-    "lint": "prettier --check \"app/**/*.{ts,tsx}\" \"components/**/*.tsx\" \"lib/**/*.ts\"",
+    "lint": "prettier --check \"app/**/*.{ts,tsx}\" \"components/**/*.tsx\" \"lib/**/*.ts\" \"netlify/**/*.ts\"",
     "typecheck": "tsc",
     "test": "echo 'no web unit tests in v1'"
   },
   "dependencies": {
     "@at-directory/core": "workspace:*",
+    "@agenticterminal/mcp-server": "workspace:*",
     "next": "^16.2.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"

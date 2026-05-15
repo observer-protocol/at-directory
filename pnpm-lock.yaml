@@ -26,6 +26,9 @@ importers:
 
   apps/web:
     dependencies:
+      '@agenticterminal/mcp-server':
+        specifier: workspace:*
+        version: link:../../packages/mcp-server
       '@at-directory/core':
         specifier: workspace:*
         version: link:../../packages/core

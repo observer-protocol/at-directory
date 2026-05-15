@@ -27,6 +27,22 @@ export class MerchantLoadError extends Error {
   }
 }
 
+export interface ValidationResult {
+  valid: boolean;
+  errors: string[];
+}
+
+// Validate an in-memory object (e.g. a form submission) against the
+// merchant schema without touching disk. Does not apply the cross-record
+// rules (unique id, filename match) — those only make sense on a set.
+export function validateMerchantRecord(obj: unknown): ValidationResult {
+  if (validateMerchant(obj)) return { valid: true, errors: [] };
+  const errors = (validateMerchant.errors ?? []).map(
+    (e) => `${e.instancePath || '/'} ${e.message ?? 'invalid'}`,
+  );
+  return { valid: false, errors };
+}
+
 export function loadMerchant(filePath: string): Merchant {
   const raw = readFileSync(filePath, 'utf8');
   let parsed: unknown;
