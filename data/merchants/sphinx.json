@@ -1,0 +1,27 @@
+{
+  "id": "sphinx",
+  "name": "Sphinx",
+  "url": "https://sphinx.chat",
+  "description": "Encrypted messaging and communities with built-in Lightning payments.",
+  "category": "communication",
+  "rails": [
+    {
+      "rail": "lightning",
+      "payment_endpoint": null,
+      "health": "unknown",
+      "last_health_check": null
+    }
+  ],
+  "op_trust_tier": 1,
+  "agent_callable_tier": "human-checkout",
+  "accepts_usdc": false,
+  "accepts_x402": false,
+  "pricing_model": "variable",
+  "last_verified_at": null,
+  "source": "crawled",
+  "op_attestation_url": null,
+  "tags": [
+    "messaging",
+    "communities"
+  ]
+}

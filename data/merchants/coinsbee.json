@@ -1,0 +1,34 @@
+{
+  "id": "coinsbee",
+  "name": "Coinsbee",
+  "url": "https://www.coinsbee.com",
+  "description": "Gift cards and mobile top-ups for 4000+ brands payable with Lightning and USDT.",
+  "category": "gift-cards",
+  "rails": [
+    {
+      "rail": "lightning",
+      "payment_endpoint": null,
+      "health": "unknown",
+      "last_health_check": null
+    },
+    {
+      "rail": "usdt",
+      "chain": "tron",
+      "payment_endpoint": null,
+      "health": "unknown",
+      "last_health_check": null
+    }
+  ],
+  "op_trust_tier": 1,
+  "agent_callable_tier": "human-checkout",
+  "accepts_usdc": false,
+  "accepts_x402": false,
+  "pricing_model": "per-product",
+  "last_verified_at": null,
+  "source": "crawled",
+  "op_attestation_url": null,
+  "tags": [
+    "gift-cards",
+    "mobile-topup"
+  ]
+}

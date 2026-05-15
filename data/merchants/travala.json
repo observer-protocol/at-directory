@@ -1,0 +1,35 @@
+{
+  "id": "travala",
+  "name": "Travala",
+  "url": "https://www.travala.com",
+  "description": "Hotel and flight booking payable with Lightning and USDT across chains.",
+  "category": "travel",
+  "rails": [
+    {
+      "rail": "lightning",
+      "payment_endpoint": null,
+      "health": "unknown",
+      "last_health_check": null
+    },
+    {
+      "rail": "usdt",
+      "chain": "ethereum",
+      "payment_endpoint": null,
+      "health": "unknown",
+      "last_health_check": null
+    }
+  ],
+  "op_trust_tier": 1,
+  "agent_callable_tier": "human-checkout",
+  "accepts_usdc": false,
+  "accepts_x402": false,
+  "pricing_model": "variable",
+  "last_verified_at": null,
+  "source": "crawled",
+  "op_attestation_url": null,
+  "tags": [
+    "travel",
+    "hotels",
+    "flights"
+  ]
+}

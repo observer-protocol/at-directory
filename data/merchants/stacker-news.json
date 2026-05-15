@@ -1,0 +1,28 @@
+{
+  "id": "stacker-news",
+  "name": "Stacker News",
+  "url": "https://stacker.news",
+  "description": "Lightning-native news and discussion platform where posts and zaps are sats.",
+  "category": "content-creator",
+  "rails": [
+    {
+      "rail": "lightning",
+      "payment_endpoint": null,
+      "health": "unknown",
+      "last_health_check": null
+    }
+  ],
+  "op_trust_tier": 1,
+  "agent_callable_tier": "human-checkout",
+  "accepts_usdc": false,
+  "accepts_x402": false,
+  "pricing_model": "variable",
+  "last_verified_at": null,
+  "source": "crawled",
+  "op_attestation_url": null,
+  "tags": [
+    "news",
+    "social",
+    "zaps"
+  ]
+}
