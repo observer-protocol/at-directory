@@ -1,0 +1,27 @@
+{
+  "id": "hosthatch",
+  "name": "HostHatch",
+  "url": "https://hosthatch.com",
+  "description": "Cloud VPS provider accepting crypto.",
+  "category": "hosting-domains",
+  "rails": [
+    {
+      "rail": "lightning",
+      "payment_endpoint": null,
+      "health": "unknown",
+      "last_health_check": null
+    }
+  ],
+  "op_trust_tier": 1,
+  "agent_callable_tier": "human-checkout",
+  "accepts_usdc": false,
+  "accepts_x402": false,
+  "pricing_model": "subscription",
+  "last_verified_at": null,
+  "source": "crawled",
+  "op_attestation_url": null,
+  "tags": [
+    "vps",
+    "rail-unverified"
+  ]
+}

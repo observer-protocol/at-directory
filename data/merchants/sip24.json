@@ -1,0 +1,28 @@
+{
+  "id": "sip24",
+  "name": "SIP24",
+  "url": "https://sip24.com",
+  "description": "VoIP and SIP trunking service accepting crypto.",
+  "category": "communication",
+  "rails": [
+    {
+      "rail": "lightning",
+      "payment_endpoint": null,
+      "health": "unknown",
+      "last_health_check": null
+    }
+  ],
+  "op_trust_tier": 1,
+  "agent_callable_tier": "human-checkout",
+  "accepts_usdc": false,
+  "accepts_x402": false,
+  "pricing_model": "subscription",
+  "last_verified_at": null,
+  "source": "crawled",
+  "op_attestation_url": null,
+  "tags": [
+    "voip",
+    "sip",
+    "rail-unverified"
+  ]
+}

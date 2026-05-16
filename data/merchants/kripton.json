@@ -1,0 +1,29 @@
+{
+  "id": "kripton",
+  "name": "Kripton",
+  "url": "https://kriptonmarket.com",
+  "description": "Argentine USDT-on-Tron payment network; single entry pending full merchant-list integration (significant downstream merchant count).",
+  "category": "payment-network",
+  "rails": [
+    {
+      "rail": "usdt",
+      "chain": "tron",
+      "payment_endpoint": null,
+      "health": "unknown",
+      "last_health_check": null
+    }
+  ],
+  "op_trust_tier": 1,
+  "agent_callable_tier": "structured-handoff",
+  "accepts_usdc": false,
+  "accepts_x402": false,
+  "pricing_model": "variable",
+  "last_verified_at": null,
+  "source": "crawled",
+  "op_attestation_url": null,
+  "tags": [
+    "payments",
+    "merchant-network",
+    "argentina"
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "id": "hostmenow",
+  "name": "HostMeNow",
+  "url": "https://hostmenow.net",
+  "description": "Web hosting provider accepting crypto payments.",
+  "category": "hosting-domains",
+  "rails": [
+    {
+      "rail": "lightning",
+      "payment_endpoint": null,
+      "health": "unknown",
+      "last_health_check": null
+    }
+  ],
+  "op_trust_tier": 1,
+  "agent_callable_tier": "human-checkout",
+  "accepts_usdc": false,
+  "accepts_x402": false,
+  "pricing_model": "subscription",
+  "last_verified_at": null,
+  "source": "crawled",
+  "op_attestation_url": null,
+  "tags": [
+    "hosting",
+    "rail-unverified"
+  ]
+}

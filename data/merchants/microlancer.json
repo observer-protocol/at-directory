@@ -1,0 +1,27 @@
+{
+  "id": "microlancer",
+  "name": "Microlancer",
+  "url": "https://microlancer.io",
+  "description": "Freelance task marketplace settling in Lightning sats.",
+  "category": "marketplace",
+  "rails": [
+    {
+      "rail": "lightning",
+      "payment_endpoint": null,
+      "health": "unknown",
+      "last_health_check": null
+    }
+  ],
+  "op_trust_tier": 1,
+  "agent_callable_tier": "structured-handoff",
+  "accepts_usdc": false,
+  "accepts_x402": false,
+  "pricing_model": "variable",
+  "last_verified_at": null,
+  "source": "crawled",
+  "op_attestation_url": null,
+  "tags": [
+    "freelance",
+    "work"
+  ]
+}

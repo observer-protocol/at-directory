@@ -1,0 +1,27 @@
+{
+  "id": "ln-pizza",
+  "name": "LN.Pizza",
+  "url": "https://ln.pizza",
+  "description": "Order real-world pizza delivery and pay over Lightning.",
+  "category": "physical-goods",
+  "rails": [
+    {
+      "rail": "lightning",
+      "payment_endpoint": null,
+      "health": "unknown",
+      "last_health_check": null
+    }
+  ],
+  "op_trust_tier": 1,
+  "agent_callable_tier": "structured-handoff",
+  "accepts_usdc": false,
+  "accepts_x402": false,
+  "pricing_model": "variable",
+  "last_verified_at": null,
+  "source": "crawled",
+  "op_attestation_url": null,
+  "tags": [
+    "food",
+    "delivery"
+  ]
+}

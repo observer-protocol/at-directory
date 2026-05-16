@@ -1,0 +1,27 @@
+{
+  "id": "fold-shop",
+  "name": "Fold App Shop",
+  "url": "https://foldapp.com",
+  "description": "Gift cards and goods purchasable with Bitcoin via the Fold app.",
+  "category": "gift-cards",
+  "rails": [
+    {
+      "rail": "lightning",
+      "payment_endpoint": null,
+      "health": "unknown",
+      "last_health_check": null
+    }
+  ],
+  "op_trust_tier": 1,
+  "agent_callable_tier": "human-checkout",
+  "accepts_usdc": false,
+  "accepts_x402": false,
+  "pricing_model": "per-product",
+  "last_verified_at": null,
+  "source": "crawled",
+  "op_attestation_url": null,
+  "tags": [
+    "gift-cards",
+    "rewards"
+  ]
+}
