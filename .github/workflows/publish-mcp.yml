@@ -3,6 +3,10 @@ name: publish-mcp
 on:
   push:
     tags: ['v*']
+  # Manual re-trigger (e.g. after adding the NPM_TOKEN secret) without
+  # needing to delete/re-push the tag. Publishes whatever version is in
+  # packages/mcp-server/package.json.
+  workflow_dispatch:
 
 jobs:
   publish:
