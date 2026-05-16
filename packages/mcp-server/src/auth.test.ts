@@ -27,7 +27,7 @@ beforeEach(async () => {
             verified: true,
             subject_did: 'did:key:demo123',
             credential: {
-              issuer: 'did:web:agenticterminal.io',
+              issuer: 'did:web:agenticterminal.ai',
               credentialSubject: { directory_access_tier: 'elevated' },
               validUntil: '2026-08-13T18:00:00Z',
             },
@@ -61,7 +61,7 @@ describe('verifyCredential', () => {
     expect(v).not.toBeNull();
     expect(v!.subjectDid).toBe('did:key:demo123');
     expect(v!.tier).toBe('elevated');
-    expect(v!.issuer).toBe('did:web:agenticterminal.io');
+    expect(v!.issuer).toBe('did:web:agenticterminal.ai');
     expect(toIdentity(v)).toEqual({ authenticated: true, tier_cap: 'elevated' });
   });
 

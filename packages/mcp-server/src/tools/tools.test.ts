@@ -141,7 +141,7 @@ describe('whoami tool', () => {
       {
         merchants: [],
         identity: { authenticated: true, tier_cap: 'premium' },
-        credentialDetails: { subject_did: 'did:key:zABC', issuer: 'did:web:agenticterminal.io' },
+        credentialDetails: { subject_did: 'did:key:zABC', issuer: 'did:web:agenticterminal.ai' },
       },
     );
     expect(r.authenticated).toBe(true);
