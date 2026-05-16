@@ -1,5 +1,5 @@
 [Unit]
-Description=AT Directory MCP server (hosted HTTP/SSE)
+Description=AT Directory MCP server (hosted HTTP)
 After=network-online.target
 Wants=network-online.target
 
@@ -7,13 +7,14 @@ Wants=network-online.target
 Type=simple
 User=deploy
 WorkingDirectory=/opt/at-directory-mcp
-# Container is the deploy unit; systemd supervises it via docker.
-ExecStartPre=-/usr/bin/docker rm -f at-directory-mcp
-ExecStart=/usr/bin/docker run --rm --name at-directory-mcp \
-  -p 127.0.0.1:8099:8099 \
-  --env-file /etc/at-directory-mcp/env \
-  ghcr.io/observer-protocol/at-directory-mcp:latest
-ExecStop=/usr/bin/docker stop at-directory-mcp
+Environment=PORT=8099
+# AT_VERIFIER_URL intentionally unset: reads are ungated, so the server runs
+# the full anonymous discovery+transact path without it. Set it (and
+# daemon-reload + restart) once the AT verifier route is live to enable
+# credentialed write features.
+# Node 20 is installed side-by-side at /opt/node20; system Node 18 (OP API
+# dependency) is never touched.
+ExecStart=/opt/node20/bin/node /opt/at-directory-mcp/http.js
 Restart=always
 RestartSec=5
 
