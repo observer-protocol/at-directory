@@ -7,21 +7,36 @@ description: Discover OP-verified merchants accepting Lightning, BOLT12, L402, o
 
 AT Directory is the agent commerce discovery surface for Bitcoin- and Tether-aligned payments. It indexes merchants that sell products, services, APIs, or content and accept Lightning, BOLT12, L402, or USDT (any chain), with trust attestations issued through Observer Protocol. It is not in the payment path — you discover merchants here and pay the merchant directly.
 
-## 1. Connect
+## 1. Connect — three paths, pick one
 
-The directory is an MCP server. Prefer the hosted endpoint; no install.
+All three hit the same data and are anonymous + ungated (no credential to discover or transact).
+
+**A. Hosted MCP (recommended — lowest friction, no install).** Point any MCP-compliant client at the hosted URL:
 
 ```jsonc
-// Hosted (recommended)
 { "mcpServers": { "at-directory": { "url": "https://mcp.agenticterminal.ai/mcp" } } }
 ```
 
+**B. Local MCP (npm).** For air-gapped or offline-first setups:
+
 ```bash
-# Local alternative
-npm install -g @agenticterminal/mcp-server   # requires Node >= 23.6
+npm install -g @agenticterminal/mcp-server   # Node >= 20
+at-directory-mcp                              # stdio MCP server
 ```
 
-Six tools: `search_merchants`, `get_merchant`, `verify_payment_endpoint`, `list_categories`, `list_rails`, `whoami`.
+**C. Plain REST (no MCP client needed).** For agent runtimes that don't speak MCP (OpenClaw, custom Lightning-native agents) — just HTTP:
+
+```bash
+curl 'https://mcp.agenticterminal.ai/v1/merchants?rail=lightning&category=gift-cards'
+curl 'https://mcp.agenticterminal.ai/v1/merchants/bitrefill'
+curl 'https://mcp.agenticterminal.ai/v1/categories'
+curl 'https://mcp.agenticterminal.ai/v1/rails'
+curl -X POST 'https://mcp.agenticterminal.ai/v1/merchants/bitrefill/verify?rail=lightning'
+```
+
+REST endpoints return the same JSON as the matching MCP tool (`search_merchants` ↔ `GET /v1/merchants`, `get_merchant` ↔ `GET /v1/merchants/{id}`, etc.), including the `agent_identity` field.
+
+The MCP tool surface (paths A/B): `search_merchants`, `get_merchant`, `verify_payment_endpoint`, `list_categories`, `list_rails`, `whoami`.
 
 ## 2. Two orthogonal axes — always read both
 

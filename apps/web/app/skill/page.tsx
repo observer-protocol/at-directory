@@ -15,14 +15,22 @@ curl -fsSL https://agenticterminal.ai/SKILL.md \\
   -o ~/.claude/skills/agentic-terminal/SKILL.md`}
       </pre>
 
-      <h2>Add the MCP server</h2>
+      <h2>Connect — three paths</h2>
       <pre className="codeblock">
-        {`# Hosted (recommended)
+        {`# A. Hosted MCP (recommended, no install)
 { "mcpServers": { "at-directory": { "url": "https://mcp.agenticterminal.ai/mcp" } } }
 
-# Local
-npm install -g @agenticterminal/mcp-server`}
+# B. Local MCP (npm, Node >= 20)
+npm install -g @agenticterminal/mcp-server
+
+# C. Plain REST — for agents that don't speak MCP
+curl 'https://mcp.agenticterminal.ai/v1/merchants?rail=lightning'
+curl 'https://mcp.agenticterminal.ai/v1/merchants/bitrefill'`}
       </pre>
+      <p className="lede">
+        Reads are anonymous and ungated on all three — no credential needed to discover or transact.
+        REST endpoints return the same JSON as the matching MCP tool.
+      </p>
 
       <h2>The two axes, restated</h2>
       <p>
