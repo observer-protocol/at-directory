@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
+import type { Merchant } from '@at-directory/core';
 import { verifyUsdtAddress } from './usdt.ts';
 import { verifyBolt12 } from './bolt12.ts';
+import { verifyRail } from './index.ts';
 import { base58Decode } from './base58.ts';
 
 describe('base58Decode', () => {
@@ -82,5 +84,56 @@ describe('verifyBolt12', () => {
   it('flags non-bech32 characters as degraded', () => {
     const r = verifyBolt12('lno1bbbbbbbbbbbio');
     expect(r.status).toBe('degraded');
+  });
+});
+
+const perInvoice = (overrides: Partial<Merchant>): Merchant => ({
+  id: 'm',
+  name: 'M',
+  url: 'https://m.example',
+  description: '',
+  category: 'gift-cards',
+  rails: [{ rail: 'usdt', chain: 'tron', payment_endpoint: null, health: 'healthy' }],
+  op_trust_tier: 2,
+  agent_callable_tier: 'full-api',
+  accepts_usdc: false,
+  accepts_x402: false,
+  pricing_model: 'per-product',
+  source: 'integrated',
+  last_verified_at: '2026-05-17T00:00:00Z',
+  ...overrides,
+});
+
+describe('verifyRail — per-invoice / attested merchant', () => {
+  it('surfaces attested health (not a misleading "unknown") when endpoint is null but health is set', async () => {
+    const r = await verifyRail(perInvoice({}), 'usdt');
+    expect(r.status).toBe('healthy');
+    expect(r.evidence.probe).toBe('not-applicable');
+    expect(r.evidence.attested).toBe(true);
+    expect(r.evidence.last_verified_at).toBe('2026-05-17T00:00:00Z');
+    expect(r.detail).toMatch(/per-invoice/i);
+    expect(r.detail).toMatch(/enterprise-attested \(Tier 2\)/);
+  });
+
+  it('applies to lightning too (no false "down" from an unreachable marketing site)', async () => {
+    const r = await verifyRail(
+      perInvoice({ rails: [{ rail: 'lightning', payment_endpoint: null, health: 'healthy' }] }),
+      'lightning',
+    );
+    expect(r.status).toBe('healthy');
+    expect(r.evidence.probe).toBe('not-applicable');
+  });
+
+  it('still reports a genuine data gap as unknown when health is unknown', async () => {
+    const r = await verifyRail(
+      perInvoice({
+        op_trust_tier: 1,
+        source: 'crawled',
+        rails: [{ rail: 'usdt', chain: 'tron', payment_endpoint: null, health: 'unknown' }],
+      }),
+      'usdt',
+    );
+    expect(r.status).toBe('unknown');
+    expect(r.evidence.attested).toBeUndefined();
   });
 });
