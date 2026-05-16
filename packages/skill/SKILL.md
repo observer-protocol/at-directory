@@ -30,7 +30,7 @@ Each merchant carries two independent signals. They do not imply each other.
 **OP trust tier** (how verified the _merchant_ is):
 
 - Tier 1 — self-attested; merchant claims the rails, unverified.
-- Tier 2 — OP-attested; an OP-credentialed enterprise verified the payment endpoints.
+- Tier 2 — operator-verified; the AT operator transacted with the merchant and confirmed at least one claimed rail (v1.x: any OP-credentialed counterparty can attest, not just AT).
 - Tier 3 — chain-anchored (ships v1.x; not present yet).
 
 **Agent-callable tier** (how you _transact_):

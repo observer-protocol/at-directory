@@ -2,7 +2,7 @@ import type { OpTrustTier } from '@at-directory/core';
 
 const LABEL: Record<OpTrustTier, string> = {
   1: 'Tier 1 · Self-attested',
-  2: 'Tier 2 · OP-attested',
+  2: 'Tier 2 · Operator-verified',
   3: 'Tier 3 · Chain-anchored',
 };
 

@@ -64,7 +64,7 @@ AT_VERIFIER_URL=http://127.0.0.1:8787 \
 
 Every merchant carries two **orthogonal** signals — read both:
 
-- **OP trust tier** (the merchant): 1 self-attested · 2 OP-attested · 3 chain-anchored (v1.x).
+- **OP trust tier** (the merchant): 1 self-attested · 2 operator-verified · 3 chain-anchored (v1.x). v1 Tier 2 = AT operator transacted and confirmed; the bilateral counterparty-attestation model lands in v1.x.
 - **Agent-callable tier** (the integration): `full-api` · `structured-handoff` · `human-checkout`.
 
 Schema is enforced in CI (`pnpm validate-data`) and on every load. USDT rails require a `chain`; Tier 2+ non-integrated records require an `op_attestation_url`; Tier 3 is rejected in v1.

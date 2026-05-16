@@ -22,7 +22,7 @@ export default function AboutPage() {
       </p>
       <p>
         USDC is treated the same way: supplementary metadata on qualifying listings, with the note
-        that USDC transactions through OP-attested merchants can also be OP-verified.
+        that USDC transactions through verified merchants carry the same trust as their other rails.
       </p>
       <p>
         Tier 1–3 verification through Observer Protocol applies to every listing regardless of rail.
@@ -51,8 +51,9 @@ export default function AboutPage() {
           </tr>
           <tr>
             <td>
-              <strong>Tier 2 — OP-attested.</strong> An OP-credentialed enterprise verified the
-              payment endpoints.
+              <strong>Tier 2 — Operator-verified.</strong> The AT operator transacted with the
+              merchant and confirmed at least one claimed rail works. (v1.x: this becomes
+              counterparty attestations — any OP-credentialed agent can verify, not just AT.)
             </td>
             <td>
               <strong>structured-handoff.</strong> Agent pays autonomously; fulfillment is
