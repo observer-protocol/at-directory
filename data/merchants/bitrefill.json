@@ -23,8 +23,9 @@
   "agent_callable_tier": "full-api",
   "agent_endpoints": {
     "mcp_server": "https://api.bitrefill.com/mcp",
-    "auth_note": "Requires Bitrefill API key (bitrefill.com/account/developers); embed as /mcp/<API_KEY>",
-    "api_docs": "https://www.bitrefill.com/api"
+    "rest_api": "https://api.bitrefill.com/v2",
+    "api_docs": "https://www.bitrefill.com/api/docs",
+    "auth_note": "Requires Bitrefill API key from bitrefill.com/account/developers. For automation, embed as /mcp/<API_KEY> in the mcp_server URL. For interactive use, OAuth flow available at the bare /mcp endpoint."
   },
   "accepts_usdc": false,
   "accepts_x402": false,
