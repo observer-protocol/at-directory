@@ -77,9 +77,9 @@ export default function ApiDocsPage() {
 
       <h2>Error codes</h2>
       <pre className="codeblock">
-        {`credential_required        Tier 2+ record requested without auth
-credential_invalid         Presented credential failed verification
-rate_limited               Caller exceeded their bucket
+        {`credential_required        write/privileged operation attempted without a credential (reads never return this)
+credential_invalid         presented credential failed verification
+rate_limited               caller exceeded their bucket
 unknown_merchant           id did not resolve
 unsupported_rail           rail not present on this merchant
 verification_unavailable   downstream verification dependency failed`}
