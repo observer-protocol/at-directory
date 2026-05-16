@@ -2,18 +2,12 @@
   "id": "aeon-pay",
   "name": "AEON Pay",
   "url": "https://aeon.xyz",
-  "description": "Crypto payment app and merchant network accepting USDT and Lightning across a broad downstream merchant base.",
+  "description": "Crypto payment app and merchant network accepting USDT across a broad downstream merchant base.",
   "category": "payment-network",
   "rails": [
     {
       "rail": "usdt",
       "chain": "tron",
-      "payment_endpoint": null,
-      "health": "unknown",
-      "last_health_check": null
-    },
-    {
-      "rail": "lightning",
       "payment_endpoint": null,
       "health": "unknown",
       "last_health_check": null

@@ -2,18 +2,12 @@
   "id": "genghis-pro",
   "name": "Genghis.pro",
   "url": "https://genghis.pro",
-  "description": "Gift cards and digital goods payable with USDT and Lightning.",
+  "description": "Gift cards and digital goods payable with USDT.",
   "category": "gift-cards",
   "rails": [
     {
       "rail": "usdt",
       "chain": "tron",
-      "payment_endpoint": null,
-      "health": "unknown",
-      "last_health_check": null
-    },
-    {
-      "rail": "lightning",
       "payment_endpoint": null,
       "health": "unknown",
       "last_health_check": null

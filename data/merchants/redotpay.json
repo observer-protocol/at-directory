@@ -2,7 +2,7 @@
   "id": "redotpay",
   "name": "RedotPay",
   "url": "https://redotpay.com",
-  "description": "Crypto payment card and checkout accepting USDT; exposes a downstream merchant network.",
+  "description": "Consumer crypto payments app and card accepting USDT across multiple chains; exposes a downstream merchant network.",
   "category": "payment-network",
   "rails": [
     {
@@ -11,11 +11,18 @@
       "payment_endpoint": null,
       "health": "unknown",
       "last_health_check": null
+    },
+    {
+      "rail": "usdt",
+      "chain": "tron",
+      "payment_endpoint": null,
+      "health": "unknown",
+      "last_health_check": null
     }
   ],
   "op_trust_tier": 1,
   "agent_callable_tier": "human-checkout",
-  "accepts_usdc": false,
+  "accepts_usdc": true,
   "accepts_x402": false,
   "pricing_model": "variable",
   "last_verified_at": null,

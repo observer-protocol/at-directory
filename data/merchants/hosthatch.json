@@ -2,11 +2,12 @@
   "id": "hosthatch",
   "name": "HostHatch",
   "url": "https://hosthatch.com",
-  "description": "Cloud VPS provider accepting crypto.",
+  "description": "Cloud VPS provider accepting USDT.",
   "category": "hosting-domains",
   "rails": [
     {
-      "rail": "lightning",
+      "rail": "usdt",
+      "chain": "tron",
       "payment_endpoint": null,
       "health": "unknown",
       "last_health_check": null

@@ -1,7 +1,7 @@
 {
   "id": "kripton",
   "name": "Kripton",
-  "url": "https://kriptonmarket.com",
+  "url": "https://kripton.la",
   "description": "Argentine USDT-on-Tron payment network; single entry pending full merchant-list integration (significant downstream merchant count).",
   "category": "payment-network",
   "rails": [

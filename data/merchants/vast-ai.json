@@ -1,9 +1,9 @@
 {
-  "id": "pq-hosting",
-  "name": "PQ.Hosting",
-  "url": "https://pq.hosting",
-  "description": "VPS provider accepting a wide range of crypto including USDT.",
-  "category": "hosting-domains",
+  "id": "vast-ai",
+  "name": "Vast.ai",
+  "url": "https://vast.ai",
+  "description": "GPU rental marketplace payable with USDT (chain pending verification).",
+  "category": "compute",
   "rails": [
     {
       "rail": "usdt",
@@ -17,11 +17,13 @@
   "agent_callable_tier": "human-checkout",
   "accepts_usdc": false,
   "accepts_x402": false,
-  "pricing_model": "subscription",
+  "pricing_model": "variable",
   "last_verified_at": null,
   "source": "crawled",
   "op_attestation_url": null,
   "tags": [
-    "vps"
+    "compute",
+    "gpu",
+    "rail-unverified"
   ]
 }

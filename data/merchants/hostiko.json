@@ -2,18 +2,12 @@
   "id": "hostiko",
   "name": "Hostiko",
   "url": "https://hostiko.network",
-  "description": "Hosting and domains accepting USDT and Lightning.",
+  "description": "Hosting and domains accepting USDT.",
   "category": "hosting-domains",
   "rails": [
     {
       "rail": "usdt",
       "chain": "tron",
-      "payment_endpoint": null,
-      "health": "unknown",
-      "last_health_check": null
-    },
-    {
-      "rail": "lightning",
       "payment_endpoint": null,
       "health": "unknown",
       "last_health_check": null
