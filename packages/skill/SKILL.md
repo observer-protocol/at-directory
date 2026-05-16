@@ -64,7 +64,7 @@ get_merchant({ id: 'bitrefill' });
 verify_payment_endpoint({ merchant_id: 'bitrefill', rail: 'usdt' });
 ```
 
-Every response echoes `agent_identity` — check whether you are `anonymous` or credentialed; anonymous callers see Tier 1 only, capped at 20 results.
+Every response echoes `agent_identity`. Reads are ungated: anonymous and credentialed callers see all tiers with the same limits — you do not need a credential to discover or transact. The field is honest signal you can branch on if you choose.
 
 ## 4. Payment handoff by rail
 
@@ -84,7 +84,7 @@ Rail mechanics for `structured-handoff` / `human-checkout`:
 
 ## 5. Credentials
 
-Present an Observer Protocol `DirectoryAccessCredential` to lift the Tier 1 cap and the result limit, and to submit reviews.
+Reads (search, get_merchant, verify) need no credential. Present an Observer Protocol `DirectoryAccessCredential` only to raise rate limits and to submit reviews/notes.
 
 - Hosted: send the credential as the `X-AT-Credential` header (base64url-encoded JSON).
 - Local: set `AT_CREDENTIAL` to the base64url-encoded credential JSON.

@@ -9,7 +9,7 @@ const TOOLS: Tool[] = [
   {
     name: 'search_merchants',
     summary:
-      'Search merchants by rail, chain, category, agent-callable tier, trust tier, USDC, and free text. Ranked by trust tier then verification recency. Anonymous callers capped to Tier 1 / 20 results.',
+      'Search merchants by rail, chain, category, agent-callable tier, trust tier, USDC, and free text. Ranked by trust tier then verification recency. Reads are ungated: anonymous and credentialed callers see all tiers, same limits.',
     args: 'query?, rail?, chain?, category?, agent_callable_tier?, trust_tier_min?, accepts_usdc?, limit?',
     returns: '{ results: MerchantSummary[], total_matching, truncated, agent_identity }',
   },
@@ -69,9 +69,10 @@ export default function ApiDocsPage() {
 
       <h2>Authentication</h2>
       <p>
-        Present an Observer Protocol <code>DirectoryAccessCredential</code> to lift the Tier 1 cap
-        and result limit. Hosted: <code>X-AT-Credential</code> header (base64url JSON). Local stdio:{' '}
-        <code>AT_CREDENTIAL</code> env var. Anonymous when absent.
+        Discovery and transaction need <strong>no credential</strong> — reads are ungated. Present
+        an Observer Protocol <code>DirectoryAccessCredential</code> to raise rate limits and unlock
+        write access (reviews). Hosted: <code>X-AT-Credential</code> header (base64url JSON). Local
+        stdio: <code>AT_CREDENTIAL</code> env var. Anonymous when absent.
       </p>
 
       <h2>Error codes</h2>

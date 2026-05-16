@@ -31,15 +31,10 @@ export async function verifyPaymentEndpointTool(
       agent_identity: ctx.identity,
     };
   }
-  if (!ctx.identity.authenticated && merchant.op_trust_tier > 1) {
-    return {
-      error: {
-        code: 'credential_required',
-        message: `Merchant '${args.merchant_id}' is Tier ${merchant.op_trust_tier}; anonymous callers see Tier 1 only.`,
-      },
-      agent_identity: ctx.identity,
-    };
-  }
+  // Not credential-gated: verifying an endpoint is a read/diagnostic an
+  // autonomous agent runs before transacting. Consistent with the
+  // ungated get_merchant/search_merchants reads (spec §4.3). Abuse of
+  // the live probe is bounded by rate limits (§4.5), not tier gating.
   if (!merchant.rails.some((r) => r.rail === args.rail)) {
     return {
       error: {

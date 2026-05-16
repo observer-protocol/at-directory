@@ -42,14 +42,7 @@ export function getMerchantTool(
       agent_identity: ctx.identity,
     };
   }
-  if (!ctx.identity.authenticated && merchant.op_trust_tier > 1) {
-    return {
-      error: {
-        code: 'credential_required',
-        message: `Merchant '${args.id}' is Tier ${merchant.op_trust_tier} and requires an AT credential. Anonymous callers see Tier 1 only.`,
-      },
-      agent_identity: ctx.identity,
-    };
-  }
+  // Reads are not credential-gated (spec §4.3): any caller, anonymous or
+  // credentialed, gets the full record for any tier.
   return { merchant, agent_identity: ctx.identity };
 }

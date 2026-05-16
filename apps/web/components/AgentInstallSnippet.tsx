@@ -21,8 +21,9 @@ npm install -g @agenticterminal/mcp-server
 search_merchants({ rail: "usdt", chain: "tron", category: "gift-cards" })`}
       </pre>
       <p className="lede">
-        Anonymous queries return Tier 1 merchants, capped. Attach an Observer Protocol
-        DirectoryAccessCredential to see all tiers and lift the cap.
+        Anonymous queries see all tiers, uncapped — no setup required. An Observer Protocol
+        DirectoryAccessCredential raises rate limits and unlocks write access (reviews), but is not
+        needed to discover or transact.
       </p>
     </div>
   );

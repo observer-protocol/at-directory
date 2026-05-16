@@ -23,7 +23,7 @@ Pre-v1, active build. Target: week of 2026-05-18 for a live Tether-meeting demo.
 npm install -g @agenticterminal/mcp-server   # local alternative
 ```
 
-Six tools: `search_merchants`, `get_merchant`, `verify_payment_endpoint`, `list_categories`, `list_rails`, `whoami`. Anonymous callers see Tier 1 (capped); present an Observer Protocol `DirectoryAccessCredential` for full access. Full reference: [agenticterminal.ai/api-docs](https://agenticterminal.ai/api-docs).
+Six tools: `search_merchants`, `get_merchant`, `verify_payment_endpoint`, `list_categories`, `list_rails`, `whoami`. Reads are ungated — anonymous agents see all tiers and can transact with no setup. An Observer Protocol `DirectoryAccessCredential` raises rate limits and unlocks write access (reviews), but is not required to discover or transact. Full reference: [agenticterminal.ai/api-docs](https://agenticterminal.ai/api-docs).
 
 ## Repo layout
 

@@ -1,6 +1,6 @@
 import type { AgentIdentityTier } from '@at-directory/core';
 import type { ToolContext } from '../context.ts';
-import { ANON_RESULT_CAP, CRED_RESULT_CAP } from '../context.ts';
+import { READ_MAX_LIMIT, ANON_RPM, CRED_RPM } from '../context.ts';
 
 export interface WhoamiResponse {
   authenticated: boolean;
@@ -30,8 +30,9 @@ export function whoamiTool(_args: Record<string, never>, ctx: WhoamiContext): Wh
     authenticated,
     tier_cap: ctx.identity.tier_cap,
     limits: {
-      result_cap: authenticated ? CRED_RESULT_CAP : ANON_RESULT_CAP,
-      requests_per_minute: authenticated ? 300 : 30,
+      // Reads are uniform regardless of auth; only the rate limit differs.
+      result_cap: READ_MAX_LIMIT,
+      requests_per_minute: authenticated ? CRED_RPM : ANON_RPM,
     },
   };
   if (ctx.credentialDetails) response.credential = ctx.credentialDetails;

@@ -34,25 +34,29 @@ const cred = (merchants: Merchant[]): ToolContext => ({
 });
 
 describe('search_merchants tool', () => {
-  it('caps anonymous callers to Tier 1 and 20 results', () => {
+  it('anonymous callers see all tiers, uncapped reads (primary launch path)', () => {
     const merchants = [
       ...Array.from({ length: 30 }, (_, i) => M({ id: `t1-${i}` })),
-      M({ id: 't2', op_trust_tier: 2, op_attestation_url: 'https://x' }),
+      M({ id: 't2', op_trust_tier: 2, name: 'AAA', op_attestation_url: 'https://x' }),
     ];
     const r = searchMerchantsTool({}, anon(merchants));
-    expect(r.results.length).toBe(20);
-    expect(r.results.every((m) => m.op_trust_tier === 1)).toBe(true);
+    // No Tier-1 ceiling, no 20-result anon cap; Tier 2 ranks first.
+    expect(r.results.some((m) => m.id === 't2')).toBe(true);
+    expect(r.results.length).toBe(31);
+    expect(r.results[0]!.op_trust_tier).toBe(2);
     expect(r.agent_identity.authenticated).toBe(false);
   });
 
-  it('credentialed callers see Tier 2 and higher caps', () => {
+  it('anonymous and credentialed get identical read access', () => {
     const merchants = [
       M({ id: 't1' }),
       M({ id: 't2', op_trust_tier: 2, name: 'Z', op_attestation_url: 'https://x' }),
     ];
-    const r = searchMerchantsTool({}, cred(merchants));
-    expect(r.results.map((m) => m.id)).toContain('t2');
-    expect(r.agent_identity.tier_cap).toBe('elevated');
+    const a = searchMerchantsTool({}, anon(merchants));
+    const c = searchMerchantsTool({}, cred(merchants));
+    expect(a.results.map((m) => m.id).sort()).toEqual(c.results.map((m) => m.id).sort());
+    expect(a.agent_identity.authenticated).toBe(false);
+    expect(c.agent_identity.tier_cap).toBe('elevated');
   });
 });
 
@@ -62,13 +66,13 @@ describe('get_merchant tool', () => {
     expect('error' in r && r.error.code).toBe('unknown_merchant');
   });
 
-  it('blocks anonymous access to Tier 2 with credential_required', () => {
+  it('anonymous callers get the full Tier 2 record (reads not gated)', () => {
     const merchants = [M({ id: 't2', op_trust_tier: 2, op_attestation_url: 'https://x' })];
     const r = getMerchantTool({ id: 't2' }, anon(merchants));
-    expect('error' in r && r.error.code).toBe('credential_required');
+    expect('merchant' in r && r.merchant.id).toBe('t2');
   });
 
-  it('returns the full record for an authorized caller', () => {
+  it('returns the full record for a credentialed caller too', () => {
     const merchants = [M({ id: 't2', op_trust_tier: 2, op_attestation_url: 'https://x' })];
     const r = getMerchantTool({ id: 't2' }, cred(merchants));
     expect('merchant' in r && r.merchant.id).toBe('t2');
@@ -128,11 +132,12 @@ describe('list_rails tool', () => {
 });
 
 describe('whoami tool', () => {
-  it('reports anonymous limits', () => {
+  it('reports anonymous: uniform read cap, lower rate limit', () => {
     const r = whoamiTool({}, anon([]));
     expect(r.authenticated).toBe(false);
     expect(r.tier_cap).toBe('anonymous');
-    expect(r.limits.result_cap).toBe(20);
+    expect(r.limits.result_cap).toBe(100);
+    expect(r.limits.requests_per_minute).toBe(30);
   });
 
   it('reports credentialed limits and credential details', () => {
@@ -147,6 +152,7 @@ describe('whoami tool', () => {
     expect(r.authenticated).toBe(true);
     expect(r.tier_cap).toBe('premium');
     expect(r.limits.result_cap).toBe(100);
+    expect(r.limits.requests_per_minute).toBe(300);
     expect(r.credential?.subject_did).toBe('did:key:zABC');
   });
 });
