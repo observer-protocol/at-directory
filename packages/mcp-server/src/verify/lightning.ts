@@ -6,11 +6,24 @@ export interface RailCheckResult {
 
 const TIMEOUT_MS = 8000;
 
+// Identify the probe honestly. A missing/library default User-Agent gets
+// blocked by common WAFs (Cloudflare etc.), which made live merchants
+// look "down". This both reduces false blocks and is the polite thing.
+const PROBE_UA = 'AT-Directory-Verifier/1.0 (+https://agenticterminal.ai)';
+
 async function timedFetch(url: string, init?: RequestInit): Promise<Response> {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
   try {
-    return await fetch(url, { ...init, signal: controller.signal });
+    return await fetch(url, {
+      ...init,
+      headers: {
+        'User-Agent': PROBE_UA,
+        Accept: 'text/html,application/json;q=0.9,*/*;q=0.8',
+        ...(init?.headers ?? {}),
+      },
+      signal: controller.signal,
+    });
   } finally {
     clearTimeout(timer);
   }
@@ -32,6 +45,19 @@ export async function verifyLightning(
       status: 'down',
       detail: `Merchant URL ${merchantUrl} unreachable.`,
       evidence: { http_status: null, response_ms: Date.now() - start },
+    };
+  }
+
+  // 401/403/429 from a merchant edge almost always means bot/WAF
+  // protection or rate-limiting blocked the probe — NOT that the
+  // merchant is down. Asserting "down" off a WAF block is a false
+  // negative that defames a live merchant on a trust directory. Report
+  // "unknown" and say so plainly.
+  if (httpStatus === 401 || httpStatus === 403 || httpStatus === 429) {
+    return {
+      status: 'unknown',
+      detail: `Merchant edge returned ${httpStatus} to the verification probe (likely bot/WAF protection or rate-limiting). The merchant is not necessarily down — server-side reachability could not be verified.`,
+      evidence: { http_status: httpStatus, probe_blocked: true, response_ms: Date.now() - start },
     };
   }
 

@@ -1,8 +1,9 @@
-import { describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import type { Merchant } from '@at-directory/core';
 import { verifyUsdtAddress } from './usdt.ts';
 import { verifyBolt12 } from './bolt12.ts';
 import { verifyRail } from './index.ts';
+import { verifyLightning } from './lightning.ts';
 import { base58Decode } from './base58.ts';
 
 describe('base58Decode', () => {
@@ -135,5 +136,59 @@ describe('verifyRail — per-invoice / attested merchant', () => {
     );
     expect(r.status).toBe('unknown');
     expect(r.evidence.attested).toBeUndefined();
+  });
+});
+
+describe('verifyLightning — WAF/anti-bot handling', () => {
+  afterEach(() => vi.unstubAllGlobals());
+
+  it('maps a 403 (WAF block) to unknown, NOT down', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async () => new Response('blocked', { status: 403 })),
+    );
+    const r = await verifyLightning('https://bitrefill.com', null);
+    expect(r.status).toBe('unknown');
+    expect(r.evidence.probe_blocked).toBe(true);
+    expect(r.detail).toMatch(/not necessarily down/i);
+  });
+
+  it('429 rate-limit is also unknown, not down', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async () => new Response('', { status: 429 })),
+    );
+    expect((await verifyLightning('https://x.example', null)).status).toBe('unknown');
+  });
+
+  it('a genuine network failure is still down', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async () => {
+        throw new Error('ECONNREFUSED');
+      }),
+    );
+    expect((await verifyLightning('https://dead.example', null)).status).toBe('down');
+  });
+
+  it('200 with no LNURL is unknown (reachable, no probe) — unchanged', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async () => new Response('ok', { status: 200 })),
+    );
+    const r = await verifyLightning('https://live.example', null);
+    expect(r.status).toBe('unknown');
+    expect(r.evidence.probe_blocked).toBeUndefined();
+  });
+
+  it('sends an identifying User-Agent on the probe', async () => {
+    const spy = vi.fn(
+      async (_url: string, _init?: RequestInit) => new Response('ok', { status: 200 }),
+    );
+    vi.stubGlobal('fetch', spy);
+    await verifyLightning('https://ua.example', null);
+    const init = spy.mock.calls[0]?.[1];
+    const headers = (init?.headers ?? {}) as Record<string, string>;
+    expect(headers['User-Agent']).toMatch(/AT-Directory-Verifier/);
   });
 });
