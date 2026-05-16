@@ -1,0 +1,29 @@
+# Repo-root netlify.toml. Netlify reads the config at the build base; for
+# this pnpm monorepo the base must be the repo root so `pnpm install`
+# resolves the workspace:* deps (@at-directory/core,
+# @agenticterminal/mcp-server). Do NOT set a Netlify "base directory" of
+# apps/web in the dashboard — that breaks workspace resolution.
+[build]
+  command = "corepack enable && pnpm install --frozen-lockfile && pnpm -F @at-directory/web build && pnpm -F @at-directory/web bundle:data"
+  publish = "apps/web/out"
+
+[build.environment]
+  NODE_VERSION = "22"
+  # pnpm version comes from the root package.json packageManager field.
+
+[functions]
+  directory = "apps/web/netlify/functions"
+  node_bundler = "esbuild"
+
+# SKILL.md and .well-known/did.json are emitted into apps/web/out by the
+# static export + bundle:data step, so they serve at /SKILL.md and
+# /.well-known/did.json with no redirect needed.
+
+# Maxi's prior scraped feed at agenticterminal.ai is replaced by this
+# deploy. Audit inbound links before cutover (spec §6.6); any
+# load-bearing legacy paths get explicit 200/301 redirects added ABOVE
+# this comment before the cutover, e.g.:
+# [[redirects]]
+#   from = "/old-feed/*"
+#   to = "/legacy/:splat"
+#   status = 301
