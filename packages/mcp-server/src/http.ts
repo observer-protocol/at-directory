@@ -3,6 +3,7 @@ import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/
 import { bootstrap, type DirectoryData } from './bootstrap.ts';
 import { verifyCredential } from './auth.ts';
 import { buildServer, resolveSessionAuth } from './server.ts';
+import { tryHandleRest } from './rest.ts';
 
 const PORT = Number(process.env.PORT ?? 8099);
 const MCP_PATH = '/mcp';
@@ -51,28 +52,34 @@ async function handleMcp(
 export async function main(): Promise<void> {
   const data = await bootstrap();
   const httpServer = createServer((req, res) => {
-    if (req.url === '/healthz') {
-      res.writeHead(200, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({ ok: true, merchants: data.merchants.length }));
-      return;
-    }
-    if (req.url?.startsWith(MCP_PATH) && req.method === 'POST') {
-      handleMcp(req, res, data).catch((err) => {
+    void (async () => {
+      try {
+        if (req.url === '/healthz') {
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ ok: true, merchants: data.merchants.length }));
+          return;
+        }
+        // Plain REST surface for non-MCP agent runtimes (spec §4 / v1).
+        if (await tryHandleRest(req, res, data)) return;
+        if (req.url?.startsWith(MCP_PATH) && req.method === 'POST') {
+          await handleMcp(req, res, data);
+          return;
+        }
+        res.writeHead(404, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'not found' }));
+      } catch (err) {
         process.stderr.write(`[at-directory-mcp http] ${(err as Error).stack ?? err}\n`);
         if (!res.headersSent) {
           res.writeHead(500, { 'Content-Type': 'application/json' });
           res.end(JSON.stringify({ error: 'internal error' }));
         }
-      });
-      return;
-    }
-    res.writeHead(404, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({ error: 'not found' }));
+      }
+    })();
   });
 
   httpServer.listen(PORT, () => {
     process.stderr.write(
-      `[at-directory-mcp http] listening on :${PORT}${MCP_PATH}; ${data.merchants.length} merchants\n`,
+      `[at-directory-mcp http] listening on :${PORT} ; ${MCP_PATH} (MCP) + /v1 (REST) ; ${data.merchants.length} merchants\n`,
     );
   });
 }
