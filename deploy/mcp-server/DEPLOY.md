@@ -47,7 +47,11 @@ Success: first prints `v20.18.1`, second still prints `v18.x`.
 sudo mkdir -p /opt/at-directory-mcp
 sudo tar -xzf ~/at-directory-mcp.tgz -C /opt/at-directory-mcp
 cd /opt/at-directory-mcp
-sudo /opt/node20/bin/npm install --omit=dev --no-package-lock
+# Invoke npm via the Node 20 binary explicitly — npm's `env node` shebang
+# + sudo's restricted PATH would otherwise run npm under system Node 18 and
+# print a (harmless but noisy) EBADENGINE warning. Deps are pure JS so the
+# install is correct either way; this just keeps the output clean.
+sudo /opt/node20/bin/node /opt/node20/bin/npm install --omit=dev --no-package-lock
 ls /opt/at-directory-mcp           # http.js package.json merchants.snapshot.json fixtures node_modules
 ```
 
@@ -134,11 +138,22 @@ GATE — must pass before any restart:
 sudo cloudflared tunnel ingress validate    # expect: "Validating rules ... OK"
 ```
 
-Bind the hostname to this tunnel (idempotent — no-op if already routed):
+Bind the hostname to this tunnel via a **manual Cloudflare dashboard
+CNAME**. `cloudflared tunnel route dns` does NOT work on this box: the
+tunnel was migrated credentials-only, so there is no account
+`cert.pem`, and `route dns` is an account-level API write that requires
+it. Do not run `cloudflared tunnel login` for this (it over-privileges
+the prod box). The dashboard CNAME reaches the identical end state and
+matches how this tunnel's other hostnames are already wired.
 
-```bash
-sudo cloudflared tunnel route dns cda977eb-55f1-4615-abca-9fbea978bc8a mcp.agenticterminal.ai
-```
+In Cloudflare DNS for zone `agenticterminal.ai`:
+
+- Type **CNAME**, Name **`mcp`**
+- Target **`cda977eb-55f1-4615-abca-9fbea978bc8a.cfargotunnel.com`**
+- Proxy **Proxied (orange cloud)** — mandatory for tunnel routing
+- TTL Auto
+- Delete any pre-existing `mcp` A record (a proxied A → the VPS IP
+  cannot work; ingress is the outbound tunnel, not a public 443 listener).
 
 Apply:
 
@@ -173,9 +188,16 @@ curl -s -X POST https://mcp.agenticterminal.ai/mcp \
   -d '{"jsonrpc":"2.0","id":1,"method":"tools/list"}' | head -c 300
 # expect: JSON listing the 6 tools
 
-# REGRESSION: OP API still healthy (we touched shared ingress)
-curl -s https://api.observerprotocol.org/health -o /dev/null -w '%{http_code}\n'
-# expect: 200 (unchanged from before deploy)
+# REGRESSION: OP API tunnel route still works (we touched shared ingress).
+# The OP API has no /health endpoint; what matters is that the request
+# reaches the origin app (any normal HTTP code) rather than a Cloudflare
+# edge error (52x/53x = tunnel can't reach origin = we broke the route).
+curl -s -o /dev/null -w '%{http_code}\n' https://api.observerprotocol.org/
+# expect: 404 (app reached — normal, no root handler). NOT 521/522/530.
+# Stronger optional check (proves an app endpoint round-trips):
+curl -s -o /dev/null -w '%{http_code}\n' -X POST \
+  https://api.observerprotocol.org/api/v1/credentials/verify
+# expect: 422 (verifier shim reached and validating input)
 ```
 
 Success: MCP healthz + tools/list over HTTPS, AND the OP API still returns its
@@ -191,5 +213,11 @@ normal status. Only then is the deploy done.
 
 ## Status
 
-Approach approved 2026-05-16. Artifact built + staged. Runbook executed as a
-guided dry-run: deploy runs the commands, Claude watches and debugs live.
+**DEPLOYED 2026-05-16.** Hosted MCP live at `https://mcp.agenticterminal.ai`
+via the cloudflared tunnel on op-vps; `/healthz` → 42 merchants;
+`tools/list` returns the 6 tools over SSE; OP API tunnel route unaffected.
+This runbook reflects the corrections found during that run (manual
+dashboard CNAME instead of `route dns`; npm via the Node 20 binary; OP API
+regression check uses a real path). Subsequent deploys = re-scp a new
+`dist/` tarball, re-extract, `sudo systemctl restart at-directory-mcp`;
+cloudflared and DNS are untouched on redeploys.
