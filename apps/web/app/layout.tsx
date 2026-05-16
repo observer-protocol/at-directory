@@ -3,9 +3,9 @@ import type { ReactNode } from 'react';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'AT Directory — agent commerce, OP-verified',
+  title: 'AT Directory — OP-verified merchants on the rails Bitcoin and Tether actually use',
   description:
-    'Where agents discover OP-verified merchants on the rails Bitcoin and Tether actually use: Lightning, BOLT12, L402, USDT.',
+    'Discover Lightning, BOLT12, L402, and USDT merchants with verifiable Observer Protocol trust attestations. The agent-callable commerce layer for Bitcoin and Tether rails.',
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

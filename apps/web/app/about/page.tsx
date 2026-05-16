@@ -8,6 +8,28 @@ export default function AboutPage() {
         agent-payment landscape.
       </p>
 
+      <h2>Why these rails</h2>
+      <p>
+        AT Directory indexes Lightning, BOLT12, L402, and USDT because those are the rails that
+        currently move real commerce at scale. Lightning is the sovereign endpoint for
+        Bitcoin-native agents. USDT, deployed across Tron, Ethereum, Solana, and increasingly
+        Lightning via Taproot Assets, is the highest-volume stablecoin rail in production today.
+      </p>
+      <p>
+        x402-only merchants are out of scope by design — that protocol is owned by other players,
+        and AT Directory occupies the rails they don&apos;t dominate. Merchants that accept x402
+        alongside a qualifying rail are still indexed, with x402 noted as supplementary metadata.
+      </p>
+      <p>
+        USDC is treated the same way: supplementary metadata on qualifying listings, with the note
+        that USDC transactions through OP-attested merchants can also be OP-verified.
+      </p>
+      <p>
+        Tier 1–3 verification through Observer Protocol applies to every listing regardless of rail.
+        Agents reason over trust tier and agent-callable tier independently — the rail a merchant
+        accepts and the trust we attest to are orthogonal axes.
+      </p>
+
       <h2>Two independent axes</h2>
       <p>Every merchant carries two orthogonal signals. Read them together.</p>
       <table>
