@@ -62,11 +62,11 @@ Success: `http.js`, `merchants.snapshot.json`, and `node_modules/@modelcontextpr
 ```bash
 PORT=8099 /opt/node20/bin/node /opt/at-directory-mcp/http.js & SMOKE=$!
 sleep 2
-curl -s localhost:8099/healthz      # expect: {"ok":true,"merchants":42}
+curl -s localhost:8099/healthz      # expect: {"ok":true,"merchants":47}
 kill $SMOKE
 ```
 
-Success: `{"ok":true,"merchants":42}`. If not, stop — do not proceed to systemd.
+Success: `{"ok":true,"merchants":47}`. If not, stop — do not proceed to systemd.
 
 ## Step 4 — systemd service (new unit; touches no existing service)
 
@@ -97,7 +97,7 @@ WantedBy=multi-user.target
 sudo systemctl daemon-reload
 sudo systemctl enable --now at-directory-mcp     # enable = survives reboot
 systemctl is-active at-directory-mcp             # expect: active
-curl -s localhost:8099/healthz                   # expect: {"ok":true,"merchants":42}
+curl -s localhost:8099/healthz                   # expect: {"ok":true,"merchants":47}
 ```
 
 Success: `active` and healthz ok. `enable` is mandatory (the 2026-05-07
@@ -180,7 +180,7 @@ unaffected until a restart.)
 ```bash
 # MCP through the tunnel (HTTPS, Cloudflare-terminated)
 curl -s https://mcp.agenticterminal.ai/healthz
-# expect: {"ok":true,"merchants":42}
+# expect: {"ok":true,"merchants":47}
 
 curl -s -X POST https://mcp.agenticterminal.ai/mcp \
   -H 'Content-Type: application/json' \
@@ -213,8 +213,11 @@ normal status. Only then is the deploy done.
 
 ## Status
 
-**DEPLOYED 2026-05-16.** Hosted MCP live at `https://mcp.agenticterminal.ai`
-via the cloudflared tunnel on op-vps; `/healthz` → 42 merchants;
+**DEPLOYED 2026-05-16; content redeploy 2026-05-17 (42 → 47 merchants
+via the re-scp/extract/restart redeploy path — cloudflared & DNS
+untouched; rollback anchor `/opt/at-directory-mcp.bak-m42`).** Hosted
+MCP live at `https://mcp.agenticterminal.ai` via the cloudflared tunnel
+on op-vps; `/healthz` → 47 merchants;
 `tools/list` returns the 6 tools over SSE; OP API tunnel route unaffected.
 This runbook reflects the corrections found during that run (manual
 dashboard CNAME instead of `route dns`; npm via the Node 20 binary; OP API
