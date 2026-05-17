@@ -6,7 +6,7 @@
       "id": "did:web:agenticterminal.ai#key-1",
       "type": "Ed25519VerificationKey2020",
       "controller": "did:web:agenticterminal.ai",
-      "publicKeyMultibase": "z6MkmJW1YEx2LEJtfm2tZjjdPdQCkEcx6AJJXUrmYBHQ7NQA"
+      "publicKeyMultibase": "z2CFDc22gBo2x9hHo7TZ8JeqxVqYmpMGEyJGH64X1nBSF"
     }
   ],
   "authentication": ["did:web:agenticterminal.ai#key-1"],
