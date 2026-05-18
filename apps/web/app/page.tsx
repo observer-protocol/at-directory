@@ -18,9 +18,8 @@ export default function Home() {
       <p className="lede">
         AT Directory is the open agentic commerce merchant directory for the rails that move real
         commerce — Lightning, BOLT12, L402, and USDT on any chain — with verifiable trust
-        attestations issued through Observer Protocol. These are the rails moving real commerce
-        today — and the rails Tether is bringing onto Lightning via Taproot Assets. We index them
-        honestly; agents transact accordingly.
+        attestations issued through Observer Protocol. Tether is bringing USDT onto Lightning via
+        Taproot Assets; we index these rails honestly, and agents transact accordingly.
       </p>
 
       <TierLegend />

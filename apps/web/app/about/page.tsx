@@ -94,7 +94,7 @@ export default function AboutPage() {
       </p>
 
       <p className="notice">
-        Verification is issued through Observer Protocol. Tier 2 listings link to their OP
+        Verification is issued through Observer Protocol. Tier 2+ listings carry a queryable OP
         attestation record.
       </p>
     </div>
