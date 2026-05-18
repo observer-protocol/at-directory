@@ -1,0 +1,32 @@
+{
+  "id": "cryptorefills",
+  "name": "Cryptorefills",
+  "url": "https://cryptorefills.com",
+  "description": "6,600+ gift cards, eSIMs, flights, hotel stays, and mobile top-ups payable with crypto.",
+  "category": "gift-cards",
+  "rails": [
+    {
+      "rail": "usdt",
+      "chain": "tron",
+      "payment_endpoint": null,
+      "health": "unknown",
+      "last_health_check": null
+    }
+  ],
+  "op_trust_tier": 1,
+  "agent_callable_tier": "full-api",
+  "accepts_usdc": true,
+  "accepts_x402": false,
+  "pricing_model": "per-product",
+  "last_verified_at": null,
+  "source": "crawled",
+  "op_attestation_url": null,
+  "tags": [
+    "gift-cards",
+    "esim",
+    "flights",
+    "hotels",
+    "mobile-topup",
+    "rail-unverified"
+  ]
+}
