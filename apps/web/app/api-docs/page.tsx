@@ -57,6 +57,12 @@ export default function ApiDocsPage() {
         anonymous vs. credentialed state.
       </p>
 
+      <p className="notice">
+        <strong>Anonymous access, full directory.</strong> Reads require no credential — discover,
+        query, and transact without authentication. An Observer Protocol credential unlocks higher
+        rate limits and write access for reviews.
+      </p>
+
       {TOOLS.map((t) => (
         <div key={t.name} style={{ margin: '20px 0' }}>
           <h2 style={{ margin: '0 0 6px' }}>

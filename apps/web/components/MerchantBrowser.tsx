@@ -33,6 +33,8 @@ export function MerchantBrowser({ merchants, categories, rails }: Props) {
     });
   }, [merchants, q, rail, category, callable, trustMin, usdc]);
 
+  const filterActive = Boolean(q || rail || category || callable || trustMin || usdc);
+
   return (
     <div>
       <div className="filterbar">
@@ -93,7 +95,9 @@ export function MerchantBrowser({ merchants, categories, rails }: Props) {
         </label>
       </div>
       <p className="lede">
-        {filtered.length} of {merchants.length} merchants
+        {filterActive
+          ? `${filtered.length} of ${merchants.length} merchants`
+          : 'Browse the full directory'}
       </p>
       <div className="grid">
         {filtered.map((m) => (

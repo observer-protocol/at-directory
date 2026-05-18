@@ -3,9 +3,9 @@ export default function AboutPage() {
     <div>
       <h1>About AT Directory</h1>
       <p className="lede">
-        AT Directory is where agents discover OP-verified merchants on the rails Bitcoin and Tether
-        actually use. It is the verified, agent-callable layer on top of the fragmented
-        agent-payment landscape.
+        AT Directory is the open agentic commerce merchant directory where agents discover
+        OP-verified merchants on the rails Bitcoin and Tether actually use. It is the verified,
+        agent-callable layer on top of the fragmented agent-payment landscape.
       </p>
 
       <h2>Why these rails</h2>
@@ -31,7 +31,10 @@ export default function AboutPage() {
       </p>
 
       <h2>Two independent axes</h2>
-      <p>Every merchant carries two orthogonal signals. Read them together.</p>
+      <p>
+        OP trust tier describes the <em>merchant</em>. Agent-callable tier describes the{' '}
+        <em>integration</em>. They are independent — always read both before transacting.
+      </p>
       <table>
         <thead>
           <tr>
@@ -42,8 +45,7 @@ export default function AboutPage() {
         <tbody>
           <tr>
             <td>
-              <strong>Tier 1 — Self-attested.</strong> Merchant claims the rails; not independently
-              verified.
+              <strong>Tier 1 — Self-attested.</strong> The merchant&apos;s own claim.
             </td>
             <td>
               <strong>full-api.</strong> Agent completes the purchase end to end programmatically.
@@ -51,9 +53,8 @@ export default function AboutPage() {
           </tr>
           <tr>
             <td>
-              <strong>Tier 2 — Operator-verified.</strong> The AT operator transacted with the
-              merchant and confirmed at least one claimed rail works. (v1.x: this becomes
-              counterparty attestations — any OP-credentialed agent can verify, not just AT.)
+              <strong>Tier 2 — Verified by 1+ counterparties.</strong> OP-credentialed agents
+              attested real transactions.
             </td>
             <td>
               <strong>structured-handoff.</strong> Agent pays autonomously; fulfillment is
@@ -62,7 +63,8 @@ export default function AboutPage() {
           </tr>
           <tr>
             <td>
-              <strong>Tier 3 — Chain-anchored.</strong> DID anchored on-chain. Ships in v1.x.
+              <strong>Tier 3 — OP-native, counterparty-verified.</strong> The merchant runs Observer
+              Protocol.
             </td>
             <td>
               <strong>human-checkout.</strong> Agent discovers; a human completes the web checkout.
@@ -78,10 +80,11 @@ export default function AboutPage() {
       <h2>What qualifies</h2>
       <p>
         A merchant is indexed if it does commerce (sells products, services, APIs, or content) AND
-        accepts at least one of Lightning, BOLT12, L402, or USDT (any chain). Pure wallets,
-        exchanges, and payment infrastructure are excluded. x402-only merchants are excluded by
-        design; x402 and USDC are recorded as supplementary metadata when a qualifying rail is also
-        present.
+        accepts at least one of Lightning, BOLT12, L402, or USDT (any chain) AND has a payment
+        surface callable by autonomous agents without human-only flows like CAPTCHA or 3D Secure.
+        Pure wallets, exchanges, and payment infrastructure are excluded. x402-only merchants are
+        excluded by design; x402 and USDC are recorded as supplementary metadata when a qualifying
+        rail is also present.
       </p>
 
       <h2>Not in the payment path</h2>

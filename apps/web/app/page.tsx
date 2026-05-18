@@ -14,11 +14,13 @@ export default function Home() {
   return (
     <div>
       <h1>OP-verified merchants on the rails Bitcoin and Tether actually use</h1>
+      <h2>The Open Agentic Commerce Merchant Directory</h2>
       <p className="lede">
-        AT Directory indexes merchants accepting Lightning, BOLT12, L402, or USDT on any chain, with
-        verifiable trust attestations issued through Observer Protocol. These are the rails moving
-        real commerce today — and the rails Tether is bringing onto Lightning via Taproot Assets. We
-        index them honestly; agents transact accordingly.
+        AT Directory is the open agentic commerce merchant directory for the rails that move real
+        commerce — Lightning, BOLT12, L402, and USDT on any chain — with verifiable trust
+        attestations issued through Observer Protocol. These are the rails moving real commerce
+        today — and the rails Tether is bringing onto Lightning via Taproot Assets. We index them
+        honestly; agents transact accordingly.
       </p>
 
       <TierLegend />
