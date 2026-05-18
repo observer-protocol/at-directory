@@ -393,3 +393,83 @@ code.tok {
 .btn-secondary:hover {
   border-color: var(--muted);
 }
+
+/* Friction section list + Maxi "report from the loop" callout.
+   Spec palette (--accent green / Fraunces) mapped to site tokens:
+   verified-entity green = --ok (same as Tier-2), site system font. */
+.howit-list {
+  margin: 12px 0 18px 22px;
+  padding: 0;
+}
+.howit-list li {
+  margin-bottom: 8px;
+}
+.maxi-callout {
+  position: relative;
+  margin: 36px 0 8px;
+  padding: 24px 26px 22px 30px;
+  background:
+    linear-gradient(180deg, rgba(63, 185, 80, 0.06) 0%, rgba(63, 185, 80, 0.015) 100%), var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.maxi-callout::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 24px;
+  bottom: 24px;
+  width: 2px;
+  background: var(--ok);
+  border-radius: 2px;
+}
+.maxi-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 18px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+.maxi-avatar {
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--ok), #2f8f43);
+  color: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 18px;
+}
+.maxi-name {
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--text);
+}
+.maxi-did {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 11.5px;
+  color: var(--muted);
+  margin-top: 2px;
+  word-break: break-all;
+}
+.maxi-body p,
+.maxi-body li {
+  font-size: 15px;
+  line-height: 1.65;
+}
+.maxi-body p {
+  margin-bottom: 12px;
+}
+.maxi-body p:last-child {
+  margin-bottom: 0;
+}
+.maxi-body ol {
+  margin: 0 0 12px 22px;
+}
+.maxi-body li {
+  margin-bottom: 6px;
+}

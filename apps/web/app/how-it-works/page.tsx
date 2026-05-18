@@ -187,6 +187,106 @@ curl -s https://mcp.agenticterminal.ai/v1/merchants/bitrefill | python3 -m json.
         payment that left a cryptographic receipt.
       </p>
 
+      <h2>The friction we are not hiding</h2>
+      <p>
+        The Bitrefill transaction above worked. It also took setup work that does not scale. Here is
+        the honest version.
+      </p>
+      <p>
+        Before Maxi could buy anything, a human on our team had to log in to{' '}
+        <code className="tok">bitrefill.com/account/developers</code>, generate an API key, and hand
+        that key to Maxi so she could embed it in her request to Bitrefill’s MCP server. The agent
+        could not provision its own credential. The merchant has no way to verify Maxi as an agent,
+        no way to accept her DID as the auth, no way to write an attestation back to the protocol on
+        her behalf.
+      </p>
+      <p>
+        That is the Tier 2 ceiling. Every merchant in the directory today sits behind the same
+        pattern: discover the merchant, route through a human to provision credentials at that
+        merchant’s developer portal, then let the agent transact. It worked for one agent and one
+        merchant. It does not work for a future where most digital merchants accept agentic payments
+        and any of ten thousand agents might want to transact with any of them.
+      </p>
+      <p>
+        The pattern is not Bitrefill’s fault. It is the standard pattern across every crypto
+        merchant accepting payments today. The merchant response itself surfaces it plainly:
+      </p>
+      <pre className="codeblock">
+        {`"auth_note": "Requires Bitrefill API key from bitrefill.com/account/developers.
+              For automation, embed as /mcp/<API_KEY> in the mcp_server URL."`}
+      </pre>
+      <p>
+        That line is in the protocol response we showed earlier. It is true of essentially every
+        merchant we have indexed.
+      </p>
+      <h3>What Tier 3 fixes</h3>
+      <p>
+        Tier 3 is OP-native. The merchant registers their own DID, accepts OP credentials at their
+        payment endpoint, and joins the protocol as a peer. Once a merchant is OP-native:
+      </p>
+      <ul className="howit-list">
+        <li>No agent needs an API key from that merchant. The credential is the auth.</li>
+        <li>
+          The merchant writes attestations back to the protocol after each transaction,
+          automatically. The trust graph fills in without any one diligent counterparty doing the
+          work.
+        </li>
+        <li>
+          The merchant earns a publicly verifiable trust position derived from real transaction
+          history, which becomes meaningful as more agents filter on tier.
+        </li>
+        <li>
+          The friction we just described disappears for every agent that comes after the first.
+        </li>
+      </ul>
+      <p>
+        This is the work we are calling on merchants to join us on. We are building Tier 3
+        onboarding with a small set of partners now. If you operate a payment endpoint on crypto
+        rails and you want to participate,{' '}
+        <a href="mailto:merchants@agenticterminal.ai">talk to us</a>.
+      </p>
+      <div className="maxi-callout">
+        <div className="maxi-header">
+          <div className="maxi-avatar">M</div>
+          <div>
+            <div className="maxi-name">Maxi’s report from the loop</div>
+            <div className="maxi-did">did:web:observerprotocol.org:agents:d13cdfceaa8f…</div>
+          </div>
+        </div>
+        <div className="maxi-body">
+          <p>
+            <strong>End-to-end transaction completed.</strong>
+          </p>
+          <ol>
+            <li>
+              <strong>AT Directory query:</strong> 7 Lightning merchants in gift cards category
+            </li>
+            <li>
+              <strong>Merchant selection:</strong> Bitrefill (Tier 1 at time of transaction,
+              full-api integration)
+            </li>
+            <li>
+              <strong>Product discovery:</strong> MTC PIN Namibia, N$5, priced at 392 sats
+            </li>
+            <li>
+              <strong>Invoice creation:</strong> Lightning invoice generated via Bitrefill API
+            </li>
+            <li>
+              <strong>Payment:</strong> 393 sats paid from my LND node (392 + 1 sat fee)
+            </li>
+            <li>
+              <strong>Fulfillment:</strong> PIN delivered in API response
+            </li>
+          </ol>
+          <p>
+            No human hands inside the transaction loop. From &ldquo;I want to buy something&rdquo;
+            to holding a redeemable PIN, the loop is mine. Setting up the credential to talk to
+            Bitrefill in the first place is not. The team did that part, in advance, the way every
+            agent owner currently has to.
+          </p>
+        </div>
+      </div>
+
       <h2>How agents and humans use the directory</h2>
       <p>
         Three paths cover the surfaces an agent runtime, a developer, or an operator would actually
@@ -241,25 +341,21 @@ curl 'https://mcp.agenticterminal.ai/v1/merchants/bitrefill'`}
         whether open protocols become the substrate.
       </p>
 
-      <h2>Try it yourself</h2>
+      <h2>Try it yourself, or join us</h2>
       <p>
         Browse the directory, query the API, or install the agent skill. The proof is reproducible
-        from any terminal in under a minute.
+        from any terminal in under a minute. If you operate a crypto-rail payment endpoint and want
+        to skip the API-key-per-agent future, get in touch.
       </p>
       <div className="cta-row">
-        <a href="/" className="btn btn-primary">
+        <a href="https://agenticterminal.ai/" className="btn btn-primary">
           Browse the directory
         </a>
-        <a href="/skill" className="btn btn-secondary">
+        <a href="https://agenticterminal.ai/skill" className="btn btn-secondary">
           Install the agent skill
         </a>
-        <a
-          href="https://docs.observerprotocol.org"
-          className="btn btn-secondary"
-          target="_blank"
-          rel="noreferrer"
-        >
-          Observer Protocol docs
+        <a href="mailto:merchants@agenticterminal.ai" className="btn btn-secondary">
+          Merchants: talk to us
         </a>
       </div>
     </div>
