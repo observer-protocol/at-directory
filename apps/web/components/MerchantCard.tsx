@@ -1,5 +1,7 @@
+'use client';
 import type { Merchant } from '@at-directory/core';
-import { LiveTrustBadge } from './LiveTrustBadge';
+import { useDerivedTier } from './useDerivedTier';
+import { TrustBadge } from './TrustBadge';
 import { RailIcon } from './RailIcon';
 
 const CALLABLE_LABEL: Record<string, string> = {
@@ -9,9 +11,13 @@ const CALLABLE_LABEL: Record<string, string> = {
 };
 
 export function MerchantCard({ m }: { m: Merchant }) {
+  // One derived-tier fetch per card, hoisted so the whole card (border,
+  // header tint, glow) reflects the tier — not just the badge. Renders
+  // the static fallback tier instantly, upgrades on resolve.
+  const { tier, count } = useDerivedTier(m.id, m.op_trust_tier);
   return (
-    <div className="card">
-      <div className="row">
+    <div className={`card tier${tier}`}>
+      <div className="row cardhead">
         <div
           className="logo"
           style={{
@@ -31,11 +37,7 @@ export function MerchantCard({ m }: { m: Merchant }) {
         ))}
       </div>
       <div className="row">
-        <LiveTrustBadge
-          merchantId={m.id}
-          fallbackTier={m.op_trust_tier}
-          attestationUrl={m.op_attestation_url}
-        />
+        <TrustBadge tier={tier} count={count} attestationUrl={m.op_attestation_url} />
         <span className="badge callable">{CALLABLE_LABEL[m.agent_callable_tier]}</span>
         {m.accepts_usdc && <span className="badge">+ USDC</span>}
       </div>

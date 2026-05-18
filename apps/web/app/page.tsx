@@ -1,4 +1,5 @@
 import { MerchantCard } from '@/components/MerchantCard';
+import { TierLegend } from '@/components/TierLegend';
 import { AgentInstallSnippet } from '@/components/AgentInstallSnippet';
 import { allMerchants, countByCategory, categoryLabel } from '@/lib/data';
 
@@ -19,6 +20,8 @@ export default function Home() {
         real commerce today — and the rails Tether is bringing onto Lightning via Taproot Assets. We
         index them honestly; agents transact accordingly.
       </p>
+
+      <TierLegend />
 
       <h2>Featured</h2>
       <div className="grid">
