@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import { allMerchants, merchantBySlug, categoryLabel } from '@/lib/data';
-import { TrustBadge } from '@/components/TrustBadge';
+import { LiveTrustBadge } from '@/components/LiveTrustBadge';
 import { RailIcon } from '@/components/RailIcon';
 import { VerifyNowButton } from '@/components/VerifyNowButton';
 
@@ -18,7 +18,11 @@ export default async function MerchantPage({ params }: { params: Promise<{ slug:
       <h1>{m.name}</h1>
       <p className="lede">{m.description}</p>
       <div className="row">
-        <TrustBadge tier={m.op_trust_tier} attestationUrl={m.op_attestation_url} />
+        <LiveTrustBadge
+          merchantId={m.id}
+          fallbackTier={m.op_trust_tier}
+          attestationUrl={m.op_attestation_url}
+        />
         <span className="badge callable">{m.agent_callable_tier}</span>
         <span className="badge">{m.pricing_model}</span>
         {m.accepts_usdc && <span className="badge">+ USDC</span>}

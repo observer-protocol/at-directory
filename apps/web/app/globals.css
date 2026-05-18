@@ -10,6 +10,7 @@
   --ok: #3fb950;
   --warn: #d29922;
   --bad: #f85149;
+  --tier3: #d4af37; /* gold — premium tier; NOT --accent orange (BTC "accepts Bitcoin" misread / USDT cultural dissonance) */
   --radius: 10px;
 }
 
@@ -144,12 +145,12 @@ h2 {
   border-color: #3a4252;
 }
 .badge.tier2 {
-  border-color: var(--accent);
-  color: var(--accent);
+  border-color: var(--ok);
+  color: var(--ok);
 }
 .badge.tier3 {
-  border-color: var(--accent-2);
-  color: var(--accent-2);
+  border-color: var(--tier3);
+  color: var(--tier3);
 }
 .badge.rail {
   font-family: ui-monospace, monospace;

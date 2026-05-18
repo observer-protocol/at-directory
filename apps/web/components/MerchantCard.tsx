@@ -1,5 +1,5 @@
 import type { Merchant } from '@at-directory/core';
-import { TrustBadge } from './TrustBadge';
+import { LiveTrustBadge } from './LiveTrustBadge';
 import { RailIcon } from './RailIcon';
 
 const CALLABLE_LABEL: Record<string, string> = {
@@ -31,7 +31,11 @@ export function MerchantCard({ m }: { m: Merchant }) {
         ))}
       </div>
       <div className="row">
-        <TrustBadge tier={m.op_trust_tier} attestationUrl={m.op_attestation_url} />
+        <LiveTrustBadge
+          merchantId={m.id}
+          fallbackTier={m.op_trust_tier}
+          attestationUrl={m.op_attestation_url}
+        />
         <span className="badge callable">{CALLABLE_LABEL[m.agent_callable_tier]}</span>
         {m.accepts_usdc && <span className="badge">+ USDC</span>}
       </div>

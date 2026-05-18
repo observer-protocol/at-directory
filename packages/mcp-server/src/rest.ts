@@ -18,6 +18,62 @@ import {
 
 const REST_PREFIX = '/v1';
 
+// §0.2-C: the OP trust tier is DERIVED at request time from the OP API;
+// the static merchant JSON value is a cache/fallback only. Loopback
+// origin only — the box calling its own public Cloudflare hostname
+// loops back / times out (op-vps gotcha). Fail-soft: any error keeps
+// the static value (never break the directory if the OP API is slow).
+const OP_API_BASE = process.env.OP_API_BASE ?? 'http://127.0.0.1:8000';
+const TIER_TTL_MS = 60_000;
+
+interface DerivedTier {
+  op_trust_tier: number;
+  distinct_attestors: number;
+  attestation_count: number;
+  as_of: string;
+}
+const _tierCache = new Map<string, { v: DerivedTier | null; exp: number }>();
+
+async function fetchDerivedTier(id: string): Promise<DerivedTier | null> {
+  const hit = _tierCache.get(id);
+  if (hit && hit.exp > Date.now()) return hit.v;
+  let v: DerivedTier | null = null;
+  try {
+    const r = await fetch(`${OP_API_BASE}/v1/merchants/${encodeURIComponent(id)}/tier`, {
+      signal: AbortSignal.timeout(2000),
+    });
+    if (r.ok) {
+      const d = (await r.json()) as Partial<DerivedTier>;
+      if (typeof d.op_trust_tier === 'number') {
+        v = {
+          op_trust_tier: d.op_trust_tier,
+          distinct_attestors: d.distinct_attestors ?? 0,
+          attestation_count: d.attestation_count ?? 0,
+          as_of: d.as_of ?? '',
+        };
+      }
+    }
+  } catch {
+    v = null; // fail-soft
+  }
+  _tierCache.set(id, { v, exp: Date.now() + TIER_TTL_MS });
+  return v;
+}
+
+function overlayTier(m: object, dv: DerivedTier | null): object {
+  if (!dv) return m;
+  return {
+    ...m,
+    op_trust_tier: dv.op_trust_tier,
+    op_trust: {
+      tier: dv.op_trust_tier,
+      distinct_attestors: dv.distinct_attestors,
+      attestation_count: dv.attestation_count,
+      as_of: dv.as_of,
+    },
+  };
+}
+
 function send(res: ServerResponse, status: number, body: unknown): void {
   const json = JSON.stringify(body, null, 2);
   res.writeHead(status, {
@@ -77,7 +133,16 @@ export async function tryHandleRest(
         send(res, 400, { error: 'invalid_query', detail: parsed.error.flatten() });
         return true;
       }
-      send(res, 200, searchMerchantsTool(parsed.data, ctx));
+      const listed = searchMerchantsTool(parsed.data, ctx);
+      // Overlay derived tier on each result (TTL-cached). Ranking still
+      // uses the static value — derived-tier ranking is deferred (#2).
+      await Promise.all(
+        listed.results.map(async (r, i) => {
+          const dv = await fetchDerivedTier(String((r as { id: string }).id));
+          if (dv) listed.results[i] = overlayTier(r as object, dv) as typeof r;
+        }),
+      );
+      send(res, 200, listed);
       return true;
     }
 
@@ -113,11 +178,18 @@ export async function tryHandleRest(
       return true;
     }
 
-    // GET /v1/merchants/{id}
+    // GET /v1/merchants/{id} — overlay the DERIVED tier (§0.2-C: static
+    // value is the cache/fallback; the OP API is the source of truth).
     const getMatch = path.match(/^\/v1\/merchants\/([^/]+)$/);
     if (getMatch && method === 'GET') {
-      const result = getMerchantTool({ id: decodeURIComponent(getMatch[1]!) }, ctx);
-      send(res, 'error' in result ? 404 : 200, result);
+      const mid = decodeURIComponent(getMatch[1]!);
+      const result = getMerchantTool({ id: mid }, ctx);
+      if ('error' in result) {
+        send(res, 404, result);
+        return true;
+      }
+      const dv = await fetchDerivedTier(mid);
+      send(res, 200, dv ? { ...result, merchant: overlayTier(result.merchant, dv) } : result);
       return true;
     }
 
