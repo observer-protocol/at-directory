@@ -2,7 +2,7 @@
   "id": "cryptorefills",
   "name": "Cryptorefills",
   "url": "https://cryptorefills.com",
-  "description": "6,600+ gift cards, eSIMs, flights, hotel stays, and mobile top-ups payable with crypto.",
+  "description": "6,600+ gift cards, eSIMs, flights, hotel stays, and mobile top-ups payable with crypto. Public MCP server for agents at api.cryptorefills.com.",
   "category": "gift-cards",
   "rails": [
     {
@@ -15,11 +15,16 @@
   ],
   "op_trust_tier": 1,
   "agent_callable_tier": "full-api",
+  "agent_endpoints": {
+    "mcp_server": "https://api.cryptorefills.com/mcp/http",
+    "api_docs": "https://www.cryptorefills.com/.well-known/mcp.json",
+    "auth_note": "Public MCP server, no API key required for catalog or order tools. Required request header: 'User-Agent: Cryptorefills-MCP/1.0'. Direct tools available standalone (no wizard session): listProductsForCountry, getProductPrice, validateOrder, createOrder, getOrderStatus, getCurrencies, getPaymentViasWithCurrencies. User.email is the only required identity field on createOrder. The interactive purchaseElicitation wizard is also offered for small agents but is not needed for agentic clients that can drive the lower-level tools."
+  },
   "accepts_usdc": true,
   "accepts_x402": false,
   "pricing_model": "per-product",
-  "last_verified_at": null,
-  "source": "crawled",
+  "last_verified_at": "2026-05-20T13:00:00Z",
+  "source": "integrated",
   "op_attestation_url": null,
   "tags": [
     "gift-cards",
@@ -27,6 +32,7 @@
     "flights",
     "hotels",
     "mobile-topup",
-    "rail-unverified"
+    "mcp-native",
+    "verified-mcp"
   ]
 }
