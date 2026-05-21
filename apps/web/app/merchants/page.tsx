@@ -6,8 +6,9 @@ export default function MerchantsPage() {
     <div>
       <h1>Merchants</h1>
       <p className="lede">
-        Every indexed merchant. Filter by rail, category, agent-callable tier, OP trust tier, and
-        USDC. The same data the MCP server returns, rendered for humans.
+        Every indexed merchant. Filter by rail, category, agent-callable tier, OP trust tier
+        (Bitcoin/Lightning and USDT), and USDC. The same data the MCP server returns, rendered for
+        humans.
       </p>
       <div className="row">
         {Object.entries(countByCategory())
