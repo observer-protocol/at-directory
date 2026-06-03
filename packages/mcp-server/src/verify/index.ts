@@ -89,5 +89,23 @@ export async function verifyRail(merchant: Merchant, rail: RailName): Promise<Ra
         evidence: { ...ev },
       };
     }
+    case 'btc':
+      // v1: best-effort no-op, mirroring Lightning's "no network probing"
+      // posture (spec §3). A future minor adds Base58Check / Bech32
+      // address-shape validation; for now, attested health applies via
+      // the per-invoice branch above when payment_endpoint is null.
+      if (!endpoint) {
+        return {
+          status: 'unknown',
+          detail: 'No BTC on-chain address declared on this rail.',
+          evidence: {},
+        };
+      }
+      return {
+        status: 'unknown',
+        detail:
+          'BTC on-chain verification is best-effort in v1; address-shape probe lands in a follow-up.',
+        evidence: { endpoint, rail: 'btc' },
+      };
   }
 }

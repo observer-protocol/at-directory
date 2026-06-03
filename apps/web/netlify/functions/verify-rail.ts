@@ -5,7 +5,7 @@ import { loadAllMerchants } from '@at-directory/core';
 import { verifyRail } from '@agenticterminal/mcp-server/verify';
 import type { RailName } from '@at-directory/core';
 
-const RAILS: RailName[] = ['lightning', 'bolt12', 'l402', 'usdt'];
+const RAILS: RailName[] = ['lightning', 'bolt12', 'l402', 'usdt', 'btc'];
 
 export default async function handler(req: Request): Promise<Response> {
   if (req.method !== 'POST') {

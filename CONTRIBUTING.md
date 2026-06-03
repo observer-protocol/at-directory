@@ -21,7 +21,7 @@ New entries land at **Tier 1** (self-attested). Promotion to Tier 2 happens thro
 
 ### Inclusion criteria
 
-A merchant qualifies only if **both**: (1) it does commerce — sells products, services, APIs, or content (pure wallets/exchanges/processors excluded), and (2) it accepts at least one of Lightning, BOLT12, L402, or USDT (any chain). x402-only merchants are out of scope by design; x402/USDC are recorded as supplementary metadata when a qualifying rail is present.
+A merchant qualifies only if **both**: (1) it does commerce — sells products, services, APIs, or content (pure wallets/exchanges/processors excluded), and (2) it accepts at least one of Lightning, BOLT12, L402, USDT (any chain), or on-chain Bitcoin (`btc`). x402-only merchants are out of scope by design; x402/USDC are recorded as supplementary metadata when a qualifying rail is present.
 
 ## Code
 

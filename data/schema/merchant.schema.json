@@ -83,7 +83,7 @@
       "required": ["rail", "health"],
       "additionalProperties": false,
       "properties": {
-        "rail": { "enum": ["lightning", "bolt12", "l402", "usdt"] },
+        "rail": { "enum": ["lightning", "bolt12", "l402", "usdt", "btc"] },
         "chain": {
           "enum": ["tron", "ethereum", "solana", "bsc", "polygon", "arbitrum", "base"],
           "description": "Required when rail === 'usdt'. Forbidden otherwise."

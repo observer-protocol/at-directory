@@ -12,7 +12,7 @@ export type Category =
   | 'concierge'
   | 'gaming';
 
-export type RailName = 'lightning' | 'bolt12' | 'l402' | 'usdt';
+export type RailName = 'lightning' | 'bolt12' | 'l402' | 'usdt' | 'btc';
 
 export type UsdtChain = 'tron' | 'ethereum' | 'solana' | 'bsc' | 'polygon' | 'arbitrum' | 'base';
 

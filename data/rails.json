@@ -3,6 +3,7 @@
     { "id": "lightning", "label": "Lightning Network" },
     { "id": "bolt12", "label": "BOLT12" },
     { "id": "l402", "label": "L402" },
+    { "id": "btc", "label": "Bitcoin (on-chain)" },
     {
       "id": "usdt",
       "label": "USDT",

@@ -1,0 +1,35 @@
+{
+  "id": "cherry-servers",
+  "name": "Cherry Servers",
+  "url": "https://www.cherryservers.com",
+  "description": "Enterprise-grade bare metal cloud servers and VPS across 19 global data centers. Developer-first with REST API, CLI, Terraform provider, and Ansible modules.",
+  "category": "hosting-domains",
+  "rails": [
+    {
+      "rail": "btc",
+      "payment_endpoint": null,
+      "health": "unknown",
+      "last_health_check": null
+    }
+  ],
+  "op_trust_tier": 1,
+  "agent_callable_tier": "full-api",
+  "agent_endpoints": {
+    "rest_api": "https://api.cherryservers.com",
+    "api_docs": "https://api.cherryservers.com/doc/",
+    "auth_note": "API token from client portal. REST + CLI + Terraform provider + Ansible modules. 17 GitHub repos at github.com/cherryservers."
+  },
+  "accepts_usdc": false,
+  "accepts_x402": false,
+  "pricing_model": "per-product",
+  "last_verified_at": "2026-06-03T00:00:00Z",
+  "source": "crawled",
+  "op_attestation_url": null,
+  "tags": [
+    "bare-metal",
+    "vps",
+    "hosting",
+    "enterprise",
+    "terraform"
+  ]
+}

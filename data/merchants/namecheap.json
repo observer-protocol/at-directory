@@ -1,0 +1,34 @@
+{
+  "id": "namecheap",
+  "name": "Namecheap",
+  "url": "https://www.namecheap.com",
+  "description": "Top-5 global domain registrar (NASDAQ: NCN). Domain registration, web hosting, SSL certificates, and email hosting. Bitcoin accepted via account balance top-up.",
+  "category": "hosting-domains",
+  "rails": [
+    {
+      "rail": "btc",
+      "payment_endpoint": null,
+      "health": "unknown",
+      "last_health_check": null
+    }
+  ],
+  "op_trust_tier": 1,
+  "agent_callable_tier": "full-api",
+  "agent_endpoints": {
+    "api_docs": "https://www.namecheap.com/support/api/intro/",
+    "auth_note": "API key + username + whitelisted IPv4. XML responses. Sandbox available for testing."
+  },
+  "accepts_usdc": false,
+  "accepts_x402": false,
+  "pricing_model": "per-product",
+  "last_verified_at": "2026-06-03T00:00:00Z",
+  "source": "crawled",
+  "op_attestation_url": null,
+  "tags": [
+    "domains",
+    "registrar",
+    "hosting",
+    "ssl",
+    "publicly-traded"
+  ]
+}

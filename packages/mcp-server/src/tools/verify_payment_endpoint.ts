@@ -5,7 +5,7 @@ import type { ToolError } from './get_merchant.ts';
 
 export const VerifyPaymentEndpointArgs = z.object({
   merchant_id: z.string().min(1),
-  rail: z.enum(['lightning', 'bolt12', 'l402', 'usdt']),
+  rail: z.enum(['lightning', 'bolt12', 'l402', 'usdt', 'btc']),
 });
 
 export type VerifyPaymentEndpointArgs = z.infer<typeof VerifyPaymentEndpointArgs>;
