@@ -1,0 +1,34 @@
+{
+  "id": "unstoppable-domains",
+  "name": "Unstoppable Domains",
+  "url": "https://unstoppabledomains.com",
+  "description": "ICANN-accredited registrar for traditional DNS (.com etc.) and Web3 domains (.crypto, .nft, .wallet). MCP AI Assistant plus REST APIs for domain operations.",
+  "category": "hosting-domains",
+  "rails": [
+    {
+      "rail": "usdt",
+      "chain": "ethereum",
+      "payment_endpoint": null,
+      "health": "unknown",
+      "last_health_check": null
+    }
+  ],
+  "op_trust_tier": 1,
+  "agent_callable_tier": "full-api",
+  "agent_endpoints": {
+    "api_docs": "https://docs.unstoppabledomains.com/",
+    "auth_note": "OAuth 2.0 plus API key. Resolution libraries in Java, JavaScript, Swift, and Go. Reseller and affiliate APIs available for white-label use. MCP AI Assistant for agentic domain operations is the agent-callable surface."
+  },
+  "accepts_usdc": true,
+  "accepts_x402": false,
+  "pricing_model": "per-product",
+  "last_verified_at": "2026-06-03T00:00:00Z",
+  "source": "crawled",
+  "op_attestation_url": null,
+  "tags": [
+    "domains",
+    "registrar",
+    "web3",
+    "mcp-native"
+  ]
+}

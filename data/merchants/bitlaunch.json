@@ -1,0 +1,36 @@
+{
+  "id": "bitlaunch",
+  "name": "BitLaunch",
+  "url": "https://bitlaunch.io",
+  "description": "Cloud VPS reseller for DigitalOcean, Vultr, and Linode across 27 datacenters. Hourly billing, no KYC, native BLPay processor with Lightning.",
+  "category": "hosting-domains",
+  "rails": [
+    {
+      "rail": "lightning",
+      "payment_endpoint": null,
+      "health": "unknown",
+      "last_health_check": null
+    }
+  ],
+  "op_trust_tier": 1,
+  "agent_callable_tier": "full-api",
+  "agent_endpoints": {
+    "rest_api": "https://developers.bitlaunch.io",
+    "api_docs": "https://developers.bitlaunch.io",
+    "auth_note": "API token from account settings; passed as Authorization header. Go, Python, and PHP SDKs plus blcli CLI. llms.txt published."
+  },
+  "accepts_usdc": false,
+  "accepts_x402": false,
+  "pricing_model": "per-product",
+  "last_verified_at": "2026-06-03T00:00:00Z",
+  "source": "crawled",
+  "op_attestation_url": null,
+  "tags": [
+    "vps",
+    "hosting",
+    "cloud",
+    "lightning",
+    "no-kyc",
+    "llms-txt"
+  ]
+}

@@ -27,11 +27,11 @@
     "api_docs": "https://www.bitrefill.com/api/docs",
     "auth_note": "Requires Bitrefill API key from bitrefill.com/account/developers. For automation, embed as /mcp/<API_KEY> in the mcp_server URL. For interactive use, OAuth flow available at the bare /mcp endpoint."
   },
-  "accepts_usdc": false,
-  "accepts_x402": false,
+  "accepts_usdc": true,
+  "accepts_x402": true,
   "pricing_model": "per-product",
-  "last_verified_at": null,
+  "last_verified_at": "2026-06-03T00:00:00Z",
   "source": "integrated",
   "op_attestation_url": null,
-  "tags": ["gift-cards", "mobile-topup", "esim", "lightning", "verified-mcp"]
+  "tags": ["gift-cards", "mobile-topup", "esim", "lightning", "verified-mcp", "skill-md", "llms-txt", "x402"]
 }

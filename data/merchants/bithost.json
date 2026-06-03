@@ -1,0 +1,33 @@
+{
+  "id": "bithost",
+  "name": "Bithost",
+  "url": "https://bithost.io",
+  "description": "Cloud VPS reseller (DigitalOcean, Linode, Vultr) for Linux and Windows. Hourly billing, no KYC, broad crypto acceptance including USDT/USDC on Ethereum.",
+  "category": "hosting-domains",
+  "rails": [
+    {
+      "rail": "usdt",
+      "chain": "ethereum",
+      "payment_endpoint": null,
+      "health": "unknown",
+      "last_health_check": null
+    }
+  ],
+  "op_trust_tier": 1,
+  "agent_callable_tier": "full-api",
+  "agent_endpoints": {
+    "auth_note": "REST API for servers, SSH keys, images, regions. CLI tool 'bh' carries the documented surface; no separate developer portal."
+  },
+  "accepts_usdc": true,
+  "accepts_x402": false,
+  "pricing_model": "per-product",
+  "last_verified_at": "2026-06-03T00:00:00Z",
+  "source": "crawled",
+  "op_attestation_url": null,
+  "tags": [
+    "vps",
+    "hosting",
+    "cloud",
+    "no-kyc"
+  ]
+}

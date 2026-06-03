@@ -21,9 +21,9 @@
     "auth_note": "Public MCP server, no API key required for catalog or order tools. Required request header: 'User-Agent: Cryptorefills-MCP/1.0'. Direct tools available standalone (no wizard session): listProductsForCountry, getProductPrice, validateOrder, createOrder, getOrderStatus, getCurrencies, getPaymentViasWithCurrencies. User.email is the only required identity field on createOrder. The interactive purchaseElicitation wizard is also offered for small agents but is not needed for agentic clients that can drive the lower-level tools."
   },
   "accepts_usdc": true,
-  "accepts_x402": false,
+  "accepts_x402": true,
   "pricing_model": "per-product",
-  "last_verified_at": "2026-05-20T13:00:00Z",
+  "last_verified_at": "2026-06-03T00:00:00Z",
   "source": "integrated",
   "op_attestation_url": null,
   "tags": [
@@ -33,6 +33,7 @@
     "hotels",
     "mobile-topup",
     "mcp-native",
-    "verified-mcp"
+    "verified-mcp",
+    "x402"
   ]
 }

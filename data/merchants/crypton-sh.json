@@ -1,0 +1,48 @@
+{
+  "id": "crypton-sh",
+  "name": "Crypton.sh",
+  "url": "https://crypton.sh",
+  "description": "Physical and virtual phone numbers, SMS verification, and end-to-end encrypted messaging. Privacy-first; no KYC for guest verification.",
+  "category": "communication",
+  "rails": [
+    {
+      "rail": "lightning",
+      "payment_endpoint": null,
+      "health": "unknown",
+      "last_health_check": null
+    },
+    {
+      "rail": "usdt",
+      "chain": "ethereum",
+      "payment_endpoint": null,
+      "health": "unknown",
+      "last_health_check": null
+    },
+    {
+      "rail": "usdt",
+      "chain": "tron",
+      "payment_endpoint": null,
+      "health": "unknown",
+      "last_health_check": null
+    }
+  ],
+  "op_trust_tier": 1,
+  "agent_callable_tier": "full-api",
+  "agent_endpoints": {
+    "api_docs": "https://crypton.sh/api/docs",
+    "auth_note": "Token-based auth with customizable expiration. REST endpoints cover number browse/reserve/purchase, forwarding config, encrypted SMS, message history, and credit balance."
+  },
+  "accepts_usdc": false,
+  "accepts_x402": false,
+  "pricing_model": "per-product",
+  "last_verified_at": "2026-06-03T00:00:00Z",
+  "source": "crawled",
+  "op_attestation_url": null,
+  "tags": [
+    "phone-numbers",
+    "sms",
+    "privacy",
+    "encrypted-messaging",
+    "no-kyc"
+  ]
+}
