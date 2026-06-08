@@ -1,0 +1,42 @@
+{
+  "id": "lightningfaucet",
+  "name": "LightningFaucet",
+  "url": "https://lightningfaucet.com/",
+  "description": "Bitcoin and Lightning faucet with earning, games, and pay-per-use L402 API endpoints.",
+  "category": "gaming",
+  "rails": [
+    {
+      "rail": "lightning",
+      "payment_endpoint": null,
+      "health": "unknown",
+      "last_health_check": null
+    },
+    {
+      "rail": "l402",
+      "payment_endpoint": "https://lightningfaucet.com/api/l402/headers",
+      "health": "healthy",
+      "last_health_check": "2026-06-08T16:06:14Z"
+    }
+  ],
+  "op_trust_tier": 1,
+  "agent_callable_tier": "structured-handoff",
+  "agent_endpoints": {
+    "rest_api": "https://lightningfaucet.com/api/l402/headers",
+    "api_docs": "https://lightningfaucet.com/api/l402/",
+    "auth_note": "Unauthenticated requests return an L402 challenge with a Lightning invoice. Pay the invoice, then retry with the L402 token and preimage."
+  },
+  "accepts_usdc": false,
+  "accepts_x402": false,
+  "pricing_model": "per-request",
+  "last_verified_at": "2026-06-08T16:06:14Z",
+  "source": "self-registered",
+  "source_attribution": "Verified by LightningFaucet contributor via HEAD and GET on https://lightningfaucet.com/api/l402/headers.",
+  "op_attestation_url": null,
+  "tags": [
+    "bitcoin",
+    "lightning",
+    "l402",
+    "api",
+    "games"
+  ]
+}
