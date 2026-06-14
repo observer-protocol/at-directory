@@ -1,0 +1,24 @@
+{
+  "id": "proton",
+  "name": "Proton",
+  "url": "https://proton.me",
+  "description": "Swiss privacy suite (VPN, Mail, Drive, Pass). Bitcoin accepted on-chain for plan upgrades after creating a free account; no Lightning, manual renewal.",
+  "category": "vpn-privacy",
+  "rails": [
+    {
+      "rail": "btc",
+      "payment_endpoint": null,
+      "health": "unknown",
+      "last_health_check": null
+    }
+  ],
+  "op_trust_tier": 1,
+  "agent_callable_tier": "human-checkout",
+  "accepts_usdc": false,
+  "accepts_x402": false,
+  "pricing_model": "subscription",
+  "last_verified_at": "2026-06-14T00:00:00Z",
+  "source": "crawled",
+  "op_attestation_url": null,
+  "tags": ["vpn", "privacy", "email", "on-chain"]
+}

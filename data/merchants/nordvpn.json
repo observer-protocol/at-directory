@@ -1,0 +1,31 @@
+{
+  "id": "nordvpn",
+  "name": "NordVPN",
+  "url": "https://nordvpn.com",
+  "description": "Major global VPN provider with crypto checkout in 176 countries via CoinGate, including BTC and USDT; also supports BitPay and Binance Pay.",
+  "category": "vpn-privacy",
+  "rails": [
+    {
+      "rail": "btc",
+      "payment_endpoint": null,
+      "health": "unknown",
+      "last_health_check": null
+    },
+    {
+      "rail": "usdt",
+      "chain": "tron",
+      "payment_endpoint": null,
+      "health": "unknown",
+      "last_health_check": null
+    }
+  ],
+  "op_trust_tier": 1,
+  "agent_callable_tier": "human-checkout",
+  "accepts_usdc": true,
+  "accepts_x402": false,
+  "pricing_model": "subscription",
+  "last_verified_at": "2026-06-14T00:00:00Z",
+  "source": "crawled",
+  "op_attestation_url": null,
+  "tags": ["vpn", "privacy", "coingate"]
+}
