@@ -107,5 +107,15 @@ export async function verifyRail(merchant: Merchant, rail: RailName): Promise<Ra
           'BTC on-chain verification is best-effort in v1; address-shape probe lands in a follow-up.',
         evidence: { endpoint, rail: 'btc' },
       };
+    case 'fiat':
+      // Fiat rails have no cryptographic settlement anchor by definition.
+      // No live-probe applies; CounterpartyAttestations for fiat are
+      // advisory-only until the Phase 3 Sybil model resolves.
+      return {
+        status: 'unknown',
+        detail:
+          'Fiat rails cannot be live-probed; settlement evidence is attestation-based and advisory-only in Phase 1.',
+        evidence: { rail: 'fiat', probe: 'not-applicable' },
+      };
   }
 }

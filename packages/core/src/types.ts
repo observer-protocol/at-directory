@@ -10,9 +10,10 @@ export type Category =
   | 'communication'
   | 'payment-network'
   | 'concierge'
-  | 'gaming';
+  | 'gaming'
+  | 'agent-services';
 
-export type RailName = 'lightning' | 'bolt12' | 'l402' | 'usdt' | 'btc';
+export type RailName = 'lightning' | 'bolt12' | 'l402' | 'usdt' | 'btc' | 'fiat';
 
 export type UsdtChain = 'tron' | 'ethereum' | 'solana' | 'bsc' | 'polygon' | 'arbitrum' | 'base';
 
@@ -25,6 +26,10 @@ export type OpTrustTier = 1 | 2 | 3;
 export type PricingModel = 'subscription' | 'per-product' | 'per-request' | 'variable' | 'free';
 
 export type Source = 'crawled' | 'self-registered' | 'integrated';
+
+export type ParticipantType = 'merchant' | 'agent' | 'human';
+
+export type ListingType = 'offer' | 'open-call';
 
 export interface Rail {
   rail: RailName;
@@ -59,6 +64,13 @@ export interface Merchant {
   source: Source;
   source_attribution?: string;
   op_attestation_url?: string | null;
+  merchant_did?: string | null;
+  merchant_vc_url?: string | null;
+  merchant_controlled_key_ref?: string | null;
+  participant_type?: ParticipantType;
+  listing_type?: ListingType;
+  price_display?: string | null;
+  contact_url?: string | null;
   logo_url?: string;
   tags?: string[];
 }
@@ -74,6 +86,10 @@ export interface MerchantSummary {
   rails: Array<Pick<Rail, 'rail' | 'chain'>>;
   accepts_usdc: boolean;
   accepts_x402: boolean;
+  participant_type?: ParticipantType;
+  listing_type?: ListingType;
+  price_display?: string | null;
+  contact_url?: string | null;
 }
 
 export type AgentIdentityTier = 'anonymous' | 'basic' | 'elevated' | 'premium';

@@ -473,3 +473,133 @@ code.tok {
 .maxi-body li {
   margin-bottom: 6px;
 }
+
+/* ── Marketplace ─────────────────────────────────────────────────────────── */
+.page-hero {
+  padding: 2.5rem 0 1.5rem;
+}
+.page-hero h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+.marketplace-tabs {
+  display: flex;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.25rem;
+}
+.tab-btn {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  border-radius: 6px;
+  padding: 0.4rem 1rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.tab-btn:hover {
+  border-color: var(--accent);
+  color: var(--text);
+}
+.tab-btn.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #000;
+  font-weight: 600;
+}
+.tab-count {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 100px;
+  padding: 0 0.45rem;
+  font-size: 0.75rem;
+}
+.tab-btn.active .tab-count {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+/* Listing type labels (prepended row inside card) */
+.listing-type-row {
+  display: flex;
+  gap: 0.4rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Participant type badges */
+.badge.type-agent {
+  background: rgba(78, 161, 255, 0.12);
+  color: var(--accent-2);
+  border: 1px solid rgba(78, 161, 255, 0.3);
+}
+.badge.type-human {
+  background: rgba(163, 100, 255, 0.12);
+  color: #a364ff;
+  border: 1px solid rgba(163, 100, 255, 0.3);
+}
+.badge.open-call {
+  background: rgba(247, 147, 26, 0.12);
+  color: var(--accent);
+  border: 1px solid rgba(247, 147, 26, 0.3);
+}
+.badge.verify-vc {
+  color: var(--muted);
+  border: 1px solid var(--border);
+  text-decoration: none;
+}
+.badge.verify-vc:hover {
+  color: var(--text);
+  border-color: var(--accent-2);
+}
+
+/* Card variant: agent (blue tint) */
+.card.card-agent {
+  border-color: rgba(78, 161, 255, 0.25);
+}
+.card.card-agent:hover {
+  border-color: rgba(78, 161, 255, 0.5);
+}
+
+/* Card variant: open-call (orange tint) */
+.card.card-open-call {
+  border-color: rgba(247, 147, 26, 0.3);
+}
+.card.card-open-call:hover {
+  border-color: rgba(247, 147, 26, 0.55);
+}
+
+/* Price / budget line */
+.price-display {
+  font-size: 0.85rem;
+  color: var(--accent);
+  font-weight: 500;
+  margin: 0.2rem 0 0.4rem;
+}
+
+/* Connect / Respond button */
+.connect-btn {
+  display: inline-block;
+  margin-top: 0.75rem;
+  padding: 0.4rem 1rem;
+  background: transparent;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  border-radius: 6px;
+  font-size: 0.85rem;
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+}
+.connect-btn:hover {
+  background: var(--accent);
+  color: #000;
+}
+
+/* Empty-state message inside the grid */
+.no-results {
+  text-align: center;
+  padding: 3rem 0;
+  grid-column: 1 / -1;
+}

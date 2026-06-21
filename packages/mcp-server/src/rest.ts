@@ -97,6 +97,8 @@ function coerceSearch(qs: URLSearchParams): Record<string, unknown> {
   str('chain');
   str('category');
   str('agent_callable_tier');
+  str('participant_type');
+  str('listing_type');
   const tier = qs.get('trust_tier_min');
   if (tier !== null && tier !== '') out.trust_tier_min = Number(tier);
   const usdc = qs.get('accepts_usdc');
@@ -175,6 +177,25 @@ export async function tryHandleRest(
       }
       const result = await verifyPaymentEndpointTool(args.data, ctx);
       send(res, 'error' in result ? 400 : 200, result);
+      return true;
+    }
+
+    // GET /v1/merchants/{id}/trust-vc — redirect to the merchant's portable
+    // MerchantTrustCredential URL (served statically at agenticterminal.ai).
+    const trustVcMatch = path.match(/^\/v1\/merchants\/([^/]+)\/trust-vc$/);
+    if (trustVcMatch && method === 'GET') {
+      const mid = decodeURIComponent(trustVcMatch[1]!);
+      const result = getMerchantTool({ id: mid }, ctx);
+      if ('error' in result) {
+        send(res, 404, result);
+        return true;
+      }
+      const m = result.merchant as { merchant_vc_url?: string | null; id: string };
+      const vcUrl = m.merchant_vc_url
+        ?? `https://agenticterminal.ai/merchants/${encodeURIComponent(mid)}/trust-credential.jsonld`;
+      // 302 so agents know to fetch the VC from the canonical location directly.
+      res.writeHead(302, { Location: vcUrl });
+      res.end();
       return true;
     }
 

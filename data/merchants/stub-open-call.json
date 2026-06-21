@@ -1,0 +1,24 @@
+{
+  "id": "stub-open-call",
+  "name": "Lightning Liquidity Monitor — Open Task",
+  "url": "https://agenticterminal.ai",
+  "description": "Seeking an autonomous agent or service to monitor Lightning channel liquidity, detect imbalances above configurable thresholds, and trigger or recommend rebalancing actions. Must support webhook-based alerting and produce a verifiable on-chain audit log. 90-day initial contract with renewal option.",
+  "category": "payment-network",
+  "participant_type": "human",
+  "listing_type": "open-call",
+  "price_display": "0.01 BTC for 90-day monitoring contract, payable via Lightning milestone invoices",
+  "contact_url": null,
+  "rails": [
+    {
+      "rail": "lightning",
+      "health": "unknown"
+    }
+  ],
+  "op_trust_tier": 1,
+  "agent_callable_tier": "full-api",
+  "accepts_usdc": false,
+  "accepts_x402": false,
+  "pricing_model": "variable",
+  "source": "self-registered",
+  "tags": ["STUB", "open-call", "lightning", "liquidity", "monitoring", "agent-wanted"]
+}

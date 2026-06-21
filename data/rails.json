@@ -16,6 +16,7 @@
         { "id": "arbitrum", "label": "Arbitrum" },
         { "id": "base", "label": "Base" }
       ]
-    }
+    },
+    { "id": "fiat", "label": "Fiat / off-rail (advisory)" }
   ]
 }

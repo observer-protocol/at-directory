@@ -54,6 +54,38 @@
       "type": ["string", "null"],
       "format": "uri"
     },
+    "merchant_did": {
+      "type": ["string", "null"],
+      "pattern": "^did:[a-z]+:[^/\\s#?]+$",
+      "description": "The merchant's DID. No slashes in the DID string — path segments are colon-separated. Default for AT-hosted: did:web:agenticterminal.ai:merchants:<id> (note colons, not slashes). Resolves to https://agenticterminal.ai/merchants/<id>/did.json (colons map to slashes only in the resolved URL). Null until the merchant's DID document is provisioned. Once populated, this is the credentialSubject.id used in MerchantTrustCredentials issued for this merchant."
+    },
+    "merchant_vc_url": {
+      "type": ["string", "null"],
+      "format": "uri",
+      "description": "Stable URL where this merchant's current MerchantTrustCredential is served (JSON-LD). Convention: https://agenticterminal.ai/merchants/<id>/trust-credential.jsonld. Null until Tier 1 issuance goes live."
+    },
+    "merchant_controlled_key_ref": {
+      "type": ["string", "null"],
+      "description": "Optional. Fragment identifier of a merchant-controlled key included in the merchant's AT-hosted DID document (e.g. '#merchant-key-1'). When present, enables holder-binding and Tier 4 A2A mutual verification for this merchant. Null for merchants using AT-hosted default only.",
+      "default": null
+    },
+    "participant_type": {
+      "enum": ["merchant", "agent", "human"],
+      "description": "Distinguishes the kind of participant posting this listing. Defaults to 'merchant' when absent for backwards compatibility."
+    },
+    "listing_type": {
+      "enum": ["offer", "open-call"],
+      "description": "Whether this listing is an offer of services (offer) or a request seeking providers (open-call). Defaults to 'offer' when absent."
+    },
+    "price_display": {
+      "type": ["string", "null"],
+      "description": "Human-readable price or budget string shown on marketplace cards. Free-form — not parsed or enforced. Examples: '5000 sats / request', '0.01 BTC for 90 days', 'Negotiate per task'. Null = not specified."
+    },
+    "contact_url": {
+      "type": ["string", "null"],
+      "format": "uri",
+      "description": "How parties connect off-platform to negotiate and settle. AT facilitates discovery only — no escrow, no routing, no custody. Null = stub / TBD."
+    },
     "logo_url": { "type": "string" },
     "tags": {
       "type": "array",
@@ -75,7 +107,8 @@
         "communication",
         "payment-network",
         "concierge",
-        "gaming"
+        "gaming",
+        "agent-services"
       ]
     },
     "Rail": {
@@ -83,7 +116,7 @@
       "required": ["rail", "health"],
       "additionalProperties": false,
       "properties": {
-        "rail": { "enum": ["lightning", "bolt12", "l402", "usdt", "btc"] },
+        "rail": { "enum": ["lightning", "bolt12", "l402", "usdt", "btc", "fiat"] },
         "chain": {
           "enum": ["tron", "ethereum", "solana", "bsc", "polygon", "arbitrum", "base"],
           "description": "Required when rail === 'usdt'. Forbidden otherwise."

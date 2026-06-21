@@ -1,8 +1,10 @@
 import type {
   AgentCallableTier,
+  ListingType,
   Merchant,
   MerchantSummary,
   OpTrustTier,
+  ParticipantType,
   RailName,
   UsdtChain,
 } from './types.ts';
@@ -17,6 +19,8 @@ export interface SearchOptions {
   agent_callable_tier?: AgentCallableTier;
   trust_tier_min?: OpTrustTier;
   accepts_usdc?: boolean;
+  participant_type?: ParticipantType;
+  listing_type?: ListingType;
   limit?: number;
 }
 
@@ -45,6 +49,8 @@ function matches(m: Merchant, opts: SearchOptions): boolean {
   if (opts.agent_callable_tier && m.agent_callable_tier !== opts.agent_callable_tier) return false;
   if (opts.trust_tier_min !== undefined && m.op_trust_tier < opts.trust_tier_min) return false;
   if (opts.accepts_usdc !== undefined && m.accepts_usdc !== opts.accepts_usdc) return false;
+  if (opts.participant_type && (m.participant_type ?? 'merchant') !== opts.participant_type) return false;
+  if (opts.listing_type && (m.listing_type ?? 'offer') !== opts.listing_type) return false;
   if (opts.rail) {
     const rails = m.rails.filter((r) => r.rail === opts.rail);
     if (rails.length === 0) return false;
@@ -80,5 +86,9 @@ function toSummary(m: Merchant): MerchantSummary {
     rails: m.rails.map((r) => (r.chain ? { rail: r.rail, chain: r.chain } : { rail: r.rail })),
     accepts_usdc: m.accepts_usdc,
     accepts_x402: m.accepts_x402,
+    ...(m.participant_type !== undefined && { participant_type: m.participant_type }),
+    ...(m.listing_type !== undefined && { listing_type: m.listing_type }),
+    ...(m.price_display !== undefined && { price_display: m.price_display }),
+    ...(m.contact_url !== undefined && { contact_url: m.contact_url }),
   };
 }

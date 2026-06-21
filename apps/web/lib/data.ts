@@ -43,6 +43,10 @@ export function allMerchants(): Merchant[] {
   return load().merchants.filter((m) => m.op_trust_tier <= 2);
 }
 
+export function allListings(): Merchant[] {
+  return load().merchants;
+}
+
 export function merchantBySlug(slug: string): Merchant | undefined {
   return allMerchants().find((m) => m.id === slug);
 }

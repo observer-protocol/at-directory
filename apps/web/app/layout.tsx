@@ -18,6 +18,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               AT<span aria-hidden="true">·</span>Directory
             </a>
             <nav className="nav">
+              <a href="/marketplace">Marketplace</a>
               <a href="/merchants">Merchants</a>
               <a href="/how-it-works">How it works</a>
               <a href="/about">About</a>
