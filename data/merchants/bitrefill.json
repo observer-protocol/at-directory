@@ -19,7 +19,7 @@
       "last_health_check": null
     }
   ],
-  "op_trust_tier": 1,
+  "op_trust_tier": 2,
   "agent_callable_tier": "full-api",
   "agent_endpoints": {
     "mcp_server": "https://api.bitrefill.com/mcp",
