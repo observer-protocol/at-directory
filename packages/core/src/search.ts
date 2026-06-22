@@ -49,7 +49,8 @@ function matches(m: Merchant, opts: SearchOptions): boolean {
   if (opts.agent_callable_tier && m.agent_callable_tier !== opts.agent_callable_tier) return false;
   if (opts.trust_tier_min !== undefined && m.op_trust_tier < opts.trust_tier_min) return false;
   if (opts.accepts_usdc !== undefined && m.accepts_usdc !== opts.accepts_usdc) return false;
-  if (opts.participant_type && (m.participant_type ?? 'merchant') !== opts.participant_type) return false;
+  if (opts.participant_type && (m.participant_type ?? 'merchant') !== opts.participant_type)
+    return false;
   if (opts.listing_type && (m.listing_type ?? 'offer') !== opts.listing_type) return false;
   if (opts.rail) {
     const rails = m.rails.filter((r) => r.rail === opts.rail);
