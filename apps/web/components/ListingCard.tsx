@@ -3,6 +3,7 @@ import type { Merchant } from '@at-directory/core';
 import { useDerivedTier } from './useDerivedTier';
 import { TrustBadge } from './TrustBadge';
 import { RailIcon } from './RailIcon';
+import { MerchantTrustPanel } from './MerchantTrustPanel';
 
 const TYPE_LABEL: Record<string, string> = {
   agent: 'Agent',
@@ -48,12 +49,10 @@ export function ListingCard({ m }: { m: Merchant }) {
       </div>
       <div className="row">
         <TrustBadge tier={tier} count={count} attestationUrl={m.op_attestation_url} />
-        {m.merchant_vc_url && (
-          <a className="badge verify-vc" href={m.merchant_vc_url} target="_blank" rel="noreferrer">
-            ◈ Verify VC
-          </a>
-        )}
       </div>
+      {m.merchant_vc_url ? (
+        <MerchantTrustPanel vcUrl={m.merchant_vc_url} />
+      ) : null}
       {m.contact_url && (
         <a className="connect-btn" href={m.contact_url} target="_blank" rel="noreferrer">
           {isOpenCall ? 'Respond →' : 'Connect →'}

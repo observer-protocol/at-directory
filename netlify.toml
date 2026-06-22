@@ -19,6 +19,30 @@
 # static export + bundle:data step, so they serve at /SKILL.md and
 # /.well-known/did.json with no redirect needed.
 
+# Trust credential JSON-LD and DID documents — must be cross-origin readable
+# so the sovereign dashboard (app.agenticterminal.io) can verify the same VC
+# independently without an AT server call.
+[[headers]]
+  for = "/merchants/*/trust-credential.jsonld"
+  [headers.values]
+    Content-Type = "application/ld+json"
+    Access-Control-Allow-Origin = "*"
+    Cache-Control = "public, max-age=3600"
+
+[[headers]]
+  for = "/merchants/*/did.json"
+  [headers.values]
+    Content-Type = "application/json"
+    Access-Control-Allow-Origin = "*"
+    Cache-Control = "public, max-age=3600"
+
+[[headers]]
+  for = "/status/merchant-trust/*"
+  [headers.values]
+    Content-Type = "application/json"
+    Access-Control-Allow-Origin = "*"
+    Cache-Control = "public, max-age=300"
+
 # Maxi's prior scraped feed at agenticterminal.ai is replaced by this
 # deploy. Audit inbound links before cutover (spec §6.6); any
 # load-bearing legacy paths get explicit 200/301 redirects added ABOVE
