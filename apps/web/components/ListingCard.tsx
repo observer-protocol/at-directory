@@ -33,7 +33,7 @@ export function ListingCard({ m }: { m: Merchant }) {
       <div className="row cardhead">
         <div
           className="logo"
-          style={{ backgroundImage: `url(/logos/${m.id}.svg)`, backgroundSize: 'cover' }}
+          style={{ backgroundImage: `url(${m.logo_url ?? `/logos/${m.id}.svg`})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
           aria-hidden
         />
         <h3>

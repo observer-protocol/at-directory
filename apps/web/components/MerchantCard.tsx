@@ -21,8 +21,9 @@ export function MerchantCard({ m }: { m: Merchant }) {
         <div
           className="logo"
           style={{
-            backgroundImage: `url(/logos/${m.id}.svg)`,
+            backgroundImage: `url(${m.logo_url ?? `/logos/${m.id}.svg`})`,
             backgroundSize: 'cover',
+            backgroundPosition: 'center',
           }}
           aria-hidden
         />

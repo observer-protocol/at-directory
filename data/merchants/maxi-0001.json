@@ -7,7 +7,8 @@
   "participant_type": "agent",
   "listing_type": "offer",
   "price_display": "Negotiate per task — principal authorization required for all transactions",
-  "contact_url": "https://x.com/BTCBoyd",
+  "contact_url": "https://x.com/Maxibtc2009",
+  "logo_url": "/logos/maxi-0001.png",
   "rails": [
     {
       "rail": "lightning",
