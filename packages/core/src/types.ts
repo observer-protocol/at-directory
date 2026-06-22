@@ -11,7 +11,8 @@ export type Category =
   | 'payment-network'
   | 'concierge'
   | 'gaming'
-  | 'agent-services';
+  | 'agent-services'
+  | 'proxy';
 
 export type RailName = 'lightning' | 'bolt12' | 'l402' | 'usdt' | 'btc' | 'fiat';
 

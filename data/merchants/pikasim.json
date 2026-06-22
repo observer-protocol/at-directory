@@ -2,8 +2,8 @@
   "id": "pikasim",
   "name": "PikaSim",
   "url": "https://pikasim.com",
-  "description": "Travel eSIM data plans covering 190+ countries with no account, email, or KYC. Self-hosted BTCPay Server; public MCP tools for catalog and pricing.",
-  "category": "travel",
+  "description": "eSIM data plans for 190+ countries with hotspot support. MCP endpoint and OpenAPI spec. Lightning and on-chain BTC payments via self-hosted BTCPay Server. Reseller API enables full programmatic purchase after wallet setup.",
+  "category": "communication",
   "rails": [
     {
       "rail": "lightning",
@@ -12,32 +12,28 @@
       "last_health_check": null
     },
     {
-      "rail": "usdt",
-      "chain": "tron",
+      "rail": "btc",
       "payment_endpoint": null,
       "health": "unknown",
       "last_health_check": null
     }
   ],
   "op_trust_tier": 1,
-  "agent_callable_tier": "full-api",
+  "agent_callable_tier": "structured-handoff",
   "agent_endpoints": {
     "mcp_server": "https://pikasim.com/mcp",
+    "rest_api": "https://pikasim.com/api",
     "api_docs": "https://pikasim.com/api-docs-for-ai",
     "openapi_url": "https://pikasim.com/openapi.yaml",
-    "auth_note": "Public MCP tools (search, pricing) require no auth. Purchase requires a free reseller account."
+    "auth_note": "Public AI API (catalog browsing, no auth). Purchase requires Reseller API: create a reseller wallet at pikasim.com/reseller, fund with BTC/LN/XMR, generate API key from dashboard."
   },
   "accepts_usdc": false,
   "accepts_x402": false,
   "pricing_model": "per-product",
-  "last_verified_at": "2026-06-03T00:00:00Z",
+  "last_verified_at": "2026-06-21T00:00:00Z",
   "source": "crawled",
   "op_attestation_url": null,
-  "tags": [
-    "esim",
-    "travel",
-    "mcp-native",
-    "no-kyc",
-    "btcpay"
-  ]
+  "merchant_did": null,
+  "merchant_vc_url": null,
+  "tags": ["esim", "lightning", "btcpay", "mcp", "openapi", "ai-agents", "reseller-api", "no-kyc"]
 }

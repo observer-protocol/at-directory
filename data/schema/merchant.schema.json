@@ -108,7 +108,8 @@
         "payment-network",
         "concierge",
         "gaming",
-        "agent-services"
+        "agent-services",
+        "proxy"
       ]
     },
     "Rail": {

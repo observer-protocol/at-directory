@@ -1,0 +1,46 @@
+{
+  "id": "nadanada",
+  "name": "nadanada",
+  "url": "https://nadanada.me",
+  "description": "Agent-first eSIM data plans (200+ countries), pay-as-you-go WireGuard VPN, and disposable phone numbers. MCP endpoint and REST API v2 with full purchase flows. No account, no KYC. Lightning payments receive a 5% discount.",
+  "category": "communication",
+  "rails": [
+    {
+      "rail": "lightning",
+      "payment_endpoint": null,
+      "health": "unknown",
+      "last_health_check": null
+    },
+    {
+      "rail": "btc",
+      "payment_endpoint": null,
+      "health": "unknown",
+      "last_health_check": null
+    },
+    {
+      "rail": "usdt",
+      "chain": "ethereum",
+      "payment_endpoint": null,
+      "health": "unknown",
+      "last_health_check": null
+    }
+  ],
+  "op_trust_tier": 1,
+  "agent_callable_tier": "full-api",
+  "agent_endpoints": {
+    "mcp_server": "https://mcp.nadanada.me/mcp",
+    "rest_api": "https://nadanada.me/api/v2",
+    "api_docs": "https://nadanada.me/api/v2/documentation",
+    "openapi_url": "https://nadanada.me/api/v2/openapi.json",
+    "auth_note": "Catalog endpoints are open (no auth). Purchase endpoints use payment-based auth via Lightning invoice flow. MCP endpoint open in default mode."
+  },
+  "accepts_usdc": true,
+  "accepts_x402": false,
+  "pricing_model": "per-product",
+  "last_verified_at": "2026-06-21T00:00:00Z",
+  "source": "crawled",
+  "op_attestation_url": null,
+  "merchant_did": null,
+  "merchant_vc_url": null,
+  "tags": ["esim", "vpn", "phone-numbers", "lightning", "mcp", "openapi", "no-kyc", "ai-agents", "llms-txt"]
+}

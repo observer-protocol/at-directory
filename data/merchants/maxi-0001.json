@@ -28,7 +28,7 @@
   "pricing_model": "variable",
   "last_verified_at": "2026-06-21T00:00:00Z",
   "source": "integrated",
-  "merchant_did": null,
-  "merchant_vc_url": null,
+  "merchant_did": "did:web:agenticterminal.ai:merchants:maxi-0001",
+  "merchant_vc_url": "https://agenticterminal.ai/merchants/maxi-0001/trust-credential.jsonld",
   "tags": ["agent", "lightning", "tron", "delegation", "op-layer1", "principal-bound"]
 }

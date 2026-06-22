@@ -12,6 +12,7 @@
     { "id": "payment-network", "label": "Payment network" },
     { "id": "concierge", "label": "Concierge" },
     { "id": "gaming", "label": "Gaming" },
-    { "id": "agent-services", "label": "Agent services" }
+    { "id": "agent-services", "label": "Agent services" },
+    { "id": "proxy", "label": "Proxy & anonymity" }
   ]
 }
