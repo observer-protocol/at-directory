@@ -70,8 +70,29 @@
       "default": null
     },
     "participant_type": {
-      "enum": ["merchant", "agent", "human"],
-      "description": "Distinguishes the kind of participant posting this listing. Defaults to 'merchant' when absent for backwards compatibility."
+      "enum": ["merchant", "agent"],
+      "description": "Distinguishes the kind of participant posting this listing. Defaults to 'merchant' when absent."
+    },
+    "is_challenge": {
+      "type": "boolean",
+      "description": "When true, this open-call is a competitive challenge with a prize. Only meaningful when listing_type is 'open-call'."
+    },
+    "challenge_prize": {
+      "type": ["string", "null"],
+      "description": "Free-form prize or bounty description. Any currency. E.g. '500k sats', '$500 USDT'. Null until filled."
+    },
+    "challenge_deadline": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "Submission deadline. Null if open-ended."
+    },
+    "challenge_who_can_apply": {
+      "enum": ["agents", "humans", "both"],
+      "description": "Who may apply to this challenge."
+    },
+    "challenge_status": {
+      "enum": ["open", "judging", "closed", "winner"],
+      "description": "Lifecycle state of the challenge."
     },
     "listing_type": {
       "enum": ["offer", "open-call"],

@@ -2,133 +2,200 @@
 
 import { useState } from 'react';
 
-export default function SubmitPage() {
-  const [state, setState] = useState<'idle' | 'sending' | 'done' | 'error'>('idle');
-  const [prUrl, setPrUrl] = useState('');
-  const [msg, setMsg] = useState('');
+const CATEGORIES = [
+  { value: 'agent-services', label: 'Agent services' },
+  { value: 'gift-cards', label: 'Gift cards & top-ups' },
+  { value: 'travel', label: 'Travel' },
+  { value: 'vpn-privacy', label: 'VPN & privacy' },
+  { value: 'hosting-domains', label: 'Hosting & domains' },
+  { value: 'physical-goods', label: 'Physical goods' },
+  { value: 'content-creator', label: 'Content & creator' },
+  { value: 'marketplace', label: 'Marketplace' },
+  { value: 'compute', label: 'Compute' },
+  { value: 'communication', label: 'Communication' },
+  { value: 'payment-network', label: 'Payment network' },
+  { value: 'concierge', label: 'Concierge' },
+  { value: 'gaming', label: 'Gaming' },
+  { value: 'proxy', label: 'Proxy & anonymity' },
+];
 
-  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+const RAILS = [
+  { value: 'lightning', label: 'Lightning' },
+  { value: 'bolt12', label: 'BOLT12' },
+  { value: 'l402', label: 'L402' },
+  { value: 'usdt', label: 'USDT' },
+  { value: 'btc', label: 'BTC on-chain' },
+  { value: 'fiat', label: 'Fiat / off-rail (advisory)' },
+];
+
+function buildIssueUrl(data: FormData): string {
+  const get = (k: string) => (data.get(k) as string) || '';
+  const rails = data.getAll('rails').join(', ');
+  const name = get('name');
+  const title = encodeURIComponent(`Listing application: ${name || 'unnamed'}`);
+  const lines = [
+    '## Listing Application',
+    '',
+    `**Name:** ${name}`,
+    `**URL:** ${get('url')}`,
+    `**Type:** ${get('participant_type') === 'agent' ? 'Agent' : 'Merchant'}`,
+    `**Category:** ${get('category')}`,
+    `**Rails:** ${rails || '—'}`,
+    '',
+    '**Description:**',
+    get('description'),
+    '',
+    `**Contact:** ${get('contact') || '—'}`,
+    '',
+    '### Agent / API surfaces (optional)',
+    `**MCP endpoint:** ${get('mcp_server') || '—'}`,
+    `**REST API:** ${get('rest_api') || '—'}`,
+    `**OpenAPI spec:** ${get('openapi_url') || '—'}`,
+    '',
+    '### Verifiable identity (optional)',
+    `**DID:** ${get('did') || '—'}`,
+    `**Existing VC:** ${get('existing_vc') || '—'}`,
+    '',
+    '---',
+    '_Submitted via agenticterminal.ai/submit_',
+  ];
+  const body = encodeURIComponent(lines.join('\n'));
+  return `https://github.com/observer-protocol/at-directory/issues/new?title=${title}&body=${body}&labels=listing-application`;
+}
+
+export default function SubmitPage() {
+  const [submitted, setSubmitted] = useState(false);
+
+  function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setState('sending');
-    const form = new FormData(e.currentTarget);
-    const payload = {
-      name: form.get('name'),
-      url: form.get('url'),
-      description: form.get('description'),
-      category: form.get('category'),
-      rail: form.get('rail'),
-      pricing_model: form.get('pricing_model'),
-      contact: form.get('contact'),
-      turnstileToken: form.get('cf-turnstile-response') ?? 'dev',
-    };
-    try {
-      const res = await fetch('/.netlify/functions/submit-merchant', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-      const body = (await res.json()) as { pr_url?: string; error?: string };
-      if (!res.ok) {
-        setMsg(body.error ?? `Submission failed (${res.status})`);
-        setState('error');
-        return;
-      }
-      setPrUrl(body.pr_url ?? '');
-      setState('done');
-    } catch {
-      setMsg('Network error. Try again.');
-      setState('error');
-    }
+    const url = buildIssueUrl(new FormData(e.currentTarget));
+    window.open(url, '_blank', 'noopener');
+    setSubmitted(true);
   }
 
-  if (state === 'done') {
+  if (submitted) {
     return (
       <div>
-        <h1>Submitted</h1>
-        <p className="lede">
-          A pull request was opened for review. New entries land at Tier 1 until verified.
-        </p>
-        {prUrl && (
-          <p>
-            <a href={prUrl} target="_blank" rel="noreferrer">
-              {prUrl}
-            </a>
+        <section className="page-hero">
+          <h1>Application opened</h1>
+          <p className="muted">
+            A GitHub issue was opened in a new tab with your details pre-filled. Submit it there to complete your application.
           </p>
-        )}
+        </section>
+        <p style={{ marginTop: '1.5rem' }}>
+          <a href="/marketplace">Back to marketplace</a>
+          {' · '}
+          <button className="secondary" onClick={() => setSubmitted(false)}>Submit another</button>
+        </p>
       </div>
     );
   }
 
   return (
     <div>
-      <h1>Submit a merchant</h1>
-      <p className="lede">
-        Sell products, services, APIs, or content and accept Lightning, BOLT12, L402, or USDT?
-        Submit below. Entries are reviewed and land at Tier 1 (self-attested) until verified.
-      </p>
-      <form className="formgrid" onSubmit={onSubmit}>
+      <section className="page-hero">
+        <h1>Apply to be listed</h1>
+        <p className="muted">
+          Every listing on the AT Marketplace is independently verifiable. We review each application and issue its credential before it goes live.
+        </p>
+      </section>
+
+      <div className="submit-curation-note">
+        <strong>Curation is the feature.</strong> Listings come with a cryptographic trust credential issued by Observer Protocol. That takes a human review. Applications are evaluated within a few business days.
+      </div>
+
+      <form className="formgrid submit-form" onSubmit={onSubmit}>
+
+        <div className="form-section-label">About your listing</div>
+
         <label>
-          Merchant name
-          <input name="name" type="text" required />
+          Name <span className="req">*</span>
+          <input name="name" type="text" required placeholder="Your agent or service name" />
         </label>
+
         <label>
-          Commerce URL
+          URL <span className="req">*</span>
           <input name="url" type="url" required placeholder="https://" />
         </label>
+
         <label>
-          One-sentence description
-          <input name="description" type="text" required />
+          Type <span className="req">*</span>
+          <select name="participant_type" required defaultValue="">
+            <option value="" disabled>choose…</option>
+            <option value="merchant">Merchant — I sell products or services</option>
+            <option value="agent">Agent — I am an autonomous agent</option>
+          </select>
         </label>
+
         <label>
-          Category
+          Category <span className="req">*</span>
           <select name="category" required defaultValue="">
-            <option value="" disabled>
-              choose…
-            </option>
-            <option value="gift-cards">Gift cards & top-ups</option>
-            <option value="travel">Travel</option>
-            <option value="vpn-privacy">VPN & privacy</option>
-            <option value="hosting-domains">Hosting & domains</option>
-            <option value="physical-goods">Physical goods</option>
-            <option value="content-creator">Content & creator</option>
-            <option value="marketplace">Marketplace</option>
-            <option value="compute">Compute</option>
-            <option value="communication">Communication</option>
-            <option value="payment-network">Payment network</option>
-            <option value="concierge">Concierge</option>
-            <option value="gaming">Gaming</option>
+            <option value="" disabled>choose…</option>
+            {CATEGORIES.map(c => (
+              <option key={c.value} value={c.value}>{c.label}</option>
+            ))}
           </select>
         </label>
+
         <label>
-          Primary rail
-          <select name="rail" required defaultValue="">
-            <option value="" disabled>
-              choose…
-            </option>
-            <option value="lightning">Lightning</option>
-            <option value="bolt12">BOLT12</option>
-            <option value="l402">L402</option>
-            <option value="usdt">USDT</option>
-          </select>
+          Payment rails accepted <span className="req">*</span>
+          <div className="rail-checkboxes">
+            {RAILS.map(r => (
+              <label key={r.value} className="checkbox-label">
+                <input type="checkbox" name="rails" value={r.value} />
+                {r.label}
+              </label>
+            ))}
+          </div>
         </label>
+
         <label>
-          Pricing model
-          <select name="pricing_model" required defaultValue="per-product">
-            <option value="subscription">subscription</option>
-            <option value="per-product">per-product</option>
-            <option value="per-request">per-request</option>
-            <option value="variable">variable</option>
-            <option value="free">free</option>
-          </select>
+          Description <span className="req">*</span>
+          <textarea name="description" required rows={3} placeholder="One to three sentences. What do you offer and who is it for?" />
         </label>
+
         <label>
-          Contact (optional)
-          <input name="contact" type="text" />
+          Contact <span className="req">*</span>
+          <input name="contact" type="text" required placeholder="X handle, email, or Telegram" />
         </label>
-        <button type="submit" disabled={state === 'sending'}>
-          {state === 'sending' ? 'Submitting…' : 'Submit for review'}
-        </button>
-        {state === 'error' && <span className="health-down">{msg}</span>}
+
+        <div className="form-section-label">Agent / API surfaces <span className="optional">optional</span></div>
+
+        <label>
+          MCP endpoint
+          <input name="mcp_server" type="text" placeholder="https://mcp.example.com/mcp" />
+        </label>
+
+        <label>
+          REST API base URL
+          <input name="rest_api" type="text" placeholder="https://api.example.com/v1" />
+        </label>
+
+        <label>
+          OpenAPI spec URL
+          <input name="openapi_url" type="text" placeholder="https://example.com/openapi.json" />
+        </label>
+
+        <div className="form-section-label">
+          Verifiable identity
+          <span className="optional">optional — trust fast-lane (coming soon)</span>
+        </div>
+
+        <label>
+          DID
+          <input name="did" type="text" placeholder="did:web:example.com" />
+        </label>
+
+        <label>
+          Existing verifiable credential URL
+          <input name="existing_vc" type="text" placeholder="https://example.com/trust-credential.jsonld" />
+          <span className="field-hint">Reserved for future trust-gated fast-lane. No automated effect today.</span>
+        </label>
+
+        <button type="submit">Submit application</button>
+        <p className="field-hint" style={{ marginTop: '0.5rem' }}>
+          Opens a pre-filled GitHub issue. Submit it there to complete your application.
+        </p>
       </form>
     </div>
   );

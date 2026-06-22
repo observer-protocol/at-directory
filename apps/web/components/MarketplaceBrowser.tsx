@@ -3,12 +3,11 @@ import { useMemo, useState } from 'react';
 import type { Merchant } from '@at-directory/core';
 import { ListingCard } from './ListingCard';
 
-type Tab = 'all' | 'agents' | 'humans' | 'merchants' | 'open-calls';
+type Tab = 'all' | 'agents' | 'merchants' | 'open-calls';
 
 const TABS: Array<{ id: Tab; label: string }> = [
   { id: 'all', label: 'All' },
   { id: 'agents', label: 'Agents' },
-  { id: 'humans', label: 'Humans' },
   { id: 'merchants', label: 'Merchants' },
   { id: 'open-calls', label: 'Open Calls' },
 ];
@@ -18,8 +17,7 @@ function tabCount(listings: Merchant[], tab: Tab): number {
     const pt = m.participant_type ?? 'merchant';
     const lt = m.listing_type ?? 'offer';
     if (tab === 'agents') return pt === 'agent';
-    if (tab === 'humans') return pt === 'human';
-    if (tab === 'merchants') return pt === 'merchant';
+    if (tab === 'merchants') return pt === 'merchant' && lt !== 'open-call';
     if (tab === 'open-calls') return lt === 'open-call';
     return true;
   }).length;
@@ -34,8 +32,7 @@ export function MarketplaceBrowser({ initialListings }: { initialListings: Merch
       const pt = m.participant_type ?? 'merchant';
       const lt = m.listing_type ?? 'offer';
       if (tab === 'agents' && pt !== 'agent') return false;
-      if (tab === 'humans' && pt !== 'human') return false;
-      if (tab === 'merchants' && pt !== 'merchant') return false;
+      if (tab === 'merchants' && (pt !== 'merchant' || lt === 'open-call')) return false;
       if (tab === 'open-calls' && lt !== 'open-call') return false;
       if (query) {
         const q = query.toLowerCase();
@@ -45,6 +42,8 @@ export function MarketplaceBrowser({ initialListings }: { initialListings: Merch
       return true;
     });
   }, [initialListings, tab, query]);
+
+  const openCallCount = tabCount(initialListings, 'open-calls');
 
   return (
     <div>
@@ -61,30 +60,44 @@ export function MarketplaceBrowser({ initialListings }: { initialListings: Merch
             )}
           </button>
         ))}
+        <a href="/submit" className="tab-post-btn">+ Post</a>
       </div>
-      <div className="filterbar" style={{ marginBottom: '1rem' }}>
-        <label>
-          Search
-          <input
-            type="text"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="name, description, tag"
-          />
-        </label>
-      </div>
+
+      {tab === 'open-calls' && openCallCount === 0 && (
+        <div className="open-calls-empty">
+          <p>Post a task or a challenge for agents to take on. <a href="/submit">Apply to list one.</a></p>
+        </div>
+      )}
+
+      {tab !== 'open-calls' && (
+        <div className="filterbar" style={{ marginBottom: '1rem' }}>
+          <label>
+            Search
+            <input
+              type="text"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="name, description, tag"
+            />
+          </label>
+        </div>
+      )}
+
       <p className="lede">
         {query
           ? `${filtered.length} of ${initialListings.length} listings`
           : tab === 'all'
             ? 'All listings in the marketplace'
-            : `${filtered.length} ${tab === 'open-calls' ? 'open call' : tab.slice(0, -1)}${filtered.length !== 1 ? 's' : ''}`}
+            : tab === 'open-calls'
+              ? `${filtered.length} open call${filtered.length !== 1 ? 's' : ''} — post a request for agents or humans to fulfill`
+              : `${filtered.length} ${tab.slice(0, -1)}${filtered.length !== 1 ? 's' : ''}`}
       </p>
+
       <div className="grid">
         {filtered.map((m) => (
           <ListingCard key={m.id} m={m} />
         ))}
-        {filtered.length === 0 && (
+        {filtered.length === 0 && query && (
           <p className="muted no-results">No listings match the current filter.</p>
         )}
       </div>

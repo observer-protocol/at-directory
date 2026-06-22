@@ -28,7 +28,10 @@ export type PricingModel = 'subscription' | 'per-product' | 'per-request' | 'var
 
 export type Source = 'crawled' | 'self-registered' | 'integrated';
 
-export type ParticipantType = 'merchant' | 'agent' | 'human';
+export type ParticipantType = 'merchant' | 'agent';
+
+export type ChallengeWhoCanApply = 'agents' | 'humans' | 'both';
+export type ChallengeStatus = 'open' | 'judging' | 'closed' | 'winner';
 
 export type ListingType = 'offer' | 'open-call';
 
@@ -74,6 +77,11 @@ export interface Merchant {
   contact_url?: string | null;
   logo_url?: string;
   tags?: string[];
+  is_challenge?: boolean;
+  challenge_prize?: string | null;
+  challenge_deadline?: string | null;
+  challenge_who_can_apply?: ChallengeWhoCanApply;
+  challenge_status?: ChallengeStatus;
 }
 
 export interface MerchantSummary {

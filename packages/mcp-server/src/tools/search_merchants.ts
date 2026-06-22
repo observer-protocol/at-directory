@@ -11,7 +11,7 @@ export const SearchMerchantsArgs = z.object({
   agent_callable_tier: z.enum(['full-api', 'structured-handoff', 'human-checkout']).optional(),
   trust_tier_min: z.union([z.literal(1), z.literal(2), z.literal(3)]).optional(),
   accepts_usdc: z.boolean().optional(),
-  participant_type: z.enum(['merchant', 'agent', 'human']).optional(),
+  participant_type: z.enum(['merchant', 'agent']).optional(),
   listing_type: z.enum(['offer', 'open-call']).optional(),
   limit: z.number().int().positive().optional(),
 });
