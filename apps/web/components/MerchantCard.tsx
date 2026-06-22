@@ -10,13 +10,25 @@ const CALLABLE_LABEL: Record<string, string> = {
   'human-checkout': 'Human checkout',
 };
 
+const TYPE_LABEL: Record<string, string> = {
+  agent: 'Agent',
+  merchant: 'Merchant',
+};
+
 export function MerchantCard({ m }: { m: Merchant }) {
   // One derived-tier fetch per card, hoisted so the whole card (border,
   // header tint, glow) reflects the tier — not just the badge. Renders
   // the static fallback tier instantly, upgrades on resolve.
   const { tier, count } = useDerivedTier(m.id, m.op_trust_tier);
+  const pType = m.participant_type ?? 'merchant';
+  const isNonMerchant = pType !== 'merchant';
   return (
-    <div className={`card tier${tier}`}>
+    <div className={`card tier${tier}${isNonMerchant ? ` card-${pType}` : ''}`}>
+      {isNonMerchant && (
+        <div className="listing-type-row">
+          <span className={`badge type-${pType}`}>{TYPE_LABEL[pType]}</span>
+        </div>
+      )}
       <div className="row cardhead">
         <div
           className="logo"
