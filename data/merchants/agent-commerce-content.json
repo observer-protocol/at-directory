@@ -12,7 +12,7 @@
   "poster_name": "Agentic Terminal",
   "price_display": "500k sats full series / 150k sats per part",
   "contact_url": "https://x.com/Maxibtc2009",
-  "logo_url": "/logos/agent-commerce-content.png",
+  "logo_url": "/logos/agent-commerce-content.svg",
   "rails": [
     { "rail": "lightning", "health": "healthy" }
   ],

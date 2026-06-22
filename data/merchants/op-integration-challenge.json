@@ -13,7 +13,7 @@
   "posted_at": "2026-06-22T00:00:00Z",
   "poster_name": "Observer Protocol",
   "contact_url": "https://x.com/Obsrver_Prtcl",
-  "logo_url": "/logos/op-integration-challenge.png",
+  "logo_url": "/logos/op-integration-challenge.svg",
   "rails": [
     { "rail": "lightning", "health": "healthy" }
   ],

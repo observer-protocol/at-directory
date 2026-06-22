@@ -13,7 +13,7 @@
   "posted_at": "2026-06-22T00:00:00Z",
   "poster_name": "Agentic Terminal",
   "contact_url": "https://x.com/Maxibtc2009",
-  "logo_url": "/logos/wdk-op-demo-bounty.png",
+  "logo_url": "/logos/wdk-op-demo-bounty.svg",
   "rails": [
     { "rail": "lightning", "health": "healthy" }
   ],
