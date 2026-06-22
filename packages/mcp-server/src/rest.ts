@@ -191,8 +191,9 @@ export async function tryHandleRest(
         return true;
       }
       const m = result.merchant as { merchant_vc_url?: string | null; id: string };
-      const vcUrl = m.merchant_vc_url
-        ?? `https://agenticterminal.ai/merchants/${encodeURIComponent(mid)}/trust-credential.jsonld`;
+      const vcUrl =
+        m.merchant_vc_url ??
+        `https://agenticterminal.ai/merchants/${encodeURIComponent(mid)}/trust-credential.jsonld`;
       // 302 so agents know to fetch the VC from the canonical location directly.
       res.writeHead(302, { Location: vcUrl });
       res.end();

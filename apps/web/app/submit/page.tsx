@@ -79,13 +79,16 @@ export default function SubmitPage() {
         <section className="page-hero">
           <h1>Application opened</h1>
           <p className="muted">
-            A GitHub issue was opened in a new tab with your details pre-filled. Submit it there to complete your application.
+            A GitHub issue was opened in a new tab with your details pre-filled. Submit it there to
+            complete your application.
           </p>
         </section>
         <p style={{ marginTop: '1.5rem' }}>
           <a href="/marketplace">Back to marketplace</a>
           {' · '}
-          <button className="secondary" onClick={() => setSubmitted(false)}>Submit another</button>
+          <button className="secondary" onClick={() => setSubmitted(false)}>
+            Submit another
+          </button>
         </p>
       </div>
     );
@@ -96,16 +99,18 @@ export default function SubmitPage() {
       <section className="page-hero">
         <h1>Apply to be listed</h1>
         <p className="muted">
-          Every listing on the AT Marketplace is independently verifiable. We review each application and issue its credential before it goes live.
+          Every listing on the AT Marketplace is independently verifiable. We review each
+          application and issue its credential before it goes live.
         </p>
       </section>
 
       <div className="submit-curation-note">
-        <strong>Curation is the feature.</strong> Listings come with a cryptographic trust credential issued by Observer Protocol. That takes a human review. Applications are evaluated within a few business days.
+        <strong>Curation is the feature.</strong> Listings come with a cryptographic trust
+        credential issued by Observer Protocol. That takes a human review. Applications are
+        evaluated within a few business days.
       </div>
 
       <form className="formgrid submit-form" onSubmit={onSubmit}>
-
         <div className="form-section-label">About your listing</div>
 
         <label>
@@ -121,7 +126,9 @@ export default function SubmitPage() {
         <label>
           Type <span className="req">*</span>
           <select name="participant_type" required defaultValue="">
-            <option value="" disabled>choose…</option>
+            <option value="" disabled>
+              choose…
+            </option>
             <option value="merchant">Merchant — I sell products or services</option>
             <option value="agent">Agent — I am an autonomous agent</option>
           </select>
@@ -130,9 +137,13 @@ export default function SubmitPage() {
         <label>
           Category <span className="req">*</span>
           <select name="category" required defaultValue="">
-            <option value="" disabled>choose…</option>
-            {CATEGORIES.map(c => (
-              <option key={c.value} value={c.value}>{c.label}</option>
+            <option value="" disabled>
+              choose…
+            </option>
+            {CATEGORIES.map((c) => (
+              <option key={c.value} value={c.value}>
+                {c.label}
+              </option>
             ))}
           </select>
         </label>
@@ -140,7 +151,7 @@ export default function SubmitPage() {
         <label>
           Payment rails accepted <span className="req">*</span>
           <div className="rail-checkboxes">
-            {RAILS.map(r => (
+            {RAILS.map((r) => (
               <label key={r.value} className="checkbox-label">
                 <input type="checkbox" name="rails" value={r.value} />
                 {r.label}
@@ -151,7 +162,12 @@ export default function SubmitPage() {
 
         <label>
           Description <span className="req">*</span>
-          <textarea name="description" required rows={3} placeholder="One to three sentences. What do you offer and who is it for?" />
+          <textarea
+            name="description"
+            required
+            rows={3}
+            placeholder="One to three sentences. What do you offer and who is it for?"
+          />
         </label>
 
         <label>
@@ -159,7 +175,9 @@ export default function SubmitPage() {
           <input name="contact" type="text" required placeholder="X handle, email, or Telegram" />
         </label>
 
-        <div className="form-section-label">Agent / API surfaces <span className="optional">optional</span></div>
+        <div className="form-section-label">
+          Agent / API surfaces <span className="optional">optional</span>
+        </div>
 
         <label>
           MCP endpoint
@@ -188,8 +206,14 @@ export default function SubmitPage() {
 
         <label>
           Existing verifiable credential URL
-          <input name="existing_vc" type="text" placeholder="https://example.com/trust-credential.jsonld" />
-          <span className="field-hint">Reserved for future trust-gated fast-lane. No automated effect today.</span>
+          <input
+            name="existing_vc"
+            type="text"
+            placeholder="https://example.com/trust-credential.jsonld"
+          />
+          <span className="field-hint">
+            Reserved for future trust-gated fast-lane. No automated effect today.
+          </span>
         </label>
 
         <button type="submit">Submit application</button>

@@ -497,7 +497,10 @@ code.tok {
   padding: 0.4rem 1rem;
   font-size: 0.85rem;
   cursor: pointer;
-  transition: border-color 0.15s, color 0.15s, background 0.15s;
+  transition:
+    border-color 0.15s,
+    color 0.15s,
+    background 0.15s;
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
@@ -590,7 +593,9 @@ code.tok {
   border-radius: 6px;
   font-size: 0.85rem;
   text-decoration: none;
-  transition: background 0.15s, color 0.15s;
+  transition:
+    background 0.15s,
+    color 0.15s;
 }
 .connect-btn:hover {
   background: var(--accent);
@@ -616,7 +621,9 @@ code.tok {
   padding: 0.3rem 0.75rem;
   font-size: 0.8rem;
   cursor: pointer;
-  transition: border-color 0.15s, color 0.15s;
+  transition:
+    border-color 0.15s,
+    color 0.15s;
 }
 .verify-btn:hover {
   border-color: var(--accent);
@@ -644,8 +651,12 @@ code.tok {
   font-weight: 600;
   margin-bottom: 0.35rem;
 }
-.vp-valid .vp-status { color: #22c55e; }
-.vp-invalid .vp-status { color: #ef4444; }
+.vp-valid .vp-status {
+  color: #22c55e;
+}
+.vp-invalid .vp-status {
+  color: #ef4444;
+}
 .vp-row {
   display: flex;
   gap: 0.5rem;
@@ -680,7 +691,9 @@ code.tok {
   font-size: 0.8rem;
   padding: 0;
 }
-.vp-retry:hover { color: var(--text); }
+.vp-retry:hover {
+  color: var(--text);
+}
 
 /* Challenge cards */
 .card.card-challenge {
@@ -738,7 +751,9 @@ code.tok {
   text-decoration: none;
   white-space: nowrap;
 }
-.tab-post-btn:hover { opacity: 0.85; }
+.tab-post-btn:hover {
+  opacity: 0.85;
+}
 
 /* Open calls empty state */
 .open-calls-empty {

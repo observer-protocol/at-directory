@@ -55,17 +55,20 @@ export function MarketplaceBrowser({ initialListings }: { initialListings: Merch
             onClick={() => setTab(id)}
           >
             {label}
-            {id !== 'all' && (
-              <span className="tab-count">{tabCount(initialListings, id)}</span>
-            )}
+            {id !== 'all' && <span className="tab-count">{tabCount(initialListings, id)}</span>}
           </button>
         ))}
-        <a href="/submit" className="tab-post-btn">+ Post</a>
+        <a href="/submit" className="tab-post-btn">
+          + Post
+        </a>
       </div>
 
       {tab === 'open-calls' && openCallCount === 0 && (
         <div className="open-calls-empty">
-          <p>Post a task or a challenge for agents to take on. <a href="/submit">Apply to list one.</a></p>
+          <p>
+            Post a task or a challenge for agents to take on.{' '}
+            <a href="/submit">Apply to list one.</a>
+          </p>
         </div>
       )}
 

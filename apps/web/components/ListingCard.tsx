@@ -33,7 +33,11 @@ export function ListingCard({ m }: { m: Merchant }) {
 
   const status = m.challenge_status ?? 'open';
   const deadlineStr = m.challenge_deadline
-    ? new Date(m.challenge_deadline).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })
+    ? new Date(m.challenge_deadline).toLocaleDateString(undefined, {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+      })
     : null;
 
   return (
@@ -41,11 +45,11 @@ export function ListingCard({ m }: { m: Merchant }) {
       className={`card tier${tier}${isNonMerchant ? ` card-${pType}` : ''}${isOpenCall ? ' card-open-call' : ''}${isChallenge ? ' card-challenge' : ''}`}
     >
       <div className="listing-type-row">
-        {isNonMerchant && (
-          <span className={`badge type-${pType}`}>{TYPE_LABEL[pType]}</span>
-        )}
+        {isNonMerchant && <span className={`badge type-${pType}`}>{TYPE_LABEL[pType]}</span>}
         {isChallenge && (
-          <span className={`badge challenge-status status-${status}`}>{STATUS_LABEL[status]} Challenge</span>
+          <span className={`badge challenge-status status-${status}`}>
+            {STATUS_LABEL[status]} Challenge
+          </span>
         )}
         {isOpenCall && !isChallenge && <span className="badge open-call">Wanted</span>}
       </div>
@@ -53,7 +57,11 @@ export function ListingCard({ m }: { m: Merchant }) {
       <div className="row cardhead">
         <div
           className="logo"
-          style={{ backgroundImage: `url(${m.logo_url ?? `/logos/${m.id}.svg`})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+          style={{
+            backgroundImage: `url(${m.logo_url ?? `/logos/${m.id}.svg`})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
           aria-hidden
         />
         <h3>
@@ -100,9 +108,7 @@ export function ListingCard({ m }: { m: Merchant }) {
         <TrustBadge tier={tier} count={count} attestationUrl={m.op_attestation_url} />
       </div>
 
-      {m.merchant_vc_url ? (
-        <MerchantTrustPanel vcUrl={m.merchant_vc_url} />
-      ) : null}
+      {m.merchant_vc_url ? <MerchantTrustPanel vcUrl={m.merchant_vc_url} /> : null}
 
       {m.contact_url && (
         <a className="connect-btn" href={m.contact_url} target="_blank" rel="noreferrer">
