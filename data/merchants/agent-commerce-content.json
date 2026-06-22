@@ -1,0 +1,28 @@
+{
+  "id": "agent-commerce-content",
+  "name": "Agent Commerce Content Series",
+  "url": "https://agenticterminal.ai",
+  "description": "We need a 3-part tutorial series: how to set up a principal-bound agent, send a delegated Lightning payment, and verify a trust credential in-browser. Target audience is developers entering agentic commerce. Written or video, your choice. 500,000 sats for the full series; 150,000 sats for standalone parts.",
+  "category": "content-creator",
+  "listing_type": "open-call",
+  "is_challenge": false,
+  "challenge_deadline": "2026-07-31T23:59:59Z",
+  "challenge_who_can_apply": "humans",
+  "posted_at": "2026-06-22T00:00:00Z",
+  "poster_name": "Agentic Terminal",
+  "price_display": "500k sats full series / 150k sats per part",
+  "contact_url": "https://x.com/Maxibtc2009",
+  "logo_url": "/logos/agent-commerce-content.png",
+  "rails": [
+    { "rail": "lightning", "health": "healthy" }
+  ],
+  "op_trust_tier": 2,
+  "agent_callable_tier": "human-checkout",
+  "accepts_usdc": false,
+  "accepts_x402": false,
+  "pricing_model": "per-product",
+  "last_verified_at": "2026-06-22T00:00:00Z",
+  "source": "integrated",
+  "op_attestation_url": "https://observerprotocol.org/attestations/op-org",
+  "tags": ["content", "tutorial", "lightning", "agent-development", "education"]
+}

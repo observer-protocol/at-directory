@@ -2,6 +2,8 @@
 import { useMemo, useState } from 'react';
 import type { Merchant } from '@at-directory/core';
 import { ListingCard } from './ListingCard';
+import { TaskCard } from './TaskCard';
+import { PostTaskModal } from './PostTaskModal';
 
 type Tab = 'all' | 'agents' | 'merchants' | 'open-calls';
 
@@ -23,12 +25,29 @@ function tabCount(listings: Merchant[], tab: Tab): number {
   }).length;
 }
 
+function sortOpenCalls(calls: Merchant[]): Merchant[] {
+  return [...calls].sort((a, b) => {
+    // Challenges with open status first, sorted by deadline ascending
+    const aOpen = (a.challenge_status ?? 'open') === 'open';
+    const bOpen = (b.challenge_status ?? 'open') === 'open';
+    if (aOpen !== bOpen) return aOpen ? -1 : 1;
+    const aD = a.challenge_deadline ? new Date(a.challenge_deadline).getTime() : Infinity;
+    const bD = b.challenge_deadline ? new Date(b.challenge_deadline).getTime() : Infinity;
+    if (aD !== bD) return aD - bD;
+    // Ties: newer posted_at first
+    const aP = a.posted_at ? new Date(a.posted_at).getTime() : 0;
+    const bP = b.posted_at ? new Date(b.posted_at).getTime() : 0;
+    return bP - aP;
+  });
+}
+
 export function MarketplaceBrowser({ initialListings }: { initialListings: Merchant[] }) {
-  const [tab, setTab] = useState<Tab>('all');
+  const [tab, setTab] = useState<Tab>('open-calls');
   const [query, setQuery] = useState('');
+  const [showPostModal, setShowPostModal] = useState(false);
 
   const filtered = useMemo(() => {
-    return initialListings.filter((m) => {
+    const base = initialListings.filter((m) => {
       const pt = m.participant_type ?? 'merchant';
       const lt = m.listing_type ?? 'offer';
       if (tab === 'agents' && pt !== 'agent') return false;
@@ -41,6 +60,8 @@ export function MarketplaceBrowser({ initialListings }: { initialListings: Merch
       }
       return true;
     });
+    if (tab === 'open-calls') return sortOpenCalls(base);
+    return base;
   }, [initialListings, tab, query]);
 
   const openCallCount = tabCount(initialListings, 'open-calls');
@@ -58,19 +79,10 @@ export function MarketplaceBrowser({ initialListings }: { initialListings: Merch
             {id !== 'all' && <span className="tab-count">{tabCount(initialListings, id)}</span>}
           </button>
         ))}
-        <a href="/submit" className="tab-post-btn">
-          + Post
-        </a>
+        <button className="tab-post-btn" onClick={() => setShowPostModal(true)}>
+          + Post a Task
+        </button>
       </div>
-
-      {tab === 'open-calls' && openCallCount === 0 && (
-        <div className="open-calls-empty">
-          <p>
-            Post a task or a challenge for agents to take on.{' '}
-            <a href="/submit">Apply to list one.</a>
-          </p>
-        </div>
-      )}
 
       {tab !== 'open-calls' && (
         <div className="filterbar" style={{ marginBottom: '1rem' }}>
@@ -86,24 +98,47 @@ export function MarketplaceBrowser({ initialListings }: { initialListings: Merch
         </div>
       )}
 
-      <p className="lede">
-        {query
-          ? `${filtered.length} of ${initialListings.length} listings`
-          : tab === 'all'
-            ? 'All listings in the marketplace'
-            : tab === 'open-calls'
-              ? `${filtered.length} open call${filtered.length !== 1 ? 's' : ''} — post a request for agents or humans to fulfill`
-              : `${filtered.length} ${tab.slice(0, -1)}${filtered.length !== 1 ? 's' : ''}`}
-      </p>
+      {tab === 'open-calls' ? (
+        <div className="open-calls-board">
+          <div className="open-calls-board-header">
+            <span className="open-calls-count">
+              {openCallCount} open task{openCallCount !== 1 ? 's' : ''}
+            </span>
+            <span className="open-calls-hint muted">Trust verified by Observer Protocol</span>
+          </div>
+          {filtered.length > 0 ? (
+            <div className="task-grid">
+              {filtered.map((m) => (
+                <TaskCard key={m.id} m={m} />
+              ))}
+            </div>
+          ) : (
+            <div className="open-calls-empty">
+              <p>No tasks match the filter.</p>
+            </div>
+          )}
+        </div>
+      ) : (
+        <>
+          <p className="lede">
+            {query
+              ? `${filtered.length} of ${initialListings.length} listings`
+              : tab === 'all'
+                ? 'All listings in the marketplace'
+                : `${filtered.length} ${tab.slice(0, -1)}${filtered.length !== 1 ? 's' : ''}`}
+          </p>
+          <div className="grid">
+            {filtered.map((m) => (
+              <ListingCard key={m.id} m={m} />
+            ))}
+            {filtered.length === 0 && query && (
+              <p className="muted no-results">No listings match the current filter.</p>
+            )}
+          </div>
+        </>
+      )}
 
-      <div className="grid">
-        {filtered.map((m) => (
-          <ListingCard key={m.id} m={m} />
-        ))}
-        {filtered.length === 0 && query && (
-          <p className="muted no-results">No listings match the current filter.</p>
-        )}
-      </div>
+      {showPostModal && <PostTaskModal onClose={() => setShowPostModal(false)} />}
     </div>
   );
 }

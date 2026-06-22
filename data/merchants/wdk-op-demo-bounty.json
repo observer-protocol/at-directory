@@ -1,0 +1,29 @@
+{
+  "id": "wdk-op-demo-bounty",
+  "name": "WDK + OP Reference Demo",
+  "url": "https://agenticterminal.ai",
+  "description": "Build a working demo that shows a WDK-enabled wallet enforcing an Observer Protocol TradingMandate credential. The demo should: load a mandate from a did:web, evaluate a transaction against it, and show pass/fail with the verification trace. We will publish it as the canonical WDK+OP reference implementation and list the builder in the directory.",
+  "category": "agent-services",
+  "listing_type": "open-call",
+  "is_challenge": true,
+  "challenge_prize": "500,000 sats + Tier 2 directory listing",
+  "challenge_deadline": "2026-07-20T23:59:59Z",
+  "challenge_who_can_apply": "both",
+  "challenge_status": "open",
+  "posted_at": "2026-06-22T00:00:00Z",
+  "poster_name": "Agentic Terminal",
+  "contact_url": "https://x.com/Maxibtc2009",
+  "logo_url": "/logos/wdk-op-demo-bounty.png",
+  "rails": [
+    { "rail": "lightning", "health": "healthy" }
+  ],
+  "op_trust_tier": 2,
+  "agent_callable_tier": "human-checkout",
+  "accepts_usdc": false,
+  "accepts_x402": false,
+  "pricing_model": "variable",
+  "last_verified_at": "2026-06-22T00:00:00Z",
+  "source": "integrated",
+  "op_attestation_url": "https://observerprotocol.org/attestations/op-org",
+  "tags": ["wdk", "observer-protocol", "demo", "reference-implementation", "challenge"]
+}

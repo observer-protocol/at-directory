@@ -1,0 +1,29 @@
+{
+  "id": "op-integration-challenge",
+  "name": "OP Integration Challenge",
+  "url": "https://observerprotocol.org",
+  "description": "Add Observer Protocol trust credential verification to any Lightning-enabled service, wallet, or agent. We want to see real integrations: fetch a MerchantTrustCredential, verify the eddsa-jcs-2022 signature, gate actions on the result. Winning submission earns a Tier 2 listing in the AT Directory, a co-authored case study, and the prize.",
+  "category": "agent-services",
+  "listing_type": "open-call",
+  "is_challenge": true,
+  "challenge_prize": "1,000,000 sats",
+  "challenge_deadline": "2026-07-15T23:59:59Z",
+  "challenge_who_can_apply": "both",
+  "challenge_status": "open",
+  "posted_at": "2026-06-22T00:00:00Z",
+  "poster_name": "Observer Protocol",
+  "contact_url": "https://x.com/Obsrver_Prtcl",
+  "logo_url": "/logos/op-integration-challenge.png",
+  "rails": [
+    { "rail": "lightning", "health": "healthy" }
+  ],
+  "op_trust_tier": 2,
+  "agent_callable_tier": "human-checkout",
+  "accepts_usdc": false,
+  "accepts_x402": false,
+  "pricing_model": "variable",
+  "last_verified_at": "2026-06-22T00:00:00Z",
+  "source": "integrated",
+  "op_attestation_url": "https://observerprotocol.org/attestations/op-org",
+  "tags": ["observer-protocol", "lightning", "verifiable-credentials", "integration", "challenge"]
+}

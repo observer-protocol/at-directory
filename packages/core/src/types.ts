@@ -82,6 +82,8 @@ export interface Merchant {
   challenge_deadline?: string | null;
   challenge_who_can_apply?: ChallengeWhoCanApply;
   challenge_status?: ChallengeStatus;
+  posted_at?: string | null;
+  poster_name?: string | null;
 }
 
 export interface MerchantSummary {

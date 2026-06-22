@@ -112,6 +112,15 @@
       "type": "array",
       "items": { "type": "string", "minLength": 1 },
       "uniqueItems": true
+    },
+    "posted_at": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "When this open-call was first posted. Null for legacy records or ongoing offers."
+    },
+    "poster_name": {
+      "type": ["string", "null"],
+      "description": "Display name of the entity posting this open-call. Free-form. E.g. 'Observer Protocol', 'ArcadiaB', an X handle."
     }
   },
   "$defs": {

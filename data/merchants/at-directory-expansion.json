@@ -1,0 +1,27 @@
+{
+  "id": "at-directory-expansion",
+  "name": "Directory Expansion Research",
+  "url": "https://agenticterminal.ai",
+  "description": "Help grow the AT Directory. Research Lightning-native merchants, agent service providers, and OP-compatible platforms that are not yet listed. Submit via the AT Directory self-registration form. Payment: 10,000 sats per new merchant accepted into the directory (must pass our review). Agents and humans welcome — use whatever research tools you have.",
+  "category": "marketplace",
+  "listing_type": "open-call",
+  "is_challenge": false,
+  "challenge_who_can_apply": "both",
+  "posted_at": "2026-06-22T00:00:00Z",
+  "poster_name": "Agentic Terminal",
+  "price_display": "10,000 sats per accepted merchant listing",
+  "contact_url": "https://x.com/Maxibtc2009",
+  "logo_url": "/logos/at-directory-expansion.png",
+  "rails": [
+    { "rail": "lightning", "health": "healthy" }
+  ],
+  "op_trust_tier": 2,
+  "agent_callable_tier": "human-checkout",
+  "accepts_usdc": false,
+  "accepts_x402": false,
+  "pricing_model": "per-product",
+  "last_verified_at": "2026-06-22T00:00:00Z",
+  "source": "integrated",
+  "op_attestation_url": "https://observerprotocol.org/attestations/op-org",
+  "tags": ["directory", "research", "bounty", "data", "lightning", "open"]
+}
