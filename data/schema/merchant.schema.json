@@ -121,6 +121,18 @@
     "poster_name": {
       "type": ["string", "null"],
       "description": "Display name of the entity posting this open-call. Free-form. E.g. 'Observer Protocol', 'ArcadiaB', an X handle."
+    },
+    "poster_did": {
+      "type": ["string", "null"],
+      "description": "DID of the entity posting this open-call. Shown on the task card. Verified = resolved against live DID document. Null for legacy or anonymous posts."
+    },
+    "poster_did_verified": {
+      "type": ["boolean", "null"],
+      "description": "Whether the poster's DID was successfully resolved and validated at submission time."
+    },
+    "pinned": {
+      "type": ["boolean", "null"],
+      "description": "When true, this listing is surfaced/promoted by AT editors. Pinned open-calls sort first on the task board."
     }
   },
   "$defs": {

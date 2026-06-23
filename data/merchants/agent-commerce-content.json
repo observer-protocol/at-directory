@@ -14,7 +14,10 @@
   "contact_url": "https://x.com/Maxibtc2009",
   "logo_url": "/logos/agent-commerce-content.svg",
   "rails": [
-    { "rail": "lightning", "health": "healthy" }
+    {
+      "rail": "lightning",
+      "health": "healthy"
+    }
   ],
   "op_trust_tier": 2,
   "agent_callable_tier": "human-checkout",
@@ -24,5 +27,13 @@
   "last_verified_at": "2026-06-22T00:00:00Z",
   "source": "integrated",
   "op_attestation_url": "https://observerprotocol.org/attestations/op-org",
-  "tags": ["content", "tutorial", "lightning", "agent-development", "education"]
+  "tags": [
+    "content",
+    "tutorial",
+    "lightning",
+    "agent-development",
+    "education"
+  ],
+  "poster_did": "did:web:observerprotocol.org",
+  "poster_did_verified": true
 }

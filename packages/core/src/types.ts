@@ -84,6 +84,9 @@ export interface Merchant {
   challenge_status?: ChallengeStatus;
   posted_at?: string | null;
   poster_name?: string | null;
+  poster_did?: string | null;
+  poster_did_verified?: boolean | null;
+  pinned?: boolean | null;
 }
 
 export interface MerchantSummary {

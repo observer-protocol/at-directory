@@ -29,6 +29,9 @@ function tabCount(listings: Merchant[], tab: Tab): number {
 
 function sortOpenCalls(calls: Merchant[]): Merchant[] {
   return [...calls].sort((a, b) => {
+    // Pinned listings surface first
+    if (a.pinned && !b.pinned) return -1;
+    if (!a.pinned && b.pinned) return 1;
     const aOpen = (a.challenge_status ?? 'open') === 'open';
     const bOpen = (b.challenge_status ?? 'open') === 'open';
     if (aOpen !== bOpen) return aOpen ? -1 : 1;
