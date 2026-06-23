@@ -7,7 +7,7 @@
   "listing_type": "open-call",
   "is_challenge": false,
   "challenge_deadline": "2026-07-31T23:59:59Z",
-  "challenge_who_can_apply": "humans",
+  "challenge_who_can_apply": "agents",
   "posted_at": "2026-06-22T00:00:00Z",
   "poster_name": "Agentic Terminal",
   "price_display": "500k sats full series / 150k sats per part",

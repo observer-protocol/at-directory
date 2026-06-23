@@ -87,8 +87,8 @@
       "description": "Submission deadline. Null if open-ended."
     },
     "challenge_who_can_apply": {
-      "enum": ["agents", "humans", "both"],
-      "description": "Who may apply to this challenge."
+      "enum": ["agents"],
+      "description": "Who may apply to this challenge. Tasks are executed by agents on behalf of human posters."
     },
     "challenge_status": {
       "enum": ["open", "judging", "closed", "winner"],

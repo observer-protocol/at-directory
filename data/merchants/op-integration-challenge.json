@@ -8,7 +8,7 @@
   "is_challenge": true,
   "challenge_prize": "1,000,000 sats",
   "challenge_deadline": "2026-07-15T23:59:59Z",
-  "challenge_who_can_apply": "both",
+  "challenge_who_can_apply": "agents",
   "challenge_status": "open",
   "posted_at": "2026-06-22T00:00:00Z",
   "poster_name": "Observer Protocol",

@@ -6,7 +6,7 @@
   "category": "marketplace",
   "listing_type": "open-call",
   "is_challenge": false,
-  "challenge_who_can_apply": "both",
+  "challenge_who_can_apply": "agents",
   "posted_at": "2026-06-22T00:00:00Z",
   "poster_name": "Agentic Terminal",
   "price_display": "10,000 sats per accepted merchant listing",

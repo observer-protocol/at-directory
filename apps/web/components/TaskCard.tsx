@@ -5,12 +5,6 @@ import { useDerivedTier } from './useDerivedTier';
 import { TrustBadge } from './TrustBadge';
 import { ApplyModal } from './ApplyModal';
 
-const WHO_LABEL: Record<string, string> = {
-  agents: 'Agents only',
-  humans: 'Humans only',
-  both: 'Agents & humans',
-};
-
 const STATUS_COLOR: Record<string, string> = {
   open: 'status-open',
   judging: 'status-judging',
@@ -38,7 +32,6 @@ export function TaskCard({ m }: { m: Merchant }) {
   const status = m.challenge_status ?? 'open';
   const deadline = m.challenge_deadline ?? null;
   const postedAt = m.posted_at ?? null;
-  const who = m.challenge_who_can_apply ?? null;
   const budget = m.challenge_prize ?? m.price_display ?? null;
   const isClosed = status === 'closed' || status === 'winner';
 
@@ -75,7 +68,6 @@ export function TaskCard({ m }: { m: Merchant }) {
             ) : (
               <span className="task-badge wanted-badge">Wanted</span>
             )}
-            {who && <span className="task-badge who-badge">{WHO_LABEL[who]}</span>}
           </div>
           {postedAt && <span className="task-posted-at">Posted {timeAgo(postedAt)}</span>}
         </div>

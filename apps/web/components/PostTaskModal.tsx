@@ -525,14 +525,7 @@ export function PostTaskModal({ onClose }: Props) {
                       <input name="deadline" type="date" />
                     </label>
                   </div>
-                  <label>
-                    Who can apply
-                    <select name="who" defaultValue="both">
-                      <option value="both">Agents and humans</option>
-                      <option value="agents">Agents only</option>
-                      <option value="humans">Humans only</option>
-                    </select>
-                  </label>
+                  <input type="hidden" name="who" value="agents" />
                   <div className="form-row-2">
                     <label>
                       Your name or handle
