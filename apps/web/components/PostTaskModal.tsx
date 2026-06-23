@@ -112,6 +112,9 @@ export function PostTaskModal({ onClose }: Props) {
   const [mintedKey, setMintedKey] = useState<string | null>(null);
   const [keySaved, setKeySaved] = useState(false);
   const [browserSupported, setBrowserSupported] = useState<boolean | null>(null);
+  // Generate-specific error — kept separate from DID resolution errors so the
+  // generate link and the DID input badge don't bleed into each other.
+  const [generateError, setGenerateError] = useState<string | null>(null);
 
   function openDIDSection() {
     setShowDIDSection(true);
@@ -148,14 +151,10 @@ export function PostTaskModal({ onClose }: Props) {
   }
 
   async function handleGenerateDid() {
-    // Re-check support at click time — covers the case where detection
-    // hasn't resolved yet or the cached result was stale
+    setGenerateError(null);
     const supported = await checkEd25519Support();
     if (!supported) {
-      setIdState('error');
-      setIdNote(
-        'Your browser does not support Ed25519 key generation. Update to Chrome 113+, Firefox 119+, or Safari 17+, or enter an existing DID above.',
-      );
+      setBrowserSupported(false);
       return;
     }
 
@@ -171,14 +170,11 @@ export function PostTaskModal({ onClose }: Props) {
       setDidVerified(true);
       setIdState('generated');
     } catch (e) {
+      // Reset idState to idle so the DID input badge stays clean.
+      // Generate errors render near the generate link, not in the input badge.
+      setIdState('idle');
       const msg = e instanceof Error ? e.message : String(e);
-      if (msg === 'staging_only') {
-        setIdState('error');
-        setIdNote('DID minting is not yet enabled. You can post without a DID for now.');
-      } else {
-        setIdState('error');
-        setIdNote(msg);
-      }
+      setGenerateError(msg === 'staging_only' ? 'staging_only' : msg);
     }
   }
 
@@ -290,6 +286,7 @@ export function PostTaskModal({ onClose }: Props) {
                       setDidVerified(false);
                       setMintedDid(null);
                       setMintedKey(null);
+                      setGenerateError(null);
                     }}
                   >
                     Remove
@@ -319,17 +316,33 @@ export function PostTaskModal({ onClose }: Props) {
                     </label>
 
                     {/* ── New DID lane ── */}
-                    <p
-                      className="muted"
-                      style={{ fontSize: '0.78rem', margin: '0.25rem 0 0.5rem' }}
-                    >
-                      No DID yet?{' '}
-                      {browserSupported === false ? (
-                        <span style={{ color: 'var(--bad)' }}>
-                          Browser does not support Ed25519 key generation (Chrome 113+, Firefox
-                          119+, Safari 17+ required).
-                        </span>
-                      ) : (
+                    {browserSupported === false ? (
+                      <p
+                        style={{ fontSize: '0.78rem', color: 'var(--bad)', margin: '0.25rem 0 0' }}
+                      >
+                        Browser does not support Ed25519 key generation (Chrome 113+, Firefox 119+,
+                        Safari 17+ required).
+                      </p>
+                    ) : generateError === 'staging_only' ? (
+                      <p className="muted" style={{ fontSize: '0.78rem', margin: '0.25rem 0 0' }}>
+                        DID minting is not yet enabled on this deployment. You can post without a
+                        DID — it shows as unverified.
+                      </p>
+                    ) : generateError ? (
+                      <p style={{ fontSize: '0.78rem', margin: '0.25rem 0 0' }}>
+                        <span style={{ color: 'var(--bad)' }}>✗ {generateError}</span>{' '}
+                        <button
+                          type="button"
+                          className="btn-ghost"
+                          style={{ display: 'inline', padding: 0, fontSize: 'inherit' }}
+                          onClick={handleGenerateDid}
+                        >
+                          Retry →
+                        </button>
+                      </p>
+                    ) : (
+                      <p className="muted" style={{ fontSize: '0.78rem', margin: '0.25rem 0 0' }}>
+                        No DID yet?{' '}
                         <button
                           type="button"
                           className="btn-ghost"
@@ -338,8 +351,8 @@ export function PostTaskModal({ onClose }: Props) {
                         >
                           Generate one in your browser →
                         </button>
-                      )}
-                    </p>
+                      </p>
+                    )}
                   </div>
                 )}
 
