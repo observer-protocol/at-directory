@@ -1,0 +1,51 @@
+{
+  "id": "dtelecom",
+  "name": "dTelecom",
+  "url": "https://dtelecom.org",
+  "description": "Speech and realtime voice infrastructure for agents: speech-to-text at $0.006/min across 99+ languages, text-to-speech at $0.008/1K chars, and WebRTC audio at $0.001/participant-min. Agents buy microcredits with USDC over x402 on Base or Solana, with no API key or account.",
+  "category": "communication",
+  "rails": [
+    {
+      "rail": "usdc",
+      "chain": "base",
+      "payment_endpoint": null,
+      "health": "healthy",
+      "last_health_check": "2026-07-25T00:00:00Z"
+    },
+    {
+      "rail": "usdc",
+      "chain": "solana",
+      "payment_endpoint": null,
+      "health": "healthy",
+      "last_health_check": "2026-07-25T00:00:00Z"
+    }
+  ],
+  "op_trust_tier": 1,
+  "agent_callable_tier": "full-api",
+  "agent_endpoints": {
+    "mcp_server": "npm:@dtelecom/stt-mcp",
+    "rest_api": "https://x402.dtelecom.org/v1",
+    "api_docs": "https://x402.dtelecom.org/",
+    "auth_note": "No API keys, no accounts. Payment is a CREDIT PURCHASE, not per-call: POST https://x402.dtelecom.org/v1/credits/purchase returns 402 with USDC requirements for Base (eip155:8453) and Solana and a body taking wallet_address, wallet_chain and amount_usd (minimum $0.10); the credited microcredits then fund STT/TTS/WebRTC calls. MPP (USDC on Tempo) and USDT on TRON are also offered. MCP server: https://github.com/dTelecom/stt-mcp"
+  },
+  "accepts_usdc": true,
+  "accepts_x402": true,
+  "pricing_model": "variable",
+  "last_verified_at": "2026-07-25T00:00:00Z",
+  "source": "crawled",
+  "op_attestation_url": null,
+  "merchant_did": null,
+  "merchant_vc_url": null,
+  "tags": [
+    "speech-to-text",
+    "text-to-speech",
+    "webrtc",
+    "voice",
+    "mcp",
+    "x402",
+    "usdc",
+    "base",
+    "solana",
+    "no-account"
+  ]
+}

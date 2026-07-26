@@ -2,6 +2,42 @@
 
 ## Held merchants — qualify on criteria, not listable yet
 
+### Firecrawl, Zyte, Postera (held 2026-07-25) — x402 claimed, no live 402 found
+
+All three were in the 2026-05-17 x402-eco approved mini-batch, and Firecrawl,
+Zyte and Postera are all currently listed in the usdc.org/x402 registry. None
+could be confirmed live on 2026-07-25:
+
+- **Firecrawl** (`firecrawl.dev`) — the endpoint named in its own Coinbase case
+  study, `POST /v1/x402/search`, now 404s, as do `/v2/x402/search` and
+  `/v2/x402/scrape`. `docs.firecrawl.dev/x402` 404s. Meanwhile `POST /v2/search`
+  and `POST /v2/scrape` return **200 with real results, unauthenticated and
+  unpaid** — so the public API answers for free and the x402 lane appears to
+  have moved or been withdrawn. No `.well-known/x402`.
+- **Zyte** (`zyte.com`) — `POST /v1/extract` returns 401 API-key auth; no x402
+  endpoint found and no `.well-known/x402`. The "no account, pay per scrape with
+  USDC" phrasing in search results could not be traced to Zyte's own docs and may
+  be a conflation with another scraping vendor.
+- **Postera** (`postera.dev`) — the site says agents "pay per read in USDC on
+  Base", but `/api/posts` returns 405 on GET and 401 on POST, `/api/feed` 404s,
+  and there is no `.well-known/x402` or `llms.txt`. The paid-read endpoint was
+  not locatable from outside.
+
+**Unhold when** a live 402 is observed. The cheap check for each is
+`curl -s -D - <endpoint>` looking for a `payment-required` header, or
+`/.well-known/x402`. These are probably wrong-endpoint misses rather than absent
+support, so a single documentation link from any of them resolves it.
+
+### Pinata — rejected, not held
+
+`x402` on Pinata is a tool for **its own paying customers to charge third
+parties** for their private IPFS files: "you receive payments directly to your
+wallet address. Payments go to you", and it requires a paid Pinata account. The
+agent's USDC goes to the file owner, not to Pinata. That is the
+payment-infrastructure class the 2026-05-17 dry-run explicitly rejects
+(plumbing the agent uses to pay, not a service the agent buys). Do not
+re-evaluate unless Pinata itself starts selling storage over x402.
+
 ### AgentMetal (held 2026-07-25) — USDC settlement not live
 
 `https://agentmetal.dev` — Linux VPS from $1.20/day, provisioned entirely

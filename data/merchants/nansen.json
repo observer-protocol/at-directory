@@ -1,0 +1,48 @@
+{
+  "id": "nansen",
+  "name": "Nansen",
+  "url": "https://nansen.ai",
+  "description": "Onchain analytics \u2014 wallet profiling, token screeners, DEX trades and Smart Money flows. Roughly 25 Pro-tier endpoints are x402-gated at $0.01\u2013$0.05 per call in USDC, settling on Base or Solana, with no subscription.",
+  "category": "agent-services",
+  "rails": [
+    {
+      "rail": "usdc",
+      "chain": "base",
+      "payment_endpoint": null,
+      "health": "healthy",
+      "last_health_check": "2026-07-25T00:00:00Z"
+    },
+    {
+      "rail": "usdc",
+      "chain": "solana",
+      "payment_endpoint": null,
+      "health": "healthy",
+      "last_health_check": "2026-07-25T00:00:00Z"
+    }
+  ],
+  "op_trust_tier": 1,
+  "agent_callable_tier": "full-api",
+  "agent_endpoints": {
+    "rest_api": "https://api.nansen.ai/api/v1",
+    "api_docs": "https://docs.nansen.ai/getting-started/agentic-payments/x402-payments",
+    "auth_note": "No account needed on the x402 path \u2014 a request with no API key returns 402 with the price for that endpoint's tier. Coverage is a SUBSET, not the whole API: /token-screener and the profiler, tgm and smart-money families answer 402, while some endpoints (e.g. /tgm/balances) reply 'API key required. This endpoint does not support paid access.' Probe the specific endpoint before assuming it is payable."
+  },
+  "accepts_usdc": true,
+  "accepts_x402": true,
+  "pricing_model": "per-request",
+  "last_verified_at": "2026-07-25T00:00:00Z",
+  "source": "crawled",
+  "op_attestation_url": null,
+  "merchant_did": null,
+  "merchant_vc_url": null,
+  "tags": [
+    "onchain-analytics",
+    "data-api",
+    "smart-money",
+    "x402",
+    "usdc",
+    "base",
+    "solana",
+    "no-account"
+  ]
+}

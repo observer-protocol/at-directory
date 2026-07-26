@@ -1,0 +1,39 @@
+{
+  "id": "exa",
+  "name": "Exa",
+  "url": "https://exa.ai",
+  "description": "Neural web search and page-content retrieval built for AI. The /search and /contents endpoints are x402-gated: call without a key, get a 402 quoting $0.007, pay USDC on Base or Solana and the results come back on the retry. An API key is optional and bypasses x402 entirely if supplied.",
+  "category": "agent-services",
+  "rails": [
+    {
+      "rail": "usdc",
+      "chain": "base",
+      "payment_endpoint": null,
+      "health": "healthy",
+      "last_health_check": "2026-07-25T00:00:00Z"
+    },
+    {
+      "rail": "usdc",
+      "chain": "solana",
+      "payment_endpoint": null,
+      "health": "healthy",
+      "last_health_check": "2026-07-25T00:00:00Z"
+    }
+  ],
+  "op_trust_tier": 1,
+  "agent_callable_tier": "full-api",
+  "agent_endpoints": {
+    "rest_api": "https://api.exa.ai",
+    "api_docs": "https://exa.ai/docs/reference/x402-guide",
+    "auth_note": "No account needed on the x402 path. POST https://api.exa.ai/search with no auth header returns 402 with USDC requirements for Base (eip155:8453) and Solana; sign EIP-3009 and retry. Only /search and /contents are x402-gated \u2014 every other endpoint still requires an x-api-key. Sending an API key bypasses x402 and bills the normal way."
+  },
+  "accepts_usdc": true,
+  "accepts_x402": true,
+  "pricing_model": "per-request",
+  "last_verified_at": "2026-07-25T00:00:00Z",
+  "source": "crawled",
+  "op_attestation_url": null,
+  "merchant_did": null,
+  "merchant_vc_url": null,
+  "tags": ["search", "web-search", "data-api", "x402", "usdc", "base", "solana", "no-account"]
+}

@@ -1,0 +1,32 @@
+{
+  "id": "neynar",
+  "name": "Neynar",
+  "url": "https://neynar.com",
+  "description": "Farcaster social-graph and cast data through a hosted API. x402-gated at $0.01 per call in USDC on Base, so an agent can pull profiles, casts and follower data without an API key or a prepaid tier.",
+  "category": "agent-services",
+  "rails": [
+    {
+      "rail": "usdc",
+      "chain": "base",
+      "payment_endpoint": null,
+      "health": "healthy",
+      "last_health_check": "2026-07-25T00:00:00Z"
+    }
+  ],
+  "op_trust_tier": 1,
+  "agent_callable_tier": "full-api",
+  "agent_endpoints": {
+    "rest_api": "https://api.neynar.com",
+    "api_docs": "https://docs.neynar.com/reference/quickstart",
+    "auth_note": "No account needed on the x402 path. A request without an API key returns 402 quoting 0.01 USDC on Base; sign EIP-3009 (gasless transferWithAuthorization) and retry. API-key plans remain available for higher volume."
+  },
+  "accepts_usdc": true,
+  "accepts_x402": true,
+  "pricing_model": "per-request",
+  "last_verified_at": "2026-07-25T00:00:00Z",
+  "source": "crawled",
+  "op_attestation_url": null,
+  "merchant_did": null,
+  "merchant_vc_url": null,
+  "tags": ["farcaster", "social-data", "data-api", "x402", "usdc", "base", "no-account"]
+}

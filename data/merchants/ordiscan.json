@@ -1,0 +1,33 @@
+{
+  "id": "ordiscan",
+  "name": "Ordiscan",
+  "url": "https://ordiscan.com",
+  "description": "Bitcoin Ordinals and Runes data \u2014 inscriptions, runes and the UTXOs holding them, by address or ID. x402-gated at $0.01 per request in USDC on Base, with an MCP server so an assistant can query Bitcoin metaprotocol state directly.",
+  "category": "agent-services",
+  "rails": [
+    {
+      "rail": "usdc",
+      "chain": "base",
+      "payment_endpoint": null,
+      "health": "healthy",
+      "last_health_check": "2026-07-25T00:00:00Z"
+    }
+  ],
+  "op_trust_tier": 1,
+  "agent_callable_tier": "full-api",
+  "agent_endpoints": {
+    "mcp_server": "npm:ordiscan-mcp",
+    "rest_api": "https://api.ordiscan.com/v1",
+    "api_docs": "https://ordiscan.com/docs/api",
+    "auth_note": "No account needed on the x402 path. An unauthenticated request returns 402: 'Send a payment via the x402 protocol to access this resource, or sign up for an account and an API key.' Sign ERC-3009 for 0.01 USDC on Base and retry. MCP server source: https://github.com/ordiscan/ordiscan-mcp"
+  },
+  "accepts_usdc": true,
+  "accepts_x402": true,
+  "pricing_model": "per-request",
+  "last_verified_at": "2026-07-25T00:00:00Z",
+  "source": "crawled",
+  "op_attestation_url": null,
+  "merchant_did": null,
+  "merchant_vc_url": null,
+  "tags": ["bitcoin", "ordinals", "runes", "data-api", "mcp", "x402", "usdc", "base", "no-account"]
+}

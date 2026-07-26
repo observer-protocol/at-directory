@@ -1,0 +1,42 @@
+{
+  "id": "soundside",
+  "name": "Soundside",
+  "url": "https://soundside.ai",
+  "description": "MCP-native AI media generation across multiple providers \u2014 images, video, audio, music, editing, composition and analysis, plus LoRA adapter training. 19 MCP tools, priced per call in USDC on Base with no account.",
+  "category": "compute",
+  "rails": [
+    {
+      "rail": "usdc",
+      "chain": "base",
+      "payment_endpoint": null,
+      "health": "healthy",
+      "last_health_check": "2026-07-25T00:00:00Z"
+    }
+  ],
+  "op_trust_tier": 1,
+  "agent_callable_tier": "full-api",
+  "agent_endpoints": {
+    "mcp_server": "https://mcp.soundside.ai/mcp",
+    "api_docs": "https://github.com/soundside-design/soundside-docs",
+    "auth_note": "No account needed on the x402 path; an API key with credits is the alternative. Live per-tool pricing and x402 status: https://mcp.soundside.ai/api/x402/status \u2014 it reports enabled:true, network eip155:8453, USDC, Coinbase CDP facilitator, and prices per tool/provider (e.g. analyze_media $0.03). Pricing is ceiling-quote: the amount in the 402 is the exact charge. The operator marks the x402 lane BETA and says the tool surface will expand."
+  },
+  "accepts_usdc": true,
+  "accepts_x402": true,
+  "pricing_model": "per-request",
+  "last_verified_at": "2026-07-25T00:00:00Z",
+  "source": "crawled",
+  "op_attestation_url": null,
+  "merchant_did": null,
+  "merchant_vc_url": null,
+  "tags": [
+    "ai-media",
+    "image-generation",
+    "video-generation",
+    "audio",
+    "mcp",
+    "x402",
+    "usdc",
+    "base",
+    "beta"
+  ]
+}

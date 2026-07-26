@@ -1,0 +1,39 @@
+{
+  "id": "venice-ai",
+  "name": "Venice AI",
+  "url": "https://venice.ai",
+  "description": "Private, uncensored AI inference \u2014 chat, image, audio, embeddings and more \u2014 with no logging. The API answers an unauthenticated call with a 402 for 10.00 USDC on Base or Solana, which opens access rather than pricing a single request; an API key is the alternative.",
+  "category": "compute",
+  "rails": [
+    {
+      "rail": "usdc",
+      "chain": "base",
+      "payment_endpoint": null,
+      "health": "healthy",
+      "last_health_check": "2026-07-25T00:00:00Z"
+    },
+    {
+      "rail": "usdc",
+      "chain": "solana",
+      "payment_endpoint": null,
+      "health": "healthy",
+      "last_health_check": "2026-07-25T00:00:00Z"
+    }
+  ],
+  "op_trust_tier": 1,
+  "agent_callable_tier": "full-api",
+  "agent_endpoints": {
+    "rest_api": "https://api.venice.ai/api/v1",
+    "api_docs": "https://docs.venice.ai/overview/about-venice",
+    "auth_note": "OpenAI-compatible API. An unauthenticated POST to /chat/completions returns 402 'Authentication required' quoting a FLAT 10.000000 USDC on Base (eip155:8453) or Solana \u2014 this is an access/credit payment, NOT per-token inference pricing, so do not expect a per-request quote. The same 402 lists an API key (venice.ai/settings/api) as the alternative auth. Staked DIEM credits are drawn down before USDC where present."
+  },
+  "accepts_usdc": true,
+  "accepts_x402": true,
+  "pricing_model": "variable",
+  "last_verified_at": "2026-07-25T00:00:00Z",
+  "source": "crawled",
+  "op_attestation_url": null,
+  "merchant_did": null,
+  "merchant_vc_url": null,
+  "tags": ["ai-inference", "llm", "private-ai", "no-logging", "x402", "usdc", "base", "solana"]
+}
