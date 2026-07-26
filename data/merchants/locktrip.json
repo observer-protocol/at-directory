@@ -1,0 +1,40 @@
+{
+  "id": "locktrip",
+  "name": "LockTrip",
+  "url": "https://locktrip.com",
+  "description": "Hotel and apartment booking across 2.5M+ properties in 190+ countries, payable with Bitcoin, USDT and other crypto at web checkout. MCP endpoint exposes 14 tools for search and booking, but the only agent-callable payment tool returns a Stripe checkout URL — crypto payment is web checkout only.",
+  "category": "travel",
+  "rails": [
+    {
+      "rail": "btc",
+      "payment_endpoint": null,
+      "health": "unknown",
+      "last_health_check": null
+    }
+  ],
+  "op_trust_tier": 1,
+  "agent_callable_tier": "human-checkout",
+  "agent_endpoints": {
+    "mcp_server": "https://locktrip.com/mcp/",
+    "api_docs": "https://locktrip.com/agents",
+    "auth_note": "Search tools (8) are public and need no key; booking tools (6) need a Bearer token from guest_login with an email, no password. Payment through MCP is Stripe only (get_payment_url) — an agent can search and hold a booking but cannot settle in crypto. Crypto settlement requires the human web checkout."
+  },
+  "accepts_usdc": true,
+  "accepts_x402": false,
+  "pricing_model": "variable",
+  "last_verified_at": "2026-07-25T00:00:00Z",
+  "source": "crawled",
+  "op_attestation_url": null,
+  "merchant_did": null,
+  "merchant_vc_url": null,
+  "tags": [
+    "travel",
+    "hotels",
+    "apartments",
+    "mcp",
+    "btc",
+    "usdt",
+    "usdt-chain-unverified",
+    "crypto-web-checkout-only"
+  ]
+}

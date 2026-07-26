@@ -1,0 +1,43 @@
+{
+  "id": "voidmob",
+  "name": "VoidMob",
+  "url": "https://voidmob.com",
+  "description": "Mobile 4G/5G proxies, non-VoIP carrier SMS verification, dedicated numbers, and eSIM data plans (180+ destinations) on one prepaid balance. Open-source MCP server with 28 tools across 6 categories. No KYC. Sandbox mode with $500 play-money balance requires no API key.",
+  "category": "proxy",
+  "rails": [
+    {
+      "rail": "btc",
+      "payment_endpoint": null,
+      "health": "unknown",
+      "last_health_check": null
+    }
+  ],
+  "op_trust_tier": 1,
+  "agent_callable_tier": "full-api",
+  "agent_endpoints": {
+    "mcp_server": "npm:@voidmob/mcp",
+    "api_docs": "https://voidmob.com/mcp",
+    "auth_note": "API key (vmk_live_...) self-serve from the dashboard, set as VOIDMOB_API_KEY. Purchases draw down a prepaid balance funded with crypto on the dashboard — the funding step is not agent-callable. Set VOIDMOB_SANDBOX=1 for a keyless $500 mock balance. No documented REST API; MCP is the agent surface."
+  },
+  "accepts_usdc": true,
+  "accepts_x402": false,
+  "pricing_model": "per-product",
+  "last_verified_at": "2026-07-25T00:00:00Z",
+  "source": "crawled",
+  "op_attestation_url": null,
+  "merchant_did": null,
+  "merchant_vc_url": null,
+  "tags": [
+    "proxy",
+    "mobile-proxy",
+    "sms-verification",
+    "esim",
+    "phone-numbers",
+    "mcp",
+    "no-kyc",
+    "btc",
+    "usdt",
+    "usdc",
+    "usdt-chain-unverified"
+  ]
+}
