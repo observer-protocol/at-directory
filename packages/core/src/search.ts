@@ -6,13 +6,13 @@ import type {
   OpTrustTier,
   ParticipantType,
   RailName,
-  UsdtChain,
+  TokenChain,
 } from './types.ts';
 
 export interface SearchOptions {
   query?: string;
   rail?: RailName;
-  chain?: UsdtChain;
+  chain?: TokenChain;
   // String, not Category enum: categories are extensible at runtime (spec §3.5),
   // so a query for a category added post-compile must still filter correctly.
   category?: string;

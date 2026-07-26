@@ -1,8 +1,8 @@
 import { createHash } from 'node:crypto';
 import { base58Decode } from './base58.ts';
-import type { UsdtChain } from '@at-directory/core';
+import type { TokenChain } from '@at-directory/core';
 
-export interface UsdtEvidence {
+export interface TokenAddressEvidence {
   address_valid: boolean;
   chain: string;
   detail: string;
@@ -10,7 +10,10 @@ export interface UsdtEvidence {
 
 const EVM_CHAINS = new Set(['ethereum', 'bsc', 'polygon', 'arbitrum', 'base']);
 
-export function verifyUsdtAddress(address: string, chain: UsdtChain): UsdtEvidence {
+// Address-shape validation is a property of the CHAIN, not the token:
+// USDT and USDC on Base are both plain EVM addresses. One verifier
+// serves every token rail; do not fork it per asset.
+export function verifyTokenAddress(address: string, chain: TokenChain): TokenAddressEvidence {
   if (chain === 'tron') {
     return { address_valid: isValidTron(address), chain, detail: tronDetail(address) };
   }

@@ -17,6 +17,17 @@
         { "id": "base", "label": "Base" }
       ]
     },
+    {
+      "id": "usdc",
+      "label": "USDC",
+      "chains": [
+        { "id": "base", "label": "Base" },
+        { "id": "ethereum", "label": "Ethereum (ERC-20)" },
+        { "id": "solana", "label": "Solana" },
+        { "id": "polygon", "label": "Polygon" },
+        { "id": "arbitrum", "label": "Arbitrum" }
+      ]
+    },
     { "id": "fiat", "label": "Fiat / off-rail (advisory)" }
   ]
 }

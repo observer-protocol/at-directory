@@ -1,11 +1,11 @@
-import type { RailName, UsdtChain } from '@at-directory/core';
+import type { RailName, TokenChain } from '@at-directory/core';
 import type { ToolContext } from '../context.ts';
 
 export interface RailsManifest {
   rails: Array<{
     id: RailName;
     label: string;
-    chains?: Array<{ id: UsdtChain; label: string }>;
+    chains?: Array<{ id: TokenChain; label: string }>;
   }>;
 }
 
@@ -14,7 +14,7 @@ export interface ListRailsResponse {
     rail: RailName;
     label: string;
     merchant_count: number;
-    chains?: Array<{ chain: UsdtChain; label: string; merchant_count: number }>;
+    chains?: Array<{ chain: TokenChain; label: string; merchant_count: number }>;
   }>;
 }
 
@@ -24,7 +24,7 @@ export function listRailsTool(
   manifest: RailsManifest,
 ): ListRailsResponse {
   const railCounts = new Map<RailName, number>();
-  const chainCounts = new Map<UsdtChain, number>();
+  const chainCounts = new Map<TokenChain, number>();
   for (const m of ctx.merchants) {
     for (const r of m.rails) {
       railCounts.set(r.rail, (railCounts.get(r.rail) ?? 0) + 1);

@@ -1,0 +1,45 @@
+{
+  "id": "namefi",
+  "name": "Namefi",
+  "url": "https://namefi.io",
+  "description": "ICANN-accredited domain registration where the domain is issued as an NFT, so ownership is verifiable on-chain rather than only in a registrar database. Agents buy with USDC over x402 or MPP with no Namefi account, and get DNS CRUD, bulk operations, ENS records and DNSSEC through the MCP server.",
+  "category": "hosting-domains",
+  "rails": [
+    {
+      "rail": "usdc",
+      "chain": "base",
+      "payment_endpoint": null,
+      "health": "healthy",
+      "last_health_check": "2026-07-25T00:00:00Z"
+    }
+  ],
+  "op_trust_tier": 1,
+  "agent_callable_tier": "full-api",
+  "agent_endpoints": {
+    "mcp_server": "https://api.namefi.io/mcp",
+    "rest_api": "https://api.namefi.io",
+    "api_docs": "https://namefi.io/web3/llms.txt",
+    "openapi_url": "https://api.namefi.io/v-next/openapi/doc",
+    "auth_note": "No account needed on the crypto path. GET https://api.namefi.io/x402/domain/{domain} without an X-PAYMENT header returns 402 with the exact price; sign an EIP-3009 transferWithAuthorization for USDC on Base and retry with X-PAYMENT. MPP is an alternative challenge-and-sign flow at /mpp/domain/{domain}. The MCP server is the control plane for search, DNS and config and pays with an API key plus NFSC credits — the x402 and MPP crypto paths are separate HTTP endpoints, not MCP tools."
+  },
+  "accepts_usdc": true,
+  "accepts_x402": true,
+  "pricing_model": "per-product",
+  "last_verified_at": "2026-07-25T00:00:00Z",
+  "source": "crawled",
+  "op_attestation_url": null,
+  "merchant_did": null,
+  "merchant_vc_url": null,
+  "tags": [
+    "domains",
+    "registrar",
+    "nft-domains",
+    "icann",
+    "mcp",
+    "x402",
+    "mpp",
+    "usdc",
+    "base",
+    "no-account"
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "id": "instadomain",
+  "name": "InstaDomain",
+  "url": "https://instadomain.fly.dev",
+  "description": "Domain registration for agents over MCP, settled through OpenSRS/Tucows. Checks availability, suggests names, buys, and auto-provisions a Cloudflare DNS zone, returning a scoped token the agent can manage records with. Pays in USDC on Base over x402 with no account, or by Stripe Checkout or Stripe MPP. Transfer-capable: EPP auth code and unlock are exposed as tools.",
+  "category": "hosting-domains",
+  "rails": [
+    {
+      "rail": "usdc",
+      "chain": "base",
+      "payment_endpoint": null,
+      "health": "healthy",
+      "last_health_check": "2026-07-25T00:00:00Z"
+    }
+  ],
+  "op_trust_tier": 1,
+  "agent_callable_tier": "full-api",
+  "agent_endpoints": {
+    "mcp_server": "https://instadomain.fly.dev/mcp/",
+    "rest_api": "https://instadomain.fly.dev",
+    "api_docs": "https://instadomain.fly.dev/llms.txt",
+    "openapi_url": "https://instadomain.fly.dev/openapi.json",
+    "auth_note": "No auth and no account on the x402 path. Two steps: call buy_domain_crypto (POST /buy/crypto) to get a pay_url, then GET that pay_url with an x402-enabled client, which receives the 402 and auto-pays USDC on Base from a funded wallet. Availability checks and suggestions are free and unauthenticated. Small single-developer service on fly.dev — pricing is wholesale plus markup, and it is not an accredited registrar itself."
+  },
+  "accepts_usdc": true,
+  "accepts_x402": true,
+  "pricing_model": "per-product",
+  "last_verified_at": "2026-07-25T00:00:00Z",
+  "source": "crawled",
+  "op_attestation_url": null,
+  "merchant_did": null,
+  "merchant_vc_url": null,
+  "tags": [
+    "domains",
+    "registrar",
+    "mcp",
+    "x402",
+    "usdc",
+    "base",
+    "cloudflare-dns",
+    "opensrs",
+    "no-account"
+  ]
+}

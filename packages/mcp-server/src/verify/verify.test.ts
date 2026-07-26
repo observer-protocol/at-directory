@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import type { Merchant } from '@at-directory/core';
-import { verifyUsdtAddress } from './usdt.ts';
+import { verifyTokenAddress } from './token-address.ts';
 import { verifyBolt12 } from './bolt12.ts';
 import { verifyRail } from './index.ts';
 import { verifyLightning } from './lightning.ts';
@@ -20,52 +20,52 @@ describe('base58Decode', () => {
   });
 });
 
-describe('verifyUsdtAddress — tron', () => {
+describe('verifyTokenAddress — tron', () => {
   it('accepts a valid TRC-20 address', () => {
-    const r = verifyUsdtAddress('TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t', 'tron');
+    const r = verifyTokenAddress('TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t', 'tron');
     expect(r.address_valid).toBe(true);
   });
 
   it('rejects a corrupted TRC-20 address (bad checksum)', () => {
-    const r = verifyUsdtAddress('TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6X', 'tron');
+    const r = verifyTokenAddress('TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6X', 'tron');
     expect(r.address_valid).toBe(false);
   });
 
   it('rejects wrong-prefix string', () => {
-    const r = verifyUsdtAddress('1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa', 'tron');
+    const r = verifyTokenAddress('1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa', 'tron');
     expect(r.address_valid).toBe(false);
   });
 });
 
-describe('verifyUsdtAddress — evm', () => {
+describe('verifyTokenAddress — evm', () => {
   it('accepts an all-lowercase address (no checksum)', () => {
-    const r = verifyUsdtAddress('0xdac17f958d2ee523a2206206994597c13d831ec7', 'ethereum');
+    const r = verifyTokenAddress('0xdac17f958d2ee523a2206206994597c13d831ec7', 'ethereum');
     expect(r.address_valid).toBe(true);
   });
 
   it('accepts a valid EIP-55 checksummed address', () => {
-    const r = verifyUsdtAddress('0xdAC17F958D2ee523a2206206994597C13D831ec7', 'ethereum');
+    const r = verifyTokenAddress('0xdAC17F958D2ee523a2206206994597C13D831ec7', 'ethereum');
     expect(r.address_valid).toBe(true);
   });
 
   it('rejects a mis-checksummed address', () => {
-    const r = verifyUsdtAddress('0xdAC17F958D2ee523a2206206994597C13D831eC7', 'ethereum');
+    const r = verifyTokenAddress('0xdAC17F958D2ee523a2206206994597C13D831eC7', 'ethereum');
     expect(r.address_valid).toBe(false);
   });
 
   it('rejects a non-hex / wrong-length address', () => {
-    expect(verifyUsdtAddress('0x1234', 'polygon').address_valid).toBe(false);
+    expect(verifyTokenAddress('0x1234', 'polygon').address_valid).toBe(false);
   });
 });
 
-describe('verifyUsdtAddress — solana', () => {
+describe('verifyTokenAddress — solana', () => {
   it('accepts a 32-byte base58 pubkey', () => {
-    const r = verifyUsdtAddress('5tzFkiKscXHK5ZXCGbXZxdw7gTjjD1mBwuoFbhUvuAi9', 'solana');
+    const r = verifyTokenAddress('5tzFkiKscXHK5ZXCGbXZxdw7gTjjD1mBwuoFbhUvuAi9', 'solana');
     expect(r.address_valid).toBe(true);
   });
 
   it('rejects too-short input', () => {
-    expect(verifyUsdtAddress('abc', 'solana').address_valid).toBe(false);
+    expect(verifyTokenAddress('abc', 'solana').address_valid).toBe(false);
   });
 });
 
@@ -136,6 +136,49 @@ describe('verifyRail — per-invoice / attested merchant', () => {
     );
     expect(r.status).toBe('unknown');
     expect(r.evidence.attested).toBeUndefined();
+  });
+});
+
+describe('verifyRail — usdc rail', () => {
+  const usdcMerchant = (
+    endpoint: string | null,
+    health: Merchant['rails'][number]['health'] = 'unknown',
+  ) =>
+    perInvoice({
+      op_trust_tier: 1,
+      source: 'crawled',
+      accepts_usdc: true,
+      rails: [{ rail: 'usdc', chain: 'base', payment_endpoint: endpoint, health }],
+    });
+
+  it('validates a USDC-on-Base address through the shared token verifier', async () => {
+    // Canonical USDC contract on Base, used here purely as a well-formed
+    // EVM address fixture.
+    const r = await verifyRail(usdcMerchant('0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913'), 'usdc');
+    expect(r.status).toBe('healthy');
+    expect(r.evidence.chain).toBe('base');
+    expect(r.evidence.asset).toBe('USDC');
+  });
+
+  it('reports a malformed address as down, naming USDC rather than USDT', async () => {
+    const r = await verifyRail(usdcMerchant('0xnope'), 'usdc');
+    expect(r.status).toBe('down');
+    expect(r.evidence.asset).toBe('USDC');
+  });
+
+  it('says USDC (not USDT) when no address is declared', async () => {
+    const r = await verifyRail(usdcMerchant(null), 'usdc');
+    expect(r.status).toBe('unknown');
+    expect(r.detail).toMatch(/No USDC deposit address/);
+  });
+
+  // x402 merchants have no static deposit address at all — payment is a
+  // per-request signed authorization. They must resolve via the attested
+  // branch, not report a data gap that looks like a broken listing.
+  it('surfaces attested health for an x402 merchant with no static address', async () => {
+    const r = await verifyRail(usdcMerchant(null, 'healthy'), 'usdc');
+    expect(r.status).toBe('healthy');
+    expect(r.evidence.probe).toBe('not-applicable');
   });
 });
 

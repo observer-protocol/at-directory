@@ -3,6 +3,7 @@ const RAIL_LABEL: Record<string, string> = {
   bolt12: '⚡ BOLT12',
   l402: '🔒 L402',
   usdt: '₮ USDT',
+  usdc: '$ USDC',
 };
 
 export function RailIcon({ rail, chain }: { rail: string; chain?: string }) {

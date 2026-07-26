@@ -57,7 +57,11 @@ export default async function handler(req: Request): Promise<Response> {
     rails: [
       {
         rail: body.rail,
+        // Token rails require a chain. The form doesn't ask for one, so this
+        // seeds each asset's most common chain and the review pass corrects
+        // it — a submission is a Tier 1 claim, not a verified record.
         ...(body.rail === 'usdt' ? { chain: 'tron' } : {}),
+        ...(body.rail === 'usdc' ? { chain: 'base' } : {}),
         payment_endpoint: null,
         health: 'unknown',
         last_health_check: null,

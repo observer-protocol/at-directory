@@ -34,7 +34,8 @@
     "mcp",
     "btc",
     "usdt",
-    "usdt-chain-unverified",
+    "usdc",
+    "token-chain-unverified",
     "crypto-web-checkout-only"
   ]
 }

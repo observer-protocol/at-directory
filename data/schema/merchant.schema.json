@@ -159,10 +159,10 @@
       "required": ["rail", "health"],
       "additionalProperties": false,
       "properties": {
-        "rail": { "enum": ["lightning", "bolt12", "l402", "usdt", "btc", "fiat"] },
+        "rail": { "enum": ["lightning", "bolt12", "l402", "usdt", "usdc", "btc", "fiat"] },
         "chain": {
           "enum": ["tron", "ethereum", "solana", "bsc", "polygon", "arbitrum", "base"],
-          "description": "Required when rail === 'usdt'. Forbidden otherwise."
+          "description": "Required when rail is a token rail ('usdt' or 'usdc') — the same asset settles on several chains and an agent cannot pay without knowing which. Forbidden on every other rail."
         },
         "payment_endpoint": { "type": ["string", "null"] },
         "health": { "enum": ["healthy", "degraded", "down", "unknown"] },
@@ -173,7 +173,7 @@
       },
       "allOf": [
         {
-          "if": { "properties": { "rail": { "const": "usdt" } } },
+          "if": { "properties": { "rail": { "enum": ["usdt", "usdc"] } } },
           "then": { "required": ["chain"] },
           "else": { "not": { "required": ["chain"] } }
         }

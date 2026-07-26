@@ -12,7 +12,7 @@ Two paths:
 ### Rules enforced by `pnpm validate-data` (and CI)
 
 - `id` is slug-form and the filename is `<id>.json`.
-- Every USDT rail has a `chain`; non-USDT rails must not.
+- Every token rail (`usdt`, `usdc`) has a `chain`; every other rail must not.
 - `op_trust_tier` is `1` or `2`. **Tier 3 is rejected in v1** (chain-anchored attestation format not yet locked; ships v1.x).
 - A Tier 2 record from a non-`integrated` source must have an `op_attestation_url`.
 - `agent_endpoints.mcp_server`, if present, starts with `npm:`, `http:`, or `https:`.
@@ -21,7 +21,16 @@ New entries land at **Tier 1** (self-attested). Promotion to Tier 2 happens thro
 
 ### Inclusion criteria
 
-A merchant qualifies only if **both**: (1) it does commerce — sells products, services, APIs, or content (pure wallets/exchanges/processors excluded), and (2) it accepts at least one of Lightning, BOLT12, L402, USDT (any chain), or on-chain Bitcoin (`btc`). x402-only merchants are out of scope by design; x402/USDC are recorded as supplementary metadata when a qualifying rail is present.
+A merchant qualifies only if **both**: (1) it does commerce — sells products, services, APIs, or content (pure wallets/exchanges/processors excluded), and (2) it accepts at least one of Lightning, BOLT12, L402, USDT (any chain), USDC (any chain), or on-chain Bitcoin (`btc`).
+
+**USDC counts on its own (changed 2026-07-25).** A merchant that settles only in USDC — including x402-native merchants whose entire payment surface is an HTTP 402 handshake — qualifies without any BTC/Lightning/USDT rail. This reverses the earlier "x402-only merchants are out of scope by design" rule, which had been the binding constraint since v1.
+
+Two things that did **not** change:
+
+- **`fiat` is not a qualifying rail.** Card, Stripe, or bank checkout alone still doesn't qualify. A merchant whose only crypto option is USDC qualifies; a merchant whose only option is a card does not.
+- **The rail has to actually settle.** A published price in USDC is a claim, not a rail. If a merchant's own docs say settlement is not live yet, it isn't listable — record it in `FOLLOWUPS.md` and add it when it settles. The directory's promise is that an agent can pay these merchants today.
+
+`accepts_usdc` / `accepts_x402` remain supplementary booleans. They describe a merchant that *also* takes USDC or speaks x402; they are not a substitute for the `usdc` rail, and a USDC-settling merchant needs the rail so it survives a `rail: "usdc"` filter.
 
 ## Code
 

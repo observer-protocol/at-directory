@@ -14,9 +14,11 @@ export type Category =
   | 'agent-services'
   | 'proxy';
 
-export type RailName = 'lightning' | 'bolt12' | 'l402' | 'usdt' | 'btc' | 'fiat';
+export type RailName = 'lightning' | 'bolt12' | 'l402' | 'usdt' | 'usdc' | 'btc' | 'fiat';
 
-export type UsdtChain = 'tron' | 'ethereum' | 'solana' | 'bsc' | 'polygon' | 'arbitrum' | 'base';
+// Settlement chain for a token rail. USDT and USDC both ship on several
+// chains, so the chain is part of the payment instruction, not decoration.
+export type TokenChain = 'tron' | 'ethereum' | 'solana' | 'bsc' | 'polygon' | 'arbitrum' | 'base';
 
 export type RailHealth = 'healthy' | 'degraded' | 'down' | 'unknown';
 
@@ -37,7 +39,7 @@ export type ListingType = 'offer' | 'open-call';
 
 export interface Rail {
   rail: RailName;
-  chain?: UsdtChain;
+  chain?: TokenChain;
   payment_endpoint?: string | null;
   health: RailHealth;
   last_health_check?: string | null;

@@ -2,7 +2,7 @@ import type { Merchant, RailName } from '@at-directory/core';
 import { verifyLightning, type RailCheckResult } from './lightning.ts';
 import { verifyL402 } from './l402.ts';
 import { verifyBolt12 } from './bolt12.ts';
-import { verifyUsdtAddress } from './usdt.ts';
+import { verifyTokenAddress } from './token-address.ts';
 
 export type { RailCheckResult } from './lightning.ts';
 
@@ -66,11 +66,19 @@ export async function verifyRail(merchant: Merchant, rail: RailName): Promise<Ra
         };
       }
       return verifyBolt12(endpoint);
-    case 'usdt': {
+    // Token rails share one probe: the address format is determined by the
+    // chain, not the asset. Note the ceiling this inherits — a well-formed
+    // address is NOT proof the merchant accepts that token, and for x402
+    // merchants there is usually no static deposit address at all (payment
+    // is a per-request EIP-3009 authorization), so those records carry a
+    // null payment_endpoint and resolve via the attested branch above.
+    case 'usdt':
+    case 'usdc': {
+      const asset = rail.toUpperCase();
       if (!endpoint) {
         return {
           status: 'unknown',
-          detail: 'No USDT deposit address declared on this rail.',
+          detail: `No ${asset} deposit address declared on this rail.`,
           evidence: {},
         };
       }
@@ -78,15 +86,15 @@ export async function verifyRail(merchant: Merchant, rail: RailName): Promise<Ra
       if (!chain) {
         return {
           status: 'unknown',
-          detail: 'USDT rail missing chain discriminator.',
+          detail: `${asset} rail missing chain discriminator.`,
           evidence: {},
         };
       }
-      const ev = verifyUsdtAddress(endpoint, chain);
+      const ev = verifyTokenAddress(endpoint, chain);
       return {
         status: ev.address_valid ? 'healthy' : 'down',
         detail: ev.detail,
-        evidence: { ...ev },
+        evidence: { ...ev, asset },
       };
     }
     case 'btc':

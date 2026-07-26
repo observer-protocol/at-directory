@@ -24,7 +24,7 @@ const TOOLS: Tool[] = [
     name: 'verify_payment_endpoint',
     summary:
       "Live check against a merchant's declared payment endpoint for a rail. Returns health, detail, and rail-specific evidence.",
-    args: 'merchant_id: string, rail: lightning|bolt12|l402|usdt',
+    args: 'merchant_id: string, rail: lightning|bolt12|l402|usdt|usdc|btc',
     returns: '{ merchant_id, rail, status, detail, checked_at, evidence, agent_identity }',
   },
   {

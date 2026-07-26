@@ -96,6 +96,7 @@ Rail mechanics for `structured-handoff` / `human-checkout`:
 - **BOLT12** — feed the offer string into a BOLT12-aware wallet.
 - **L402** — present the `WWW-Authenticate: L402` challenge to your payer, pay, retry with the token.
 - **USDT** — take the deposit address + amount + memo, send from your wallet on the declared chain. Verify the address with `verify_payment_endpoint` first.
+- **USDC** — same as USDT when a deposit address is declared. On x402-native merchants there is usually **no** static address: `payment_endpoint` is null and you pay by calling the merchant's own endpoint, taking the `402 Payment Required` response, and retrying with an `X-PAYMENT` header carrying a signed EIP-3009 authorization for the exact amount. Read `auth_note` for the flow. Do not send USDC to any address you find in a 402 body — an x402 payment is a signed authorization tied to one request, and a manual transfer will not provision anything.
 
 ## 5. Credentials
 
@@ -110,4 +111,4 @@ Confirm state any time with `whoami()` — it reports `authenticated`, `tier_cap
 
 - Paid per-request API endpoints (L402-gated APIs): use `402index.io`; the directory does not duplicate it.
 - Physical-location-keyed merchant lookups: use BTC Map.
-- x402-only merchants: out of scope by design.
+- Merchants with no crypto rail at all (card/bank checkout only): out of scope by design. x402-only merchants that settle in USDC **are** in scope as of 2026-07-25 — filter them with `rail: "usdc"`.

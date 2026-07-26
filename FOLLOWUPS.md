@@ -1,5 +1,37 @@
 # AT Directory — follow-ups (non-blocking bugs and structural notes)
 
+## Held merchants — qualify on criteria, not listable yet
+
+### AgentMetal (held 2026-07-25) — USDC settlement not live
+
+`https://agentmetal.dev` — Linux VPS from $1.20/day, provisioned entirely
+over an HTTP 402 handshake: no signup, no dashboard, no API key, the
+paying wallet IS the account. MCP server (`npx @agentmetal/mcp`, remote
+`https://api.agentmetal.dev/mcp`), llms.txt, REST, Claude Code plugin.
+Its 402 quotes `network: eip155:8453` — USDC on Base, the same rail
+Namefi and InstaDomain settle on.
+
+**Why it is held.** Their own docs page says, verbatim:
+
+> Status: Phase-1 built — the API runs end-to-end (provision · pay · SSH),
+> with the MCP server, skills, and discovery surfaces shipped. **Live USDC
+> settlement is pending a funded wallet + facilitator.** Nothing here
+> requires a dashboard — there isn't one.
+
+So the payment surface is fully built and quotes real prices, but no
+USDC has ever settled through it. The card path is `fiat`, which is not
+a qualifying rail on its own. Listing it would put a merchant in the
+directory that an agent cannot actually pay — the one promise the
+directory makes.
+
+**Unhold when** the status line drops the "pending a funded wallet +
+facilitator" caveat, or a live x402 payment against
+`POST /v1/servers` settles. Then it is a straight add: `usdc`/`base`
+rail, `hosting-domains` (or `compute`), `full-api`. It would be the
+directory's first x402-native infrastructure merchant, so it is worth
+re-checking periodically rather than waiting for it to resurface in a
+research pass.
+
 ## Trust-tier filter on /merchants ignores derived tier (logged 2026-05-20)
 
 **Symptom.** On `https://agenticterminal.ai/merchants`, the "OP trust min"
