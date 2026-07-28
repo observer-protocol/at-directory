@@ -164,7 +164,10 @@
           "enum": ["tron", "ethereum", "solana", "bsc", "polygon", "arbitrum", "base"],
           "description": "Required when rail is a token rail ('usdt' or 'usdc') — the same asset settles on several chains and an agent cannot pay without knowing which. Forbidden on every other rail."
         },
-        "payment_endpoint": { "type": ["string", "null"] },
+        "payment_endpoint": {
+          "type": ["string", "null"],
+          "description": "The rail-specific endpoint the verifier probes. PRECONDITION BEFORE ADDING THE FIRST LIGHTNING ADDRESS OR BECH32 LNURL: the verifier resolves those by fetching the URL and READING THE BODY, and it currently follows redirects with no destination revalidation. The bounded follow-with-revalidation loop must land before or with that first entry - see op-at-specs/2026-07-28-at-directory-mcp-redirect-guard-scoping.md. Without it, redirect:manual silently downgrades healthy providers to degraded, and redirect:follow lets the merchant choose where our IP goes. Zero merchants declare one today, which is exactly why this is cheap now and a retrofit later."
+        },
         "health": { "enum": ["healthy", "degraded", "down", "unknown"] },
         "last_health_check": {
           "type": ["string", "null"],
