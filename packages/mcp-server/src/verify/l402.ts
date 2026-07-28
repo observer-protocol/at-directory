@@ -1,25 +1,30 @@
 import type { RailCheckResult } from './lightning.ts';
+import { guardedRequest, BlockedDestinationError } from './guarded-request.ts';
 
 const TIMEOUT_MS = 8000;
 
 export async function verifyL402(endpoint: string): Promise<RailCheckResult> {
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
-  let res: Response;
+  let res: Awaited<ReturnType<typeof guardedRequest>>;
   try {
-    res = await fetch(endpoint, { method: 'GET', signal: controller.signal });
-  } catch {
+    res = await guardedRequest(endpoint, { timeoutMs: TIMEOUT_MS });
+  } catch (e) {
+    // Our refusal, not their downtime. See the same branch in lightning.ts.
+    if (e instanceof BlockedDestinationError) {
+      return {
+        status: 'unknown',
+        detail: `Verification refused: ${e.message}. This is our destination policy, not merchant availability.`,
+        evidence: { http_status: null, blocked: true },
+      };
+    }
     return {
       status: 'down',
       detail: `L402 endpoint ${endpoint} unreachable.`,
       evidence: { http_status: null },
     };
-  } finally {
-    clearTimeout(timer);
   }
 
-  const authHeader =
-    res.headers.get('www-authenticate') ?? res.headers.get('WWW-Authenticate') ?? '';
+  const rawAuth = res.headers['www-authenticate'];
+  const authHeader = Array.isArray(rawAuth) ? rawAuth.join(', ') : (rawAuth ?? '');
   const challengePresent = /l402|lsat/i.test(authHeader);
 
   if (res.status === 402 && challengePresent) {

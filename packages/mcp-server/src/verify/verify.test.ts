@@ -5,6 +5,7 @@ import { verifyBolt12 } from './bolt12.ts';
 import { verifyRail } from './index.ts';
 import { verifyLightning } from './lightning.ts';
 import { base58Decode } from './base58.ts';
+import * as guarded from './guarded-request.ts';
 
 describe('base58Decode', () => {
   it('decodes a known Tron address to 25 bytes', () => {
@@ -183,13 +184,24 @@ describe('verifyRail — usdc rail', () => {
 });
 
 describe('verifyLightning — WAF/anti-bot handling', () => {
-  afterEach(() => vi.unstubAllGlobals());
+  afterEach(() => { vi.unstubAllGlobals(); vi.restoreAllMocks(); });
+
+  // The verifiers no longer use fetch — they use guardedRequest over node:https,
+  // so the destination is checked against the RESOLVED IP before connect. Stub
+  // that seam instead. Stubbing globalThis.fetch here silently intercepted
+  // nothing once the transport changed, which is why these tests are mocked at
+  // the module boundary rather than at a global.
+  const mockProbe = (res: { status: number; body: string }) => {
+    vi.spyOn(guarded, 'guardedRequest').mockResolvedValue({
+      status: res.status,
+      headers: {},
+      body: res.body,
+      finalUrl: 'https://stubbed.example/',
+    });
+  };
 
   it('maps a 403 (WAF block) to unknown, NOT down', async () => {
-    vi.stubGlobal(
-      'fetch',
-      vi.fn(async () => new Response('blocked', { status: 403 })),
-    );
+    mockProbe({ status: 403, body: 'blocked' });
     const r = await verifyLightning('https://bitrefill.com', null);
     expect(r.status).toBe('unknown');
     expect(r.evidence.probe_blocked).toBe(true);
@@ -197,41 +209,32 @@ describe('verifyLightning — WAF/anti-bot handling', () => {
   });
 
   it('429 rate-limit is also unknown, not down', async () => {
-    vi.stubGlobal(
-      'fetch',
-      vi.fn(async () => new Response('', { status: 429 })),
-    );
+    mockProbe({ status: 429, body: '' });
     expect((await verifyLightning('https://x.example', null)).status).toBe('unknown');
   });
 
   it('a genuine network failure is still down', async () => {
-    vi.stubGlobal(
-      'fetch',
-      vi.fn(async () => {
-        throw new Error('ECONNREFUSED');
-      }),
-    );
+    vi.spyOn(guarded, 'guardedRequest').mockRejectedValue(new Error('ECONNREFUSED'));
     expect((await verifyLightning('https://dead.example', null)).status).toBe('down');
   });
 
   it('200 with no LNURL is unknown (reachable, no probe) — unchanged', async () => {
-    vi.stubGlobal(
-      'fetch',
-      vi.fn(async () => new Response('ok', { status: 200 })),
-    );
+    mockProbe({ status: 200, body: 'ok' });
     const r = await verifyLightning('https://live.example', null);
     expect(r.status).toBe('unknown');
     expect(r.evidence.probe_blocked).toBeUndefined();
   });
 
-  it('sends an identifying User-Agent on the probe', async () => {
-    const spy = vi.fn(
-      async (_url: string, _init?: RequestInit) => new Response('ok', { status: 200 }),
+  it('a refused destination is unknown, NOT down (our policy is not their downtime)', async () => {
+    vi.spyOn(guarded, 'guardedRequest').mockRejectedValue(
+      new guarded.BlockedDestinationError('refusing x: loopback address 127.0.0.1'),
     );
-    vi.stubGlobal('fetch', spy);
-    await verifyLightning('https://ua.example', null);
-    const init = spy.mock.calls[0]?.[1];
-    const headers = (init?.headers ?? {}) as Record<string, string>;
-    expect(headers['User-Agent']).toMatch(/AT-Directory-Verifier/);
+    const r = await verifyLightning('https://blocked.example', null);
+    expect(r.status).toBe('unknown');
+    expect(r.evidence.blocked).toBe(true);
   });
+
+  // The probe User-Agent moved into guarded-request.ts and is asserted there
+  // against a real loopback server, which checks the header actually sent rather
+  // than the argument handed to a stub.
 });

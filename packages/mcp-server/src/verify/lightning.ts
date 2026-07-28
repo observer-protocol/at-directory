@@ -1,3 +1,5 @@
+import { guardedRequest, BlockedDestinationError } from './guarded-request.ts';
+
 export interface RailCheckResult {
   status: 'healthy' | 'degraded' | 'down' | 'unknown';
   detail: string;
@@ -11,22 +13,14 @@ const TIMEOUT_MS = 8000;
 // look "down". This both reduces false blocks and is the polite thing.
 const PROBE_UA = 'AT-Directory-Verifier/1.0 (+https://agenticterminal.ai)';
 
-async function timedFetch(url: string, init?: RequestInit): Promise<Response> {
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
-  try {
-    return await fetch(url, {
-      ...init,
-      headers: {
-        'User-Agent': PROBE_UA,
-        Accept: 'text/html,application/json;q=0.9,*/*;q=0.8',
-        ...(init?.headers ?? {}),
-      },
-      signal: controller.signal,
-    });
-  } finally {
-    clearTimeout(timer);
-  }
+// Destination-guarded, and deliberately does NOT follow redirects. A 3xx comes
+// back as a 3xx: the reachability test below is `status < 400`, so a redirecting
+// merchant still reads as reachable, while the redirect target is never fetched.
+// Following it would hand the merchant the choice of where our IP goes, which is
+// the hole guarded-request.ts closes.
+async function timedFetch(url: string): Promise<{ status: number; body: string }> {
+  const res = await guardedRequest(url, { timeoutMs: TIMEOUT_MS });
+  return { status: res.status, body: res.body };
 }
 
 // v1: passive only. No probe invoices. Check URL reachability and resolve
@@ -38,9 +32,19 @@ export async function verifyLightning(
   const start = Date.now();
   let httpStatus: number | undefined;
   try {
-    const res = await timedFetch(merchantUrl, { method: 'GET', redirect: 'follow' });
+    const res = await timedFetch(merchantUrl);
     httpStatus = res.status;
-  } catch {
+  } catch (e) {
+    // A destination WE refused is not a merchant that is down. Saying "down"
+    // here would defame a live merchant on a trust directory for our own policy
+    // decision — the same mistake the WAF-block branch below exists to avoid.
+    if (e instanceof BlockedDestinationError) {
+      return {
+        status: 'unknown',
+        detail: `Verification refused: ${e.message}. The merchant is not necessarily down — this is our destination policy, not their availability.`,
+        evidence: { http_status: null, blocked: true, response_ms: Date.now() - start },
+      };
+    }
     return {
       status: 'down',
       detail: `Merchant URL ${merchantUrl} unreachable.`,
@@ -102,9 +106,15 @@ async function resolveLnurl(endpoint: string): Promise<{ resolved: boolean; deta
     } else {
       return { resolved: false, detail: 'Unrecognized lightning endpoint format' };
     }
-    const res = await timedFetch(url, { method: 'GET' });
-    if (!res.ok) return { resolved: false, detail: `LNURL endpoint returned ${res.status}` };
-    const body = (await res.json()) as { callback?: string; tag?: string };
+    const res = await timedFetch(url);
+    // NOTE: redirects are not followed. Zero merchants declare a lightning
+    // address or bech32 LNURL today; the first one to do so needs the bounded
+    // follow-with-revalidation loop, which is a recorded precondition on
+    // payment_endpoint in data/schema/merchant.schema.json.
+    if (res.status < 200 || res.status >= 300) {
+      return { resolved: false, detail: `LNURL endpoint returned ${res.status}` };
+    }
+    const body = JSON.parse(res.body) as { callback?: string; tag?: string };
     const ok = typeof body.callback === 'string' || body.tag === 'payRequest';
     return { resolved: ok, detail: ok ? 'payRequest resolved' : 'no payRequest in response' };
   } catch (e) {
