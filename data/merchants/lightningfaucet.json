@@ -28,7 +28,7 @@
   "accepts_usdc": false,
   "accepts_x402": false,
   "pricing_model": "per-request",
-  "last_verified_at": "2026-06-08T16:06:14Z",
+  "last_verified_at": "2026-07-29T17:42:20Z",
   "source": "self-registered",
   "source_attribution": "Verified by LightningFaucet contributor via HEAD and GET on https://lightningfaucet.com/api/l402/headers.",
   "op_attestation_url": null,

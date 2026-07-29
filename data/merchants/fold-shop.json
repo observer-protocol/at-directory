@@ -17,7 +17,7 @@
   "accepts_usdc": false,
   "accepts_x402": false,
   "pricing_model": "per-product",
-  "last_verified_at": null,
+  "last_verified_at": "2026-07-29T17:42:20Z",
   "source": "crawled",
   "op_attestation_url": null,
   "tags": [

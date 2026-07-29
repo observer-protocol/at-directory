@@ -30,7 +30,7 @@
   "accepts_usdc": true,
   "accepts_x402": true,
   "pricing_model": "variable",
-  "last_verified_at": "2026-07-25T00:00:00Z",
+  "last_verified_at": "2026-07-29T17:42:20Z",
   "source": "crawled",
   "op_attestation_url": null,
   "merchant_did": null,

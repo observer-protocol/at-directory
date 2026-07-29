@@ -21,6 +21,8 @@
   "source": "crawled",
   "op_attestation_url": null,
   "tags": [
+    "unreachable-2026-07-29",
+    "unreachable-stale-url",
     "gift-cards"
   ]
 }

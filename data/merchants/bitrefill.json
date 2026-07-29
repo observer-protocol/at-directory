@@ -30,7 +30,7 @@
   "accepts_usdc": true,
   "accepts_x402": true,
   "pricing_model": "per-product",
-  "last_verified_at": "2026-06-03T00:00:00Z",
+  "last_verified_at": "2026-07-29T17:42:20Z",
   "source": "integrated",
   "op_attestation_url": null,
   "tags": ["gift-cards", "mobile-topup", "esim", "lightning", "verified-mcp", "skill-md", "llms-txt", "x402"]

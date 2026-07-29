@@ -17,7 +17,7 @@
   "accepts_usdc": false,
   "accepts_x402": false,
   "pricing_model": "subscription",
-  "last_verified_at": "2026-06-14T00:00:00Z",
+  "last_verified_at": "2026-07-29T17:42:20Z",
   "source": "crawled",
   "op_attestation_url": null,
   "tags": ["vpn", "privacy", "email", "on-chain"]

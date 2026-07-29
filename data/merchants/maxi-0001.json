@@ -27,7 +27,7 @@
   "accepts_usdc": false,
   "accepts_x402": false,
   "pricing_model": "variable",
-  "last_verified_at": "2026-06-21T00:00:00Z",
+  "last_verified_at": "2026-07-29T17:42:20Z",
   "source": "integrated",
   "merchant_did": "did:web:agenticterminal.ai:merchants:maxi-0001",
   "merchant_vc_url": "https://agenticterminal.ai/merchants/maxi-0001/trust-credential.jsonld",
