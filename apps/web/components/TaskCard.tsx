@@ -1,8 +1,7 @@
 'use client';
 import { useState } from 'react';
 import type { Merchant } from '@at-directory/core';
-import { useDerivedTier } from './useDerivedTier';
-import { TrustBadge } from './TrustBadge';
+import { TrustTier } from './TrustTier';
 import { ApplyModal } from './ApplyModal';
 
 const STATUS_COLOR: Record<string, string> = {
@@ -25,7 +24,6 @@ function timeAgo(iso: string): string {
 }
 
 export function TaskCard({ m }: { m: Merchant }) {
-  const { tier, count } = useDerivedTier(m.id, m.op_trust_tier);
   const [showApply, setShowApply] = useState(false);
 
   const isChallenge = Boolean(m.is_challenge);
@@ -109,7 +107,11 @@ export function TaskCard({ m }: { m: Merchant }) {
             </div>
           </div>
           <div className="task-trust">
-            <TrustBadge tier={tier} count={count} attestationUrl={m.op_attestation_url} />
+            <TrustTier
+              merchantId={m.id}
+              fallbackTier={m.op_trust_tier}
+              attestationUrl={m.op_attestation_url}
+            />
           </div>
         </div>
 

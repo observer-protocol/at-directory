@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import type { Merchant } from '@at-directory/core';
 import { ListingCard } from './ListingCard';
 import { TaskCard } from './TaskCard';
@@ -14,7 +14,11 @@ const TABS: Array<{ id: Tab; label: string }> = [
   { id: 'open-calls', label: 'Open Calls' },
 ];
 
-const DIRECTORY_API = process.env.NEXT_PUBLIC_DIRECTORY_API ?? 'https://mcp.agenticterminal.ai';
+// Only the merchant count is published. One agent and a handful of open
+// calls are numbers that advertise an empty market, and the directory is
+// the asset worth promoting — so those counts are removed, not inflated.
+// The tabs still work; they just do not announce their size.
+const TABS_WITH_COUNT: ReadonlySet<Tab> = new Set<Tab>(['merchants']);
 
 function tabCount(listings: Merchant[], tab: Tab): number {
   return listings.filter((m) => {
@@ -44,45 +48,27 @@ function sortOpenCalls(calls: Merchant[]): Merchant[] {
   });
 }
 
-export function MarketplaceBrowser({ initialListings }: { initialListings: Merchant[] }) {
-  const [tab, setTab] = useState<Tab>('open-calls');
+// `initialListings` arrives with expired open calls already dropped, and
+// `showOpenCalls` already decided — both computed on the server, see
+// lib/display-policy.ts. Deriving either here would recompute against the
+// browser clock and desync hydration across a deadline boundary.
+//
+// The "OP trust min" filter and the live derived-tier fetch behind it were
+// removed with the rest of the trust-tier display.
+export function MarketplaceBrowser({
+  initialListings,
+  showOpenCalls,
+}: {
+  initialListings: Merchant[];
+  showOpenCalls: boolean;
+}) {
+  const tabs = useMemo(
+    () => TABS.filter((t) => t.id !== 'open-calls' || showOpenCalls),
+    [showOpenCalls],
+  );
+  const [tab, setTab] = useState<Tab>(showOpenCalls ? 'open-calls' : 'merchants');
   const [query, setQuery] = useState('');
-  const [trustMin, setTrustMin] = useState('');
   const [showPostModal, setShowPostModal] = useState(false);
-
-  // Live tier overlay: same pattern as MerchantBrowser. Falls back to
-  // static op_trust_tier when the API is unreachable.
-  const [liveTiers, setLiveTiers] = useState<Record<string, number> | null>(null);
-  useEffect(() => {
-    let aborted = false;
-    fetch(`${DIRECTORY_API}/v1/merchants`)
-      .then((r) => (r.ok ? r.json() : null))
-      .then((d) => {
-        if (aborted || !d || !Array.isArray(d.results)) return;
-        const map: Record<string, number> = {};
-        for (const m of d.results as Array<{
-          id: string;
-          op_trust_tier?: number;
-          op_trust?: { tier?: number };
-        }>) {
-          const t =
-            m.op_trust && typeof m.op_trust.tier === 'number' ? m.op_trust.tier : m.op_trust_tier;
-          if (typeof t === 'number') map[m.id] = t;
-        }
-        setLiveTiers(map);
-      })
-      .catch(() => {
-        /* fail-soft */
-      });
-    return () => {
-      aborted = true;
-    };
-  }, []);
-
-  const tierOf = (m: Merchant): number => {
-    if (liveTiers && typeof liveTiers[m.id] === 'number') return liveTiers[m.id]!;
-    return m.op_trust_tier;
-  };
 
   const filtered = useMemo(() => {
     const base = initialListings.filter((m) => {
@@ -91,7 +77,6 @@ export function MarketplaceBrowser({ initialListings }: { initialListings: Merch
       if (tab === 'agents' && pt !== 'agent') return false;
       if (tab === 'merchants' && (pt !== 'merchant' || lt === 'open-call')) return false;
       if (tab === 'open-calls' && lt !== 'open-call') return false;
-      if (trustMin && lt !== 'open-call' && tierOf(m) < Number(trustMin)) return false;
       if (query) {
         const q = query.toLowerCase();
         const hay = [m.name, m.description, ...(m.tags ?? [])].join(' ').toLowerCase();
@@ -101,22 +86,23 @@ export function MarketplaceBrowser({ initialListings }: { initialListings: Merch
     });
     if (tab === 'open-calls') return sortOpenCalls(base);
     return base;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initialListings, liveTiers, tab, query, trustMin]);
+  }, [initialListings, tab, query]);
 
   const openCallCount = tabCount(initialListings, 'open-calls');
 
   return (
     <div>
       <div className="marketplace-tabs">
-        {TABS.map(({ id, label }) => (
+        {tabs.map(({ id, label }) => (
           <button
             key={id}
             className={`tab-btn${tab === id ? ' active' : ''}`}
             onClick={() => setTab(id)}
           >
             {label}
-            {id !== 'all' && <span className="tab-count">{tabCount(initialListings, id)}</span>}
+            {TABS_WITH_COUNT.has(id) && (
+              <span className="tab-count">{tabCount(initialListings, id)}</span>
+            )}
           </button>
         ))}
         <button className="tab-post-btn" onClick={() => setShowPostModal(true)}>
@@ -135,14 +121,6 @@ export function MarketplaceBrowser({ initialListings }: { initialListings: Merch
               placeholder="name, description, tag"
             />
           </label>
-          <label>
-            OP trust min
-            <select value={trustMin} onChange={(e) => setTrustMin(e.target.value)}>
-              <option value="">any</option>
-              <option value="1">Tier 1+</option>
-              <option value="2">Tier 2+</option>
-            </select>
-          </label>
         </div>
       )}
 
@@ -152,7 +130,6 @@ export function MarketplaceBrowser({ initialListings }: { initialListings: Merch
             <span className="open-calls-count">
               {openCallCount} open task{openCallCount !== 1 ? 's' : ''}
             </span>
-            <span className="open-calls-hint muted">Trust verified by Observer Protocol</span>
           </div>
           {filtered.length > 0 ? (
             <div className="task-grid">
@@ -169,7 +146,7 @@ export function MarketplaceBrowser({ initialListings }: { initialListings: Merch
       ) : (
         <>
           <p className="lede">
-            {query || trustMin
+            {query
               ? `${filtered.length} of ${initialListings.length} listings`
               : tab === 'all'
                 ? 'All listings in the marketplace'
@@ -179,7 +156,7 @@ export function MarketplaceBrowser({ initialListings }: { initialListings: Merch
             {filtered.map((m) => (
               <ListingCard key={m.id} m={m} />
             ))}
-            {filtered.length === 0 && (query || trustMin) && (
+            {filtered.length === 0 && query && (
               <p className="muted no-results">No listings match the current filter.</p>
             )}
           </div>

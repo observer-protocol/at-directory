@@ -1,13 +1,20 @@
 'use client';
 import type { Merchant } from '@at-directory/core';
-import { useDerivedTier } from './useDerivedTier';
-import { TrustBadge } from './TrustBadge';
+import { TrustTier } from './TrustTier';
 import { RailIcon } from './RailIcon';
 import { MerchantTrustPanel } from './MerchantTrustPanel';
 
 const TYPE_LABEL: Record<string, string> = {
   agent: 'Agent',
   merchant: 'Merchant',
+};
+
+// Meaningless on an open call — the field carries its schema default there,
+// not a researched classification — so it is shown on offers only.
+const CALLABLE_LABEL: Record<string, string> = {
+  'full-api': 'Full API',
+  'structured-handoff': 'Structured handoff',
+  'human-checkout': 'Human checkout',
 };
 
 const STATUS_LABEL: Record<string, string> = {
@@ -24,7 +31,6 @@ const WHO_LABEL: Record<string, string> = {
 };
 
 export function ListingCard({ m }: { m: Merchant }) {
-  const { tier, count } = useDerivedTier(m.id, m.op_trust_tier);
   const pType = m.participant_type ?? 'merchant';
   const lType = m.listing_type ?? 'offer';
   const isOpenCall = lType === 'open-call';
@@ -42,7 +48,7 @@ export function ListingCard({ m }: { m: Merchant }) {
 
   return (
     <div
-      className={`card tier${tier}${isNonMerchant ? ` card-${pType}` : ''}${isOpenCall ? ' card-open-call' : ''}${isChallenge ? ' card-challenge' : ''}`}
+      className={`card${isNonMerchant ? ` card-${pType}` : ''}${isOpenCall ? ' card-open-call' : ''}${isChallenge ? ' card-challenge' : ''}`}
     >
       <div className="listing-type-row">
         {isNonMerchant && <span className={`badge type-${pType}`}>{TYPE_LABEL[pType]}</span>}
@@ -105,7 +111,16 @@ export function ListingCard({ m }: { m: Merchant }) {
       )}
 
       <div className="row">
-        <TrustBadge tier={tier} count={count} attestationUrl={m.op_attestation_url} />
+        {!isOpenCall && (
+          <span className={`badge callable callable-${m.agent_callable_tier}`}>
+            {CALLABLE_LABEL[m.agent_callable_tier]}
+          </span>
+        )}
+        <TrustTier
+          merchantId={m.id}
+          fallbackTier={m.op_trust_tier}
+          attestationUrl={m.op_attestation_url}
+        />
       </div>
 
       {m.merchant_vc_url ? <MerchantTrustPanel vcUrl={m.merchant_vc_url} /> : null}

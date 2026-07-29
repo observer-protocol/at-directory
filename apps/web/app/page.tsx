@@ -1,14 +1,18 @@
 import { allListings } from '@/lib/data';
+import { MIN_OPEN_CALLS_TO_SHOW, liveOpenCalls } from '@/lib/display-policy';
 import { HeroSection } from '@/components/HeroSection';
 import { AgentInstallSnippet } from '@/components/AgentInstallSnippet';
 
 export default function Home() {
   const listings = allListings();
-  const openCalls = listings.filter((m) => m.listing_type === 'open-call').slice(0, 3);
+  // Expired calls are excluded, and the preview disappears entirely below
+  // the threshold rather than shrinking to one row — see lib/display-policy.
+  const live = liveOpenCalls(listings);
+  const openCalls = live.length >= MIN_OPEN_CALLS_TO_SHOW ? live.slice(0, 3) : [];
 
   return (
     <div>
-      <HeroSection openCallCount={listings.filter((m) => m.listing_type === 'open-call').length} />
+      <HeroSection />
 
       <section className="home-paths">
         <a href="/marketplace?tab=open-calls" className="path-card path-post">

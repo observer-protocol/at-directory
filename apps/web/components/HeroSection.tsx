@@ -2,7 +2,10 @@
 import { useState } from 'react';
 import { PostTaskModal } from './PostTaskModal';
 
-export function HeroSection({ openCallCount }: { openCallCount: number }) {
+// The secondary CTA used to read "{n} open tasks". The number is gone
+// rather than restated — four, dropping to one as deadlines pass, is a
+// liquidity figure that works against the page. See lib/display-policy.
+export function HeroSection() {
   const [showModal, setShowModal] = useState(false);
 
   return (
@@ -24,7 +27,7 @@ export function HeroSection({ openCallCount }: { openCallCount: number }) {
               Post a task
             </button>
             <a className="hero-cta-secondary" href="/marketplace">
-              {openCallCount} open task{openCallCount !== 1 ? 's' : ''} →
+              Browse the marketplace →
             </a>
           </div>
         </div>

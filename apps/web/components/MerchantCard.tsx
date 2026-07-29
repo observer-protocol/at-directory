@@ -1,12 +1,14 @@
 'use client';
 import type { Merchant } from '@at-directory/core';
-import { useDerivedTier } from './useDerivedTier';
-import { TrustBadge } from './TrustBadge';
+import { TrustTier } from './TrustTier';
 import { RailIcon } from './RailIcon';
 
+// The lead signal on every card now that trust tiers are suppressed
+// (see lib/display-policy.ts). Objective, checkable against the merchant's
+// own documentation, and populated on all 78 merchants.
 const CALLABLE_LABEL: Record<string, string> = {
-  'full-api': 'Agent-callable: full API',
-  'structured-handoff': 'Agent-callable: structured handoff',
+  'full-api': 'Full API',
+  'structured-handoff': 'Structured handoff',
   'human-checkout': 'Human checkout',
 };
 
@@ -16,14 +18,10 @@ const TYPE_LABEL: Record<string, string> = {
 };
 
 export function MerchantCard({ m }: { m: Merchant }) {
-  // One derived-tier fetch per card, hoisted so the whole card (border,
-  // header tint, glow) reflects the tier — not just the badge. Renders
-  // the static fallback tier instantly, upgrades on resolve.
-  const { tier, count } = useDerivedTier(m.id, m.op_trust_tier);
   const pType = m.participant_type ?? 'merchant';
   const isNonMerchant = pType !== 'merchant';
   return (
-    <div className={`card tier${tier}${isNonMerchant ? ` card-${pType}` : ''}`}>
+    <div className={`card${isNonMerchant ? ` card-${pType}` : ''}`}>
       {isNonMerchant && (
         <div className="listing-type-row">
           <span className={`badge type-${pType}`}>{TYPE_LABEL[pType]}</span>
@@ -50,9 +48,15 @@ export function MerchantCard({ m }: { m: Merchant }) {
         ))}
       </div>
       <div className="row">
-        <TrustBadge tier={tier} count={count} attestationUrl={m.op_attestation_url} />
-        <span className="badge callable">{CALLABLE_LABEL[m.agent_callable_tier]}</span>
+        <span className={`badge callable callable-${m.agent_callable_tier}`}>
+          {CALLABLE_LABEL[m.agent_callable_tier]}
+        </span>
         {m.accepts_usdc && <span className="badge">+ USDC</span>}
+        <TrustTier
+          merchantId={m.id}
+          fallbackTier={m.op_trust_tier}
+          attestationUrl={m.op_attestation_url}
+        />
       </div>
     </div>
   );
