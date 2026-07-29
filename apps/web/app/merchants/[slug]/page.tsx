@@ -1,11 +1,20 @@
 import { notFound } from 'next/navigation';
-import { allMerchants, merchantBySlug, categoryLabel } from '@/lib/data';
-import { LiveTrustBadge } from '@/components/LiveTrustBadge';
+import { allListings, merchantBySlug, categoryLabel } from '@/lib/data';
+import { TrustTier } from '@/components/TrustTier';
 import { RailIcon } from '@/components/RailIcon';
 import { VerifyNowButton } from '@/components/VerifyNowButton';
 
+const CALLABLE_LABEL: Record<string, string> = {
+  'full-api': 'Full API',
+  'structured-handoff': 'Structured handoff',
+  'human-checkout': 'Human checkout',
+};
+
+// Every listing gets a detail page, not just the merchant directory:
+// marketplace task cards link open calls to /merchants/{id}/, so narrowing
+// this to allMerchants() would 404 all four of them.
 export function generateStaticParams() {
-  return allMerchants().map((m) => ({ slug: m.id }));
+  return allListings().map((m) => ({ slug: m.id }));
 }
 
 export default async function MerchantPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -18,12 +27,14 @@ export default async function MerchantPage({ params }: { params: Promise<{ slug:
       <h1>{m.name}</h1>
       <p className="lede">{m.description}</p>
       <div className="row">
-        <LiveTrustBadge
+        <span className={`badge callable callable-${m.agent_callable_tier}`}>
+          {CALLABLE_LABEL[m.agent_callable_tier] ?? m.agent_callable_tier}
+        </span>
+        <TrustTier
           merchantId={m.id}
           fallbackTier={m.op_trust_tier}
           attestationUrl={m.op_attestation_url}
         />
-        <span className="badge callable">{m.agent_callable_tier}</span>
         <span className="badge">{m.pricing_model}</span>
         {m.accepts_usdc && <span className="badge">+ USDC</span>}
         {m.accepts_x402 && <span className="badge">+ x402</span>}

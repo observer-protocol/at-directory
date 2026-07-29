@@ -58,6 +58,32 @@ describe('search_merchants tool', () => {
     expect(a.agent_identity.authenticated).toBe(false);
     expect(c.agent_identity.tier_cap).toBe('elevated');
   });
+
+  it('excludes open calls by default — an agent shopping for supply is not offered our tasks', () => {
+    const merchants = [
+      M({ id: 'shop' }),
+      M({ id: 'task', listing_type: 'open-call' }),
+      M({ id: 'agent', participant_type: 'agent' }),
+    ];
+    const r = searchMerchantsTool({}, anon(merchants));
+    expect(r.results.map((m) => m.id).sort()).toEqual(['agent', 'shop']);
+    expect(r.total_matching).toBe(2);
+  });
+
+  it('still returns open calls when the caller asks for them by name', () => {
+    const merchants = [M({ id: 'shop' }), M({ id: 'task', listing_type: 'open-call' })];
+    const r = searchMerchantsTool({ listing_type: 'open-call' }, anon(merchants));
+    expect(r.results.map((m) => m.id)).toEqual(['task']);
+  });
+
+  it('the open-call default does not leak into other filters', () => {
+    const merchants = [
+      M({ id: 'ln', rails: [{ rail: 'lightning', health: 'unknown' }] }),
+      M({ id: 'ln-task', listing_type: 'open-call' }),
+    ];
+    const r = searchMerchantsTool({ rail: 'lightning' }, anon(merchants));
+    expect(r.results.map((m) => m.id)).toEqual(['ln']);
+  });
 });
 
 describe('get_merchant tool', () => {

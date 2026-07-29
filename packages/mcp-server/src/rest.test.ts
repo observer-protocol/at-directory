@@ -81,6 +81,36 @@ describe('REST surface', () => {
     expect(r.json.results.map((m: Merchant) => m.id)).toEqual(['t2']);
   });
 
+  it('GET /v1/merchants omits open calls by default, returns them on request', async () => {
+    const withCall: DirectoryData = {
+      ...data,
+      merchants: [...data.merchants, M({ id: 'bounty', listing_type: 'open-call' })],
+    };
+    const req = { method: 'GET', url: '/v1/merchants' } as IncomingMessage;
+    let body = '';
+    const res = {
+      writeHead: () => res,
+      end(b?: string) {
+        body = b ?? '';
+      },
+      headersSent: false,
+    } as unknown as ServerResponse;
+    await tryHandleRest(req, res, withCall);
+    expect(JSON.parse(body).results.map((m: Merchant) => m.id)).not.toContain('bounty');
+
+    const req2 = { method: 'GET', url: '/v1/merchants?listing_type=open-call' } as IncomingMessage;
+    let body2 = '';
+    const res2 = {
+      writeHead: () => res2,
+      end(b?: string) {
+        body2 = b ?? '';
+      },
+      headersSent: false,
+    } as unknown as ServerResponse;
+    await tryHandleRest(req2, res2, withCall);
+    expect(JSON.parse(body2).results.map((m: Merchant) => m.id)).toEqual(['bounty']);
+  });
+
   it('GET /v1/merchants rejects bad params with 400', async () => {
     const r = await call('GET', '/v1/merchants?trust_tier_min=9');
     expect(r.status).toBe(400);

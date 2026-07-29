@@ -38,17 +38,27 @@ function load() {
   return cache;
 }
 
+// The merchant directory: what /merchants, the category counts and the
+// rail counts are about. Open calls are our own task postings — they are
+// marketplace listings, not supply, and a directory of merchants that
+// counts four of our own tasks among its entries reads as self-referential.
+// Use allListings() for any surface that spans the whole marketplace.
 export function allMerchants(): Merchant[] {
   // Tier 3 deferred from v1; only Tier 1/2 are ingested anyway.
-  return load().merchants.filter((m) => m.op_trust_tier <= 2);
+  return load()
+    .merchants.filter((m) => m.op_trust_tier <= 2)
+    .filter((m) => (m.listing_type ?? 'offer') !== 'open-call');
 }
 
 export function allListings(): Merchant[] {
   return load().merchants;
 }
 
+// Deliberately spans allListings(), not allMerchants(): marketplace task
+// cards link open calls to /merchants/{id}/. Narrowing this to the merchant
+// directory would 404 every open-call detail page.
 export function merchantBySlug(slug: string): Merchant | undefined {
-  return allMerchants().find((m) => m.id === slug);
+  return allListings().find((m) => m.id === slug);
 }
 
 export function categories(): CategoryEntry[] {

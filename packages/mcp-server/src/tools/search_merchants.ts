@@ -33,7 +33,12 @@ export function searchMerchantsTool(
   // see all tiers and the same limits. Tier gating moved to writes/rate
   // limits (spec §4.3). agent_identity is still echoed honestly below.
   const limit = Math.min(args.limit ?? READ_DEFAULT_LIMIT, READ_MAX_LIMIT);
-  const search = searchMerchants(ctx.merchants, { ...args, limit });
+  // A merchant search returns merchants. Open calls are our own task
+  // postings, and handing them to an agent shopping for supply is the
+  // same defect as rendering them in the merchant list, with a worse
+  // audience. Callers that want them still ask by name.
+  const listing_type = args.listing_type ?? 'offer';
+  const search = searchMerchants(ctx.merchants, { ...args, listing_type, limit });
   return {
     results: search.results,
     total_matching: search.total_matching,
