@@ -184,7 +184,10 @@ describe('verifyRail — usdc rail', () => {
 });
 
 describe('verifyLightning — WAF/anti-bot handling', () => {
-  afterEach(() => { vi.unstubAllGlobals(); vi.restoreAllMocks(); });
+  afterEach(() => {
+    vi.unstubAllGlobals();
+    vi.restoreAllMocks();
+  });
 
   // The verifiers no longer use fetch — they use guardedRequest over node:https,
   // so the destination is checked against the RESOLVED IP before connect. Stub

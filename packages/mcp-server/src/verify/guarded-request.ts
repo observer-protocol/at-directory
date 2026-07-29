@@ -84,7 +84,7 @@ function classifyIpv4(addr: string): string | null {
 
 function classifyIpv6(addr: string): string | null {
   const a = addr.replace(/^\[|\]$/g, '');
-  if (a === '::' ) return `unspecified address ${addr}`;
+  if (a === '::') return `unspecified address ${addr}`;
   if (a === '::1') return `IPv6 loopback address ${addr}`;
   // fc00::/7 — unique local. Covers fc.. and fd.. .
   if (/^f[cd]/.test(a)) return `IPv6 unique-local (fc00::/7) address ${addr}`;
