@@ -1,0 +1,41 @@
+{
+  "id": "llm402-ai",
+  "name": "llm402.ai",
+  "url": "https://llm402.ai",
+  "description": "Pay-per-request AI inference across 400+ models through OpenAI- and Ollama-compatible APIs, with Bitcoin Lightning payment via L402.",
+  "category": "agent-services",
+  "rails": [
+    {
+      "rail": "l402",
+      "payment_endpoint": "https://llm402.ai/v1/chat/completions",
+      "health": "healthy",
+      "last_health_check": "2026-07-25T20:33:49Z"
+    }
+  ],
+  "op_trust_tier": 1,
+  "agent_callable_tier": "full-api",
+  "agent_endpoints": {
+    "mcp_server": "https://llm402.ai/mcp",
+    "rest_api": "https://llm402.ai",
+    "api_docs": "https://llm402.ai/docs",
+    "openapi_url": "https://llm402.ai/.well-known/openapi.json",
+    "auth_note": "REST requires no account or API key: an unauthenticated inference request returns HTTP 402 with an L402 macaroon and BOLT11 Lightning invoice, then the client retries with 'Authorization: L402 <macaroon>:<preimage>'. The hosted MCP server uses a prepaid balance token funded by Lightning or USDC. Free discovery is published at /.well-known/l402 and /.well-known/openapi.json."
+  },
+  "accepts_usdc": true,
+  "accepts_x402": true,
+  "pricing_model": "per-request",
+  "last_verified_at": "2026-07-25T20:33:49Z",
+  "source": "crawled",
+  "source_attribution": "Official API docs plus live /health and /.well-known/openapi.json responses verified 2026-07-25: https://llm402.ai/docs",
+  "op_attestation_url": null,
+  "tags": [
+    "ai-inference",
+    "llm",
+    "openai-compatible",
+    "ollama-compatible",
+    "mcp",
+    "l402",
+    "lightning",
+    "pay-per-request"
+  ]
+}
