@@ -13,3 +13,7 @@ coverage/
 .vitest-cache/
 .pnpm-store/
 *.tsbuildinfo
+
+# Python bytecode from scripts/merchant-trust
+__pycache__/
+*.pyc
