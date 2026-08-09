@@ -46,7 +46,10 @@ Each merchant carries two independent signals. They do not imply each other.
 
 - Tier 1 — self-attested; merchant claims the rails, unverified.
 - Tier 2 — operator-verified; the AT operator transacted with the merchant and confirmed at least one claimed rail (v1.x: any OP-credentialed counterparty can attest, not just AT).
-- Tier 3 — chain-anchored (ships v1.x; not present yet).
+
+There is no third tier. **The tier gates nothing:** reads are ungated, every tier is visible to you,
+and you can transact with a Tier 1 merchant with no setup. Treat the tier as evidence to weigh, not
+as a decision the directory has made for you. A Tier 1 listing has been checked by nobody.
 
 **Agent-callable tier** (how you _transact_):
 

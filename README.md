@@ -10,7 +10,7 @@ AT Directory indexes merchants that sell products, services, APIs, or content an
 
 ## Status
 
-Pre-v1, active build. Target: week of 2026-05-18 for a live Tether-meeting demo. v1 ships Tiers 1–2; Tier 3 (chain-anchored) is v1.x.
+Pre-v1, active build. Target: week of 2026-05-18 for a live Tether-meeting demo. v1 ships Tiers 1–2.
 
 ## Use it from an agent
 
@@ -64,10 +64,14 @@ AT_VERIFIER_URL=http://127.0.0.1:8787 \
 
 Every merchant carries two **orthogonal** signals — read both:
 
-- **OP trust tier** (the merchant): 1 self-attested · 2 operator-verified · 3 chain-anchored (v1.x). v1 Tier 2 = AT operator transacted and confirmed; the bilateral counterparty-attestation model lands in v1.x.
+- **OP trust tier** (the merchant): 1 self-attested · 2 operator-verified. v1 Tier 2 = AT operator transacted and confirmed; the bilateral counterparty-attestation model lands in v1.x.
 - **Agent-callable tier** (the integration): `full-api` · `structured-handoff` · `human-checkout`.
 
-Schema is enforced in CI (`pnpm validate-data`) and on every load. USDT rails require a `chain`; Tier 2+ non-integrated records require an `op_attestation_url`; Tier 3 is rejected in v1.
+**The trust tier gates nothing.** Reads are ungated, every tier is visible to anonymous agents, and
+an agent can transact with a Tier 1 merchant with no setup. The tier is evidence for a caller to
+weigh, not a decision this directory has made on its behalf. Nothing is refused on the basis of it.
+
+Schema is enforced in CI (`pnpm validate-data`) and on every load. USDT rails require a `chain`; Tier 2+ non-integrated records require an `op_attestation_url`; an `op_trust_tier` of `3` is rejected on ingest, which is why the model above stops at 2.
 
 ## Contributing
 
