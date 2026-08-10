@@ -1,0 +1,42 @@
+{
+  "id": "the402machine",
+  "name": "The402Machine",
+  "url": "https://the402machine.com",
+  "description": "Digital vending machine for temporary webhook inboxes, client-encrypted handoffs, and heartbeat monitors, paid over Bitcoin Lightning without user accounts.",
+  "category": "agent-services",
+  "rails": [
+    {
+      "rail": "l402",
+      "payment_endpoint": "https://the402machine.com/api/payments/pulse",
+      "health": "healthy",
+      "last_health_check": "2026-08-10T13:51:40Z"
+    }
+  ],
+  "op_trust_tier": 1,
+  "agent_callable_tier": "full-api",
+  "agent_endpoints": {
+    "rest_api": "https://the402machine.com/api",
+    "api_docs": "https://the402machine.com/agents",
+    "openapi_url": "https://the402machine.com/openapi.json",
+    "auth_note": "No account or API key is required. Choose a product and plan from /api/catalog, then POST the purchase body with Idempotency-Key and X-Payment-Protocol: l402. The service returns HTTP 402 with an L402 macaroon and BOLT11 invoice; after payment, retry the byte-identical request with the L402 credential."
+  },
+  "accepts_usdc": false,
+  "accepts_x402": false,
+  "pricing_model": "per-product",
+  "last_verified_at": "2026-08-10T13:51:40Z",
+  "source": "self-registered",
+  "source_attribution": "Official agent guide, OpenAPI contract, public catalog, and a live unpaid L402 challenge verified on 2026-08-10: https://the402machine.com/agents",
+  "op_attestation_url": null,
+  "merchant_did": null,
+  "merchant_vc_url": null,
+  "tags": [
+    "lightning",
+    "l402",
+    "webhooks",
+    "encrypted-handoff",
+    "heartbeat-monitoring",
+    "openapi",
+    "self-hosted",
+    "no-account"
+  ]
+}
