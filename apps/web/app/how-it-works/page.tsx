@@ -298,7 +298,8 @@ curl -s https://mcp.agenticterminal.ai/v1/merchants/bitrefill | python3 -m json.
 { "mcpServers": { "at-directory": { "url": "https://mcp.agenticterminal.ai/mcp" } } }
 
 # B. Local MCP (npm, Node >= 20)
-npm install -g @agenticterminal/mcp-server
+# not yet on npm; use the hosted URL above
+npx -y @modelcontextprotocol/inspector https://mcp.agenticterminal.ai/mcp
 
 # C. REST, for agents that don't speak MCP
 curl 'https://mcp.agenticterminal.ai/v1/merchants?rail=lightning'

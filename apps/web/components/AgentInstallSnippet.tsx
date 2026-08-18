@@ -14,8 +14,8 @@ export function AgentInstallSnippet() {
   }
 }
 
-# Local
-npm install -g @agenticterminal/mcp-server
+# Local (not yet on npm; use the hosted URL above)
+npx -y @modelcontextprotocol/inspector https://mcp.agenticterminal.ai/mcp
 
 # Example tool call
 search_merchants({ rail: "usdt", chain: "tron", category: "gift-cards" })`}
