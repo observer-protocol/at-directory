@@ -1,0 +1,50 @@
+{
+  "id": "samedaydesk",
+  "name": "SameDayDesk",
+  "url": "https://samedaydesk.com",
+  "description": "Machine-commerce gateway with 22 paid web, company, wallet, payment-safety, receipt, and DeFi actions. Agents pay per request in USDC on Base through x402 or native MPP, with prices from 0.002 to 0.25 USDC and no prepaid account required.",
+  "category": "agent-services",
+  "rails": [
+    {
+      "rail": "usdc",
+      "chain": "base",
+      "payment_endpoint": null,
+      "health": "unknown",
+      "last_health_check": null
+    }
+  ],
+  "op_trust_tier": 1,
+  "agent_callable_tier": "full-api",
+  "agent_endpoints": {
+    "mcp_server": "https://agents.samedaydesk.com/mcp",
+    "rest_api": "https://agents.samedaydesk.com",
+    "api_docs": "https://agents.samedaydesk.com/openapi.json",
+    "openapi_url": "https://agents.samedaydesk.com/openapi.json",
+    "auth_note": "No prepaid account is required. Call an action and inspect its HTTP 402 response, verify the exact Base USDC terms, then replay with an x402 PAYMENT-SIGNATURE or native MPP Authorization: Payment credential. The free skill contract at https://agents.samedaydesk.com/skill.md lists every current action and price."
+  },
+  "accepts_usdc": true,
+  "accepts_x402": true,
+  "pricing_model": "per-request",
+  "last_verified_at": null,
+  "source": "self-registered",
+  "source_attribution": "Submitted by the SameDayDesk operator from the live OpenAPI, MCP, skill contract, and unpaid dual-protocol challenge.",
+  "op_attestation_url": null,
+  "merchant_did": null,
+  "merchant_vc_url": null,
+  "merchant_controlled_key_ref": null,
+  "participant_type": "agent",
+  "listing_type": "offer",
+  "price_display": "0.002-0.25 USDC per request",
+  "contact_url": "https://samedaydesk.com",
+  "tags": [
+    "agent-commerce",
+    "machine-services",
+    "mcp",
+    "x402",
+    "mpp",
+    "usdc",
+    "base",
+    "payment-safety",
+    "defi"
+  ]
+}
