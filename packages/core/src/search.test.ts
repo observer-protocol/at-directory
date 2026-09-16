@@ -37,6 +37,62 @@ describe('searchMerchants', () => {
     ]);
   });
 
+  it('filters by agent_callable across both callable tiers', () => {
+    const merchants = [
+      M({ id: 'api', agent_callable_tier: 'full-api' }),
+      M({ id: 'handoff', agent_callable_tier: 'structured-handoff' }),
+      M({ id: 'human', agent_callable_tier: 'human-checkout' }),
+    ];
+    // The point of the flag: 'what can I transact with' is two tiers, and
+    // asking by exact tier returns half the population without saying so.
+    expect(searchMerchants(merchants, { agent_callable: true }).results.map((m) => m.id)).toEqual([
+      'api',
+      'handoff',
+    ]);
+    expect(searchMerchants(merchants, { agent_callable: false }).results.map((m) => m.id)).toEqual([
+      'human',
+    ]);
+    expect(
+      searchMerchants(merchants, { agent_callable_tier: 'full-api' }).results.map((m) => m.id),
+    ).toEqual(['api']);
+  });
+
+  it('agent_callable=false is a filter, not an absent option', () => {
+    // `if (opts.agent_callable)` would silently ignore false and return
+    // everything, which is the failure this asserts against.
+    const merchants = [
+      M({ id: 'api', agent_callable_tier: 'full-api' }),
+      M({ id: 'human', agent_callable_tier: 'human-checkout' }),
+    ];
+    const r = searchMerchants(merchants, { agent_callable: false });
+    expect(r.total_matching).toBe(1);
+  });
+
+  it('agent_callable composes with the other filters rather than replacing them', () => {
+    const merchants = [
+      M({ id: 'ln', agent_callable_tier: 'full-api', category: 'compute' }),
+      M({ id: 'other', agent_callable_tier: 'full-api', category: 'travel' }),
+      M({ id: 'human', agent_callable_tier: 'human-checkout', category: 'compute' }),
+    ];
+    expect(
+      searchMerchants(merchants, { agent_callable: true, category: 'compute' }).results.map(
+        (m) => m.id,
+      ),
+    ).toEqual(['ln']);
+  });
+
+  it("carries terms_url into the summary so a caller can read a listing's terms", () => {
+    const merchants = [
+      M({ id: 'call', terms_url: 'https://agenticterminal.ai/open-calls/directory-expansion/' }),
+      M({ id: 'plain' }),
+    ];
+    const r = searchMerchants(merchants);
+    const withTerms = r.results.find((m) => m.id === 'call');
+    const without = r.results.find((m) => m.id === 'plain');
+    expect(withTerms?.terms_url).toBe('https://agenticterminal.ai/open-calls/directory-expansion/');
+    expect(without && 'terms_url' in without).toBe(false);
+  });
+
   it('filters by rail and chain', () => {
     const merchants = [
       M({

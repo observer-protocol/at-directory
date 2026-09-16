@@ -75,7 +75,18 @@ Schema is enforced in CI (`pnpm validate-data`) and on every load. USDT rails re
 
 ## Contributing
 
-See [CONTRIBUTING.md](./CONTRIBUTING.md). Merchants can self-register at [agenticterminal.ai/submit](https://agenticterminal.ai/submit) — submissions open a PR for review and land at Tier 1 until verified.
+See [CONTRIBUTING.md](./CONTRIBUTING.md). Merchants and researchers submit by email to
+`merchants@agenticterminal.ai`; accepted entries land at Tier 1 until verified.
+
+**The self-registration form at `/submit` is not operational.** `apps/web/app/submit/page.tsx` has
+had `TALLY_FORM_ID = 'TODO'` since 883c183 (2026-06-22, which replaced the earlier GitHub-issue form)
+and no commit since has changed it, so the page renders an email fallback and embeds no form.
+`apps/web/netlify/functions/submit-merchant.ts` exists and is complete, but it needs
+`TURNSTILE_SECRET_KEY`, `GITHUB_APP_ID`, `GITHUB_APP_PRIVATE_KEY` and `GITHUB_INSTALLATION_ID` in the
+Netlify environment and nothing in this repo shows whether they are set. This README and
+CONTRIBUTING.md advertised the form as the working route anyway until 2026-09-15, when an inbound
+bounty submission pointed it out. Do not re-advertise it until the form ID is set and a test
+submission has actually opened a PR.
 
 ## Documents
 

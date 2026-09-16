@@ -53,6 +53,14 @@ export const MIN_OPEN_CALLS_TO_SHOW = 3;
 // An open call is past its deadline, or its poster closed it. Expired
 // calls are hidden from every default view: a stale listing on a live page
 // reads as abandonment, and "Deadline passed — Closed" is worse than absent.
+//
+// 'paused' is deliberately NOT in that set. A call that has hit its budget
+// cap has stopped accepting work, but hiding it is the failure mode the
+// cap was published to avoid: a submitter who cannot see the call cannot
+// tell "capped until next month" from "withdrawn", and finds out only by
+// spending the effort and being declined. Paused stays on the page, with
+// its reason, and its apply affordance off (TaskCard). The assertion that
+// holds this is in lib/display-policy.test.ts.
 export function isLiveOpenCall(m: Merchant, now: number = Date.now()): boolean {
   const status = m.challenge_status ?? 'open';
   if (status === 'closed' || status === 'winner') return false;

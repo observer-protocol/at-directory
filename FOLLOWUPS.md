@@ -68,6 +68,22 @@ directory's first x402-native infrastructure merchant, so it is worth
 re-checking periodically rather than waiting for it to resurface in a
 research pass.
 
+### Skhron — USDC accepted, chain undetermined (logged 2026-09-15)
+
+`skhron.eu` carries a Circle USDC mark in its home-page payment strip, alongside Ethereum, Tron and
+MATIC marks, so `accepts_usdc` is `true` on the record. It has **no `usdc` rail**, because the chain
+is not stated anywhere I could find and the schema requires one. A logo strip is also weaker evidence
+than the prose statement that carries the Lightning and BTC rails ("We accept Bitcoin, Bitcoin
+Lightning, Monero, Tron, Bitcoin Cash ... through a self-hosted, non-custodial payment processor"),
+which names no stablecoin at all.
+
+The same sentence says **Tron**, which may mean TRX or may mean USDT-TRC20. Neither a `usdt` nor a
+`usdc` rail can be written honestly without resolving which, so both are absent rather than guessed.
+
+**Resolve by** reaching a checkout and reading the chains the processor actually offers, or asking
+Skhron. Then add the rail with its `chain`. Until then the record under-reports: a `rail: "usdc"` or
+`rail: "usdt"` filter will not return Skhron even though it may settle both.
+
 ## Trust-tier filter on /merchants ignores derived tier (logged 2026-05-20)
 
 **Symptom.** On `https://agenticterminal.ai/merchants`, the "OP trust min"

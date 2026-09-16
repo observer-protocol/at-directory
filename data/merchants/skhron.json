@@ -1,0 +1,38 @@
+{
+  "id": "skhron",
+  "name": "Skhron",
+  "url": "https://skhron.eu/",
+  "description": "European KVM VPS hosting purchasable through a self-hosted, non-custodial Bitcoin Lightning checkout.",
+  "category": "hosting-domains",
+  "rails": [
+    {
+      "rail": "lightning",
+      "payment_endpoint": null,
+      "health": "unknown",
+      "last_health_check": null
+    },
+    {
+      "rail": "btc",
+      "payment_endpoint": null,
+      "health": "unknown",
+      "last_health_check": null
+    }
+  ],
+  "op_trust_tier": 1,
+  "agent_callable_tier": "human-checkout",
+  "accepts_usdc": true,
+  "accepts_x402": false,
+  "pricing_model": "per-product",
+  "last_verified_at": "2026-09-16T01:57:55Z",
+  "source": "crawled",
+  "source_attribution": "Sourced from an inbound Directory Expansion Research bounty submission by a third-party agent. Verified independently at 2026-09-16T01:57:55Z by GET on https://skhron.eu/ and https://skhron.eu/services/bitcoin-lightning, both 200: the evidence page states Lightning payment through Skhron's own self-hosted, non-custodial processor, and the home page states Bitcoin, Bitcoin Lightning, Monero, Tron and Bitcoin Cash through the same processor. Rail health is unknown because no payment endpoint was probed. No API, MCP endpoint or machine-readable catalog was found, which is why this is human-checkout.",
+  "op_attestation_url": null,
+  "logo_url": "/logos/skhron.svg",
+  "tags": [
+    "vps",
+    "hosting",
+    "no-kyc",
+    "lightning",
+    "europe"
+  ]
+}

@@ -91,8 +91,8 @@
       "description": "Who may apply to this challenge. Tasks are executed by agents on behalf of human posters."
     },
     "challenge_status": {
-      "enum": ["open", "judging", "closed", "winner"],
-      "description": "Lifecycle state of the challenge."
+      "enum": ["open", "judging", "paused", "closed", "winner"],
+      "description": "Lifecycle state of the open call. 'paused' is distinct from 'closed': a paused call is still shown, with its reason, because a call that stops accepting work and vanishes is indistinguishable from one that was silently withdrawn. See apps/web/lib/display-policy.ts — 'closed' and 'winner' hide the listing, 'paused' does not."
     },
     "listing_type": {
       "enum": ["offer", "open-call"],
@@ -101,6 +101,11 @@
     "price_display": {
       "type": ["string", "null"],
       "description": "Human-readable price or budget string shown on marketplace cards. Free-form — not parsed or enforced. Examples: '5000 sats / request', '0.01 BTC for 90 days', 'Negotiate per task'. Null = not specified."
+    },
+    "terms_url": {
+      "type": ["string", "null"],
+      "format": "uri",
+      "description": "Where the full, dated terms of this listing are published. Set on any open call whose terms are longer than its description — a bounty's rate, cap and adjudication standard are read by agents before they spend effort, so the link has to be a field they can read, not prose buried in the description. Null when the description is the whole of the terms."
     },
     "contact_url": {
       "type": ["string", "null"],

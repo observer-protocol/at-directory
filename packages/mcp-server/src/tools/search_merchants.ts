@@ -9,6 +9,10 @@ export const SearchMerchantsArgs = z.object({
   chain: z.enum(['tron', 'ethereum', 'solana', 'bsc', 'polygon', 'arbitrum', 'base']).optional(),
   category: z.string().optional(),
   agent_callable_tier: z.enum(['full-api', 'structured-handoff', 'human-checkout']).optional(),
+  // "Only merchants I can transact with programmatically" — true matches
+  // full-api and structured-handoff, false matches human-checkout. Asking
+  // by exact tier takes two calls to cover the same population.
+  agent_callable: z.boolean().optional(),
   trust_tier_min: z.union([z.literal(1), z.literal(2), z.literal(3)]).optional(),
   accepts_usdc: z.boolean().optional(),
   participant_type: z.enum(['merchant', 'agent']).optional(),

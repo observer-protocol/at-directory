@@ -9,8 +9,8 @@ const TOOLS: Tool[] = [
   {
     name: 'search_merchants',
     summary:
-      'Search merchants by rail, chain, category, agent-callable tier, trust tier, USDC, and free text. Ranked by trust tier then verification recency. Reads are ungated: anonymous and credentialed callers see all tiers, same limits.',
-    args: 'query?, rail?, chain?, category?, agent_callable_tier?, trust_tier_min?, accepts_usdc?, limit?',
+      'Search merchants by rail, chain, category, agent-callable tier, trust tier, USDC, and free text. Ranked by trust tier then verification recency. Reads are ungated: anonymous and credentialed callers see all tiers, same limits. agent_callable is the coarse form of agent_callable_tier: true matches full-api and structured-handoff together, which exact-tier filtering cannot ask for in one call.',
+    args: 'query?, rail?, chain?, category?, agent_callable_tier?, agent_callable?, trust_tier_min?, accepts_usdc?, limit?',
     returns: '{ results: MerchantSummary[], total_matching, truncated, agent_identity }',
   },
   {

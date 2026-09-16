@@ -81,6 +81,38 @@ describe('REST surface', () => {
     expect(r.json.results.map((m: Merchant) => m.id)).toEqual(['t2']);
   });
 
+  it('GET /v1/merchants coerces agent_callable, including the false case', async () => {
+    const mixed: DirectoryData = {
+      ...data,
+      merchants: [
+        M({ id: 'api', agent_callable_tier: 'full-api' }),
+        M({ id: 'handoff', agent_callable_tier: 'structured-handoff' }),
+        M({ id: 'human', agent_callable_tier: 'human-checkout' }),
+      ],
+    };
+    const q = async (url: string) => {
+      const req = { method: 'GET', url } as IncomingMessage;
+      let body = '';
+      const res = {
+        writeHead: () => res,
+        end(b?: string) {
+          body = b ?? '';
+        },
+        headersSent: false,
+      } as unknown as ServerResponse;
+      await tryHandleRest(req, res, mixed);
+      return JSON.parse(body)
+        .results.map((m: Merchant) => m.id)
+        .sort();
+    };
+    expect(await q('/v1/merchants?agent_callable=true')).toEqual(['api', 'handoff']);
+    // 'false' has to reach the filter as false and not be dropped as falsy,
+    // otherwise the query silently returns everything.
+    expect(await q('/v1/merchants?agent_callable=false')).toEqual(['human']);
+    expect(await q('/v1/merchants?agent_callable=1')).toEqual(['api', 'handoff']);
+    expect(await q('/v1/merchants')).toEqual(['api', 'handoff', 'human']);
+  });
+
   it('GET /v1/merchants omits open calls by default, returns them on request', async () => {
     const withCall: DirectoryData = {
       ...data,
