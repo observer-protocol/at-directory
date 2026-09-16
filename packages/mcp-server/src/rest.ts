@@ -97,6 +97,7 @@ function coerceSearch(qs: URLSearchParams): Record<string, unknown> {
   str('chain');
   str('category');
   str('agent_callable_tier');
+  str('payment_protocol');
   str('participant_type');
   str('listing_type');
   const tier = qs.get('trust_tier_min');

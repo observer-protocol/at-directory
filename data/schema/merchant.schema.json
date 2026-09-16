@@ -39,6 +39,12 @@
       "enum": ["full-api", "structured-handoff", "human-checkout"]
     },
     "agent_endpoints": { "$ref": "#/$defs/AgentEndpoints" },
+    "payment_protocols": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "enum": ["mpp", "x402"] },
+      "description": "Agent-payment protocols this merchant accepts. A merchant that accepts one of these qualifies for the directory on the protocol alone, whatever it settles in, fiat included: the protocol is what makes the purchase machine-completable, and the settlement rail is a property of the record rather than a gate on it (ruled by Boyd 2026-09-15). Only protocols we can evidence are in the enum. x402 and MPP are here because records carry evidence for them; ACP, AP2, UCP, Mastercard Agent Pay and Visa TAP are not, and adding a value means having a record that evidences it, not naming it. `accepts_x402` is the older single-protocol boolean and must agree with this array, which packages/core/src/load.ts enforces on every load."
+    },
     "accepts_usdc": { "type": "boolean" },
     "accepts_x402": { "type": "boolean" },
     "pricing_model": {

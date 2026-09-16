@@ -93,6 +93,38 @@ describe('searchMerchants', () => {
     expect(without && 'terms_url' in without).toBe(false);
   });
 
+  it('filters by payment_protocol, which is a qualifying property in its own right', () => {
+    const merchants = [
+      M({ id: 'both', payment_protocols: ['x402', 'mpp'], accepts_x402: true }),
+      M({
+        id: 'mpp-only',
+        payment_protocols: ['mpp'],
+        rails: [{ rail: 'fiat', health: 'unknown' }],
+      }),
+      M({ id: 'none' }),
+    ];
+    expect(
+      searchMerchants(merchants, { payment_protocol: 'mpp' })
+        .results.map((m) => m.id)
+        .sort(),
+    ).toEqual(['both', 'mpp-only']);
+    expect(
+      searchMerchants(merchants, { payment_protocol: 'x402' }).results.map((m) => m.id),
+    ).toEqual(['both']);
+    // A fiat-settling MPP merchant is findable. Before 2026-09-15 it could not
+    // have been in the directory at all.
+    const fiat = searchMerchants(merchants, { payment_protocol: 'mpp', rail: 'fiat' });
+    expect(fiat.results.map((m) => m.id)).toEqual(['mpp-only']);
+  });
+
+  it('carries payment_protocols into the summary, and omits it when absent', () => {
+    const r = searchMerchants([M({ id: 'p', payment_protocols: ['mpp'] }), M({ id: 'none' })]);
+    const withP = r.results.find((m) => m.id === 'p');
+    const without = r.results.find((m) => m.id === 'none');
+    expect(withP?.payment_protocols).toEqual(['mpp']);
+    expect(without && 'payment_protocols' in without).toBe(false);
+  });
+
   it('filters by rail and chain', () => {
     const merchants = [
       M({

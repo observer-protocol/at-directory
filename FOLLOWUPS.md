@@ -84,6 +84,39 @@ The same sentence says **Tron**, which may mean TRX or may mean USDT-TRC20. Neit
 Skhron. Then add the rail with its `chain`. Until then the record under-reports: a `rail: "usdc"` or
 `rail: "usdt"` filter will not return Skhron even though it may settle both.
 
+## agent_callable_tier: five full-api records with no recorded connection surface (logged 2026-09-15)
+
+`agent_callable_tier` is now priced. The directory bounty pays 10,000 sats for an agent-callable
+record and 2,000 for a human-checkout one, so a record claiming `full-api` without evidence is a
+published overpayment, not a cosmetic error.
+
+Six `full-api` records carry neither `agent_endpoints.mcp_server` nor `agent_endpoints.rest_api`,
+which SKILL.md defines as the connection surfaces (`api_docs` and `openapi_url` are documentation):
+
+| id | what the record carries | status |
+|---|---|---|
+| namecheap | api_docs, auth_note | **corrected 2026-09-15** to `human-checkout`; its own text says BTC is an account top-up |
+| bithost | auth_note only | unaudited |
+| crypton-sh | api_docs, auth_note | unaudited |
+| sms4sats | api_docs | unaudited |
+| unstoppable-domains | api_docs, auth_note | unaudited; its description names an MCP assistant and REST APIs that are simply not in `agent_endpoints` |
+| maxi-0001 | no block at all | our own agent, `participant_type: agent`, not merchant supply |
+
+**These are two different findings and should not be merged.** Namecheap's record *contradicts
+itself*: the tier asserts programmatic purchase, the description describes a manual funding step.
+The other four are merely *unevidenced* — the record does not carry a surface, which is not the same
+as the merchant not having one, and unstoppable-domains is the proof that the gap is sometimes only
+in our data.
+
+**Resolve by** checking, per merchant, whether an agent can complete a *crypto* purchase unaided,
+which is the question the tier answers. Ordering API plus manual balance top-up is
+`human-checkout`, however good the API is. Record the surface in `agent_endpoints` when one exists
+so the tier stops resting on a claim nobody can check.
+
+**Not swept:** the other 17 `full-api` records, which do carry a connection surface. Carrying one is
+evidence of ordering, not of payment, so the same top-up question applies to them and has not been
+asked.
+
 ## Trust-tier filter on /merchants ignores derived tier (logged 2026-05-20)
 
 **Symptom.** On `https://agenticterminal.ai/merchants`, the "OP trust min"

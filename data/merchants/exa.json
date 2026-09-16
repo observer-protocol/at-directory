@@ -25,8 +25,12 @@
   "agent_endpoints": {
     "rest_api": "https://api.exa.ai",
     "api_docs": "https://exa.ai/docs/reference/x402-guide",
-    "auth_note": "No account needed on the x402 path. POST https://api.exa.ai/search with no auth header returns 402 with USDC requirements for Base (eip155:8453) and Solana; sign EIP-3009 and retry. Only /search and /contents are x402-gated \u2014 every other endpoint still requires an x-api-key. Sending an API key bypasses x402 and bills the normal way."
+    "auth_note": "No account needed on the x402 path. POST https://api.exa.ai/search with no auth header returns 402 with USDC requirements for Base (eip155:8453) and Solana; sign EIP-3009 and retry. Only /search and /contents are x402-gated — every other endpoint still requires an x-api-key. Sending an API key bypasses x402 and bills the normal way."
   },
+  "payment_protocols": [
+    "x402",
+    "mpp"
+  ],
   "accepts_usdc": true,
   "accepts_x402": true,
   "pricing_model": "per-request",
@@ -35,5 +39,15 @@
   "op_attestation_url": null,
   "merchant_did": null,
   "merchant_vc_url": null,
-  "tags": ["search", "web-search", "data-api", "x402", "usdc", "base", "solana", "no-account"]
+  "tags": [
+    "search",
+    "web-search",
+    "data-api",
+    "x402",
+    "usdc",
+    "base",
+    "solana",
+    "no-account"
+  ],
+  "source_attribution": "MPP support read from the mpp.dev services registry at 2026-09-16T02:20:05Z: listed as 'Exa Search' with service URL https://api.exa.ai. The x402 support already on this record is unchanged; the two protocols coexist (mpp.dev, 2026-06-08: MPP added x402 exact flows from one SDK)."
 }

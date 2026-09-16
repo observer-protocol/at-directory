@@ -2,7 +2,7 @@
   "id": "laso-finance",
   "name": "Laso Finance",
   "url": "https://laso.finance",
-  "description": "No-KYC prepaid cards, gift cards and payouts to debit cards, orderable by an agent over x402. A US prepaid card is a $5\u2013$1,000 USDC payment on Base or Solana; international cards, gift cards and push-to-card payouts are separate priced endpoints.",
+  "description": "No-KYC prepaid cards, gift cards and payouts to debit cards, orderable by an agent over x402. A US prepaid card is a $5–$1,000 USDC payment on Base or Solana; international cards, gift cards and push-to-card payouts are separate priced endpoints.",
   "category": "payment-network",
   "rails": [
     {
@@ -26,8 +26,11 @@
     "rest_api": "https://laso.finance",
     "api_docs": "https://agents.laso.finance/api-reference/introduction",
     "openapi_url": "https://laso.finance/openapi.json",
-    "auth_note": "No API key \u2014 wallet signature is the identity. x402 resources are advertised at https://laso.finance/.well-known/x402 and are GET, not POST: GET /get-card returns 402 quoting USDC on Base and Solana ('Get a prepaid card for use inside the United States'). Also /order-gift-card, /get-push-to-card and /auth. Paywalled endpoints return id_token / refresh_token for follow-up calls. KYC is not required except on /send-payment."
+    "auth_note": "No API key — wallet signature is the identity. x402 resources are advertised at https://laso.finance/.well-known/x402 and are GET, not POST: GET /get-card returns 402 quoting USDC on Base and Solana ('Get a prepaid card for use inside the United States'). Also /order-gift-card, /get-push-to-card and /auth. Paywalled endpoints return id_token / refresh_token for follow-up calls. KYC is not required except on /send-payment."
   },
+  "payment_protocols": [
+    "x402"
+  ],
   "accepts_usdc": true,
   "accepts_x402": true,
   "pricing_model": "per-product",

@@ -13,6 +13,10 @@ export const SearchMerchantsArgs = z.object({
   // full-api and structured-handoff, false matches human-checkout. Asking
   // by exact tier takes two calls to cover the same population.
   agent_callable: z.boolean().optional(),
+  // Merchants accepting a given agent-payment protocol. Accepting one is a
+  // qualifying property in its own right, so this finds merchants that a
+  // protocol-speaking agent can pay whatever they settle in.
+  payment_protocol: z.enum(['mpp', 'x402']).optional(),
   trust_tier_min: z.union([z.literal(1), z.literal(2), z.literal(3)]).optional(),
   accepts_usdc: z.boolean().optional(),
   participant_type: z.enum(['merchant', 'agent']).optional(),

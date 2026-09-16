@@ -22,6 +22,9 @@
     "openapi_url": "https://api.namefi.io/v-next/openapi/doc",
     "auth_note": "No account needed on the crypto path. GET https://api.namefi.io/x402/domain/{domain} without an X-PAYMENT header returns 402 with the exact price; sign an EIP-3009 transferWithAuthorization for USDC on Base and retry with X-PAYMENT. MPP is an alternative challenge-and-sign flow at /mpp/domain/{domain}. The MCP server is the control plane for search, DNS and config and pays with an API key plus NFSC credits — the x402 and MPP crypto paths are separate HTTP endpoints, not MCP tools."
   },
+  "payment_protocols": [
+    "x402"
+  ],
   "accepts_usdc": true,
   "accepts_x402": true,
   "pricing_model": "per-product",

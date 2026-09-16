@@ -42,6 +42,15 @@ export function isAgentCallable(tier: AgentCallableTier): boolean {
   return AGENT_CALLABLE[tier];
 }
 
+// Agent-payment protocols. A merchant that speaks one of these can be paid
+// by an agent over HTTP without a human, which is why accepting one
+// qualifies a merchant for the directory regardless of what it settles in.
+//
+// Only protocols the data can evidence are listed. Atlas's 2026-09-15
+// addendum names six; Boyd ruled on MPP. Adding a value here means having a
+// record that evidences it.
+export type PaymentProtocol = 'mpp' | 'x402';
+
 export type OpTrustTier = 1 | 2 | 3;
 
 export type PricingModel = 'subscription' | 'per-product' | 'per-request' | 'variable' | 'free';
@@ -81,7 +90,9 @@ export interface Merchant {
   op_trust_tier: OpTrustTier;
   agent_callable_tier: AgentCallableTier;
   agent_endpoints?: AgentEndpoints;
+  payment_protocols?: PaymentProtocol[];
   accepts_usdc: boolean;
+  /** Older single-protocol boolean. Must agree with payment_protocols; load.ts enforces it. */
   accepts_x402: boolean;
   pricing_model: PricingModel;
   last_verified_at?: string | null;
@@ -119,6 +130,7 @@ export interface MerchantSummary {
   op_trust_tier: OpTrustTier;
   agent_callable_tier: AgentCallableTier;
   rails: Array<Pick<Rail, 'rail' | 'chain'>>;
+  payment_protocols?: PaymentProtocol[];
   accepts_usdc: boolean;
   accepts_x402: boolean;
   participant_type?: ParticipantType;
