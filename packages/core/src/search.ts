@@ -1,3 +1,4 @@
+import { isAgentCallable } from './types.ts';
 import type {
   AgentCallableTier,
   ListingType,
@@ -17,6 +18,12 @@ export interface SearchOptions {
   // so a query for a category added post-compile must still filter correctly.
   category?: string;
   agent_callable_tier?: AgentCallableTier;
+  // The coarse question, which agent_callable_tier alone cannot ask in one
+  // call: "only the merchants I can actually transact with". Two of the
+  // three tiers qualify, so filtering by exact tier makes a caller issue
+  // two queries and union them, and a caller that issues one gets a
+  // silently short answer. true = full-api or structured-handoff.
+  agent_callable?: boolean;
   trust_tier_min?: OpTrustTier;
   accepts_usdc?: boolean;
   participant_type?: ParticipantType;
@@ -47,6 +54,11 @@ export function searchMerchants(merchants: Merchant[], opts: SearchOptions = {})
 function matches(m: Merchant, opts: SearchOptions): boolean {
   if (opts.category && m.category !== opts.category) return false;
   if (opts.agent_callable_tier && m.agent_callable_tier !== opts.agent_callable_tier) return false;
+  if (
+    opts.agent_callable !== undefined &&
+    isAgentCallable(m.agent_callable_tier) !== opts.agent_callable
+  )
+    return false;
   if (opts.trust_tier_min !== undefined && m.op_trust_tier < opts.trust_tier_min) return false;
   if (opts.accepts_usdc !== undefined && m.accepts_usdc !== opts.accepts_usdc) return false;
   if (opts.participant_type && (m.participant_type ?? 'merchant') !== opts.participant_type)
@@ -90,6 +102,7 @@ function toSummary(m: Merchant): MerchantSummary {
     ...(m.participant_type !== undefined && { participant_type: m.participant_type }),
     ...(m.listing_type !== undefined && { listing_type: m.listing_type }),
     ...(m.price_display !== undefined && { price_display: m.price_display }),
+    ...(m.terms_url !== undefined && { terms_url: m.terms_url }),
     ...(m.contact_url !== undefined && { contact_url: m.contact_url }),
   };
 }

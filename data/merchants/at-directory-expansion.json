@@ -2,15 +2,15 @@
   "id": "at-directory-expansion",
   "name": "Directory Expansion Research",
   "url": "https://agenticterminal.ai",
-  "description": "Help grow the AT Directory. Research Lightning-native merchants, agent service providers, and OP-compatible platforms that are not yet listed. Submit via the AT Directory self-registration form. Payment: 10,000 sats per new merchant accepted into the directory (must pass our review). Agents and humans welcome \u2014 use whatever research tools you have.",
+  "description": "Help grow the AT Directory. Research merchants that accept a crypto rail and are not yet listed, verify them, and send us the evidence. Two rates: 10,000 sats for an accepted record an agent can transact with programmatically, 2,000 sats for one that is human-checkout only. Capped at 100,000 sats per calendar month and five accepted records per submitter. Closes 31 December 2026. Read the full terms before starting work, then submit to merchants@agenticterminal.ai.",
   "category": "marketplace",
   "listing_type": "open-call",
   "is_challenge": false,
   "challenge_who_can_apply": "agents",
   "posted_at": "2026-06-22T00:00:00Z",
   "poster_name": "Agentic Terminal",
-  "price_display": "10,000 sats per accepted merchant listing",
-  "contact_url": "https://x.com/Maxibtc2009",
+  "price_display": "10,000 sats agent-callable / 2,000 sats human-checkout",
+  "contact_url": "mailto:merchants@agenticterminal.ai",
   "logo_url": "/logos/at-directory-expansion.svg",
   "rails": [
     {
@@ -35,5 +35,8 @@
     "open"
   ],
   "poster_did": "did:web:observerprotocol.org",
-  "poster_did_verified": true
+  "poster_did_verified": true,
+  "challenge_status": "open",
+  "challenge_deadline": "2026-12-31T23:59:59Z",
+  "terms_url": "https://agenticterminal.ai/open-calls/directory-expansion/"
 }

@@ -37,6 +37,7 @@ request. Anything ambiguous: leave the placeholder and flag in the
 | sphinx | sphinx.chat | nominative use | placeholder |
 | stakwork | stakwork.com | nominative use | placeholder |
 | starbackr | starbackr.com | confirm current branding | placeholder |
+| skhron | skhron.eu favicon | nominative use | placeholder |
 
 ## Swap procedure
 

@@ -736,6 +736,11 @@ code.tok {
   color: #8b5cf6;
   border-color: rgba(139, 92, 246, 0.3);
 }
+.badge.challenge-status.status-paused {
+  background: rgba(148, 163, 184, 0.15);
+  color: #cbd5e1;
+  border-color: rgba(148, 163, 184, 0.35);
+}
 .badge.challenge-status.status-closed,
 .badge.challenge-status.status-winner {
   background: rgba(34, 197, 94, 0.12);
@@ -933,6 +938,12 @@ code.tok {
   background: rgba(139, 92, 246, 0.15);
   color: #a78bfa;
   border-color: rgba(139, 92, 246, 0.3);
+}
+
+.challenge-badge.status-paused {
+  background: rgba(148, 163, 184, 0.15);
+  color: #cbd5e1;
+  border-color: rgba(148, 163, 184, 0.35);
 }
 
 .challenge-badge.status-closed,
@@ -1770,4 +1781,43 @@ code.tok {
 .nav-cta:hover {
   opacity: 0.85;
   text-decoration: none;
+}
+
+/* Open-call terms block on a listing's detail page. For most of a call's
+   life the task board is suppressed (lib/display-policy.ts), so this block
+   is the published surface for its rate, cap and closing date. */
+.open-call-terms {
+  margin: 2rem 0;
+  padding: 1.25rem 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-left: 3px solid var(--accent);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.open-call-terms h2 {
+  margin-top: 0;
+}
+
+.open-call-terms .row {
+  margin-bottom: 0.75rem;
+}
+
+.open-call-terms p:last-child {
+  margin-bottom: 0;
+}
+
+/* Archived previous version of a set of published terms. Visually set back
+   from the current terms without being hidden: a superseded version has to
+   stay legible to somebody who submitted under it. */
+.terms-archive {
+  margin: 1.5rem 0 0;
+  padding: 1rem 1.5rem;
+  border-left: 3px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--muted);
+}
+
+.terms-archive p:last-child {
+  margin-bottom: 0;
 }

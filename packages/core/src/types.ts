@@ -24,6 +24,24 @@ export type RailHealth = 'healthy' | 'degraded' | 'down' | 'unknown';
 
 export type AgentCallableTier = 'full-api' | 'structured-handoff' | 'human-checkout';
 
+// Can an agent complete a purchase here without a human driving a browser?
+//
+// Declared as a total map rather than `tier !== 'human-checkout'` so that
+// adding a fourth tier to the union above fails typecheck here until
+// somebody classifies it. The default matters in money: the directory
+// bounty pays 10,000 sats for an agent-callable merchant and 2,000 for a
+// human-checkout one, so a tier that lands on the wrong side of this line
+// by omission underpays a submitter against published terms.
+export const AGENT_CALLABLE: Record<AgentCallableTier, boolean> = {
+  'full-api': true,
+  'structured-handoff': true,
+  'human-checkout': false,
+};
+
+export function isAgentCallable(tier: AgentCallableTier): boolean {
+  return AGENT_CALLABLE[tier];
+}
+
 export type OpTrustTier = 1 | 2 | 3;
 
 export type PricingModel = 'subscription' | 'per-product' | 'per-request' | 'variable' | 'free';
@@ -33,7 +51,7 @@ export type Source = 'crawled' | 'self-registered' | 'integrated';
 export type ParticipantType = 'merchant' | 'agent';
 
 export type ChallengeWhoCanApply = 'agents' | 'humans' | 'both';
-export type ChallengeStatus = 'open' | 'judging' | 'closed' | 'winner';
+export type ChallengeStatus = 'open' | 'judging' | 'paused' | 'closed' | 'winner';
 
 export type ListingType = 'offer' | 'open-call';
 
@@ -76,6 +94,7 @@ export interface Merchant {
   participant_type?: ParticipantType;
   listing_type?: ListingType;
   price_display?: string | null;
+  terms_url?: string | null;
   contact_url?: string | null;
   logo_url?: string;
   tags?: string[];
@@ -105,6 +124,7 @@ export interface MerchantSummary {
   participant_type?: ParticipantType;
   listing_type?: ListingType;
   price_display?: string | null;
+  terms_url?: string | null;
   contact_url?: string | null;
 }
 

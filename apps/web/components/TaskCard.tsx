@@ -7,8 +7,17 @@ import { ApplyModal } from './ApplyModal';
 const STATUS_COLOR: Record<string, string> = {
   open: 'status-open',
   judging: 'status-judging',
+  paused: 'status-paused',
   closed: 'status-closed',
   winner: 'status-winner',
+};
+
+const CHALLENGE_STATUS_LABEL: Record<string, string> = {
+  open: 'Open',
+  judging: 'Judging',
+  paused: 'Paused',
+  closed: 'Closed',
+  winner: 'Winner announced',
 };
 
 function daysUntil(iso: string): number {
@@ -32,6 +41,11 @@ export function TaskCard({ m }: { m: Merchant }) {
   const postedAt = m.posted_at ?? null;
   const budget = m.challenge_prize ?? m.price_display ?? null;
   const isClosed = status === 'closed' || status === 'winner';
+  // Paused is shown, not hidden — see lib/display-policy.ts. The card stays
+  // on the board and says why; only the apply affordance goes away, so a
+  // submitter learns the call is capped before spending effort on it rather
+  // than by being declined afterwards.
+  const isPaused = status === 'paused';
 
   const deadlineDays = deadline ? daysUntil(deadline) : null;
   const deadlineStr = deadline
@@ -54,18 +68,15 @@ export function TaskCard({ m }: { m: Merchant }) {
           <div className="task-badges">
             {isChallenge ? (
               <span className={`task-badge challenge-badge ${STATUS_COLOR[status] ?? ''}`}>
-                Challenge —{' '}
-                {status === 'open'
-                  ? 'Open'
-                  : status === 'judging'
-                    ? 'Judging'
-                    : status === 'winner'
-                      ? 'Winner announced'
-                      : 'Closed'}
+                Challenge — {CHALLENGE_STATUS_LABEL[status] ?? 'Closed'}
               </span>
             ) : (
               <span className="task-badge wanted-badge">Wanted</span>
             )}
+            {/* A non-challenge call renders "Wanted" above and would otherwise
+                carry no status at all, so paused needs its own badge rather
+                than a branch inside the challenge one. */}
+            {isPaused && <span className="task-badge challenge-badge status-paused">Paused</span>}
           </div>
           {postedAt && <span className="task-posted-at">Posted {timeAgo(postedAt)}</span>}
         </div>
@@ -115,14 +126,18 @@ export function TaskCard({ m }: { m: Merchant }) {
           </div>
         </div>
 
-        {!isClosed && !isPast ? (
+        {!isClosed && !isPaused && !isPast ? (
           <button className="task-apply-btn" onClick={() => setShowApply(true)}>
             {isChallenge ? 'Apply for challenge' : 'Respond to this'}
             <span className="task-apply-arrow"> →</span>
           </button>
         ) : (
           <span className="task-apply-btn task-apply-closed">
-            {status === 'winner' ? 'Winner selected' : 'Closed'}
+            {isPaused
+              ? 'Paused: not accepting submissions'
+              : status === 'winner'
+                ? 'Winner selected'
+                : 'Closed'}
           </span>
         )}
       </div>

@@ -101,8 +101,12 @@ function coerceSearch(qs: URLSearchParams): Record<string, unknown> {
   str('listing_type');
   const tier = qs.get('trust_tier_min');
   if (tier !== null && tier !== '') out.trust_tier_min = Number(tier);
-  const usdc = qs.get('accepts_usdc');
-  if (usdc !== null && usdc !== '') out.accepts_usdc = usdc === 'true' || usdc === '1';
+  const bool = (k: string) => {
+    const v = qs.get(k);
+    if (v !== null && v !== '') out[k] = v === 'true' || v === '1';
+  };
+  bool('accepts_usdc');
+  bool('agent_callable');
   const limit = qs.get('limit');
   if (limit !== null && limit !== '') out.limit = Number(limit);
   return out;

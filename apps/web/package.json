@@ -9,7 +9,7 @@
     "bundle:data": "tsx scripts/bundle-data.ts",
     "lint": "prettier --check \"app/**/*.{ts,tsx}\" \"components/**/*.tsx\" \"lib/**/*.ts\" \"netlify/**/*.ts\"",
     "typecheck": "tsc",
-    "test": "echo 'no web unit tests in v1'"
+    "test": "tsx lib/display-policy.test.ts"
   },
   "dependencies": {
     "@at-directory/core": "workspace:*",

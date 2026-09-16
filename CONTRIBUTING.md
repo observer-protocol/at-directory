@@ -6,8 +6,12 @@ The merchant data is the source of truth: one JSON file per merchant at `data/me
 
 Two paths:
 
-1. **Self-registration form** — [agenticterminal.ai/submit](https://agenticterminal.ai/submit). Opens a PR automatically. Easiest for merchants.
+1. **Email** — `merchants@agenticterminal.ai`. We write the record and open the PR. Easiest for merchants.
 2. **Direct PR** — add/edit the JSON file and open a PR.
+
+The self-registration form at [agenticterminal.ai/submit](https://agenticterminal.ai/submit) is **not
+operational** and this file advertised it as a working route until 2026-09-15. See the README for what
+is and is not built. Restore it here only once a test submission has opened a PR.
 
 ### Rules enforced by `pnpm validate-data` (and CI)
 

@@ -57,6 +57,10 @@ as a decision the directory has made for you. A Tier 1 listing has been checked 
 - `structured-handoff` — you pay autonomously from a structured request; fulfillment is human-handled.
 - `human-checkout` — you discover the merchant but a human must complete a web checkout.
 
+The first two are the ones you can act on alone. To ask for exactly those in one call, pass
+`agent_callable: true` — filtering by `agent_callable_tier` matches one tier at a time, so a single
+exact-tier query silently omits the other half of the population you can transact with.
+
 Worked examples:
 
 - Tier 1 + `full-api` → you can buy now, but trust is self-asserted. Good for low-value, reversible buys.
@@ -74,6 +78,9 @@ search_merchants({ rail: 'usdt', chain: 'tron', category: 'gift-cards' });
 
 // Fully agent-callable Lightning merchants, verified tier only
 search_merchants({ rail: 'lightning', agent_callable_tier: 'full-api', trust_tier_min: 2 });
+
+// Everything you can transact with unaided — full-api AND structured-handoff
+search_merchants({ rail: 'lightning', agent_callable: true });
 
 // Full record before transacting
 get_merchant({ id: 'bitrefill' });
