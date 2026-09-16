@@ -61,6 +61,14 @@ The first two are the ones you can act on alone. To ask for exactly those in one
 `agent_callable: true` — filtering by `agent_callable_tier` matches one tier at a time, so a single
 exact-tier query silently omits the other half of the population you can transact with.
 
+**Agent-payment protocols.** Some merchants expose `payment_protocols`, currently `mpp` (Machine
+Payments Protocol) or `x402`. A merchant on this list can be paid over HTTP 402 with no API key and
+no billing account, so since 2026-09-15 accepting one qualifies a merchant for this directory on its
+own — including merchants that settle in fiat. If you speak one of these protocols, filter on it:
+those are the merchants you can pay with the least setup, whatever ends up in their bank account.
+`accepts_x402` is the older single-protocol spelling of the same fact and always agrees with the
+array.
+
 Worked examples:
 
 - Tier 1 + `full-api` → you can buy now, but trust is self-asserted. Good for low-value, reversible buys.
@@ -81,6 +89,9 @@ search_merchants({ rail: 'lightning', agent_callable_tier: 'full-api', trust_tie
 
 // Everything you can transact with unaided — full-api AND structured-handoff
 search_merchants({ rail: 'lightning', agent_callable: true });
+
+// Merchants you can pay over MPP, whatever they settle in (fiat included)
+search_merchants({ payment_protocol: 'mpp' });
 
 // Full record before transacting
 get_merchant({ id: 'bitrefill' });

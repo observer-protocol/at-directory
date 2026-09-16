@@ -20,21 +20,42 @@ is and is not built. Restore it here only once a test submission has opened a PR
 - `op_trust_tier` is `1` or `2`. **Tier 3 is rejected in v1** (chain-anchored attestation format not yet locked; ships v1.x).
 - A Tier 2 record from a non-`integrated` source must have an `op_attestation_url`.
 - `agent_endpoints.mcp_server`, if present, starts with `npm:`, `http:`, or `https:`.
+- `payment_protocols` and the older `accepts_x402` boolean describe the same fact and must agree. Setting one without the other fails the load, not a review comment.
+
+### Recording a protocol
+
+`payment_protocols` holds only protocols a record can evidence: today `mpp` and `x402`. Atlas's
+2026-09-15 addendum also names ACP, AP2, UCP, Mastercard Agent Pay and Visa Trusted Agent/TAP.
+Those are **not** in the enum, and Boyd's ruling was about MPP. Adding a value means having a record
+that evidences it, not naming the protocol.
+
+For MPP, the evidence is a merchant's entry in the mpp.dev services registry (provider, category,
+service URL) or the merchant's own docs. Cite it in `source_attribution` with the time you read it:
+a registry is a live document and an entry is true at the instant you read it.
 
 New entries land at **Tier 1** (self-attested). Promotion to Tier 2 happens through an Observer Protocol attestation, not by editing the field directly.
 
 ### Inclusion criteria
 
-A merchant qualifies only if **both**: (1) it does commerce — sells products, services, APIs, or content (pure wallets/exchanges/processors excluded), and (2) it accepts at least one of Lightning, BOLT12, L402, USDT (any chain), USDC (any chain), or on-chain Bitcoin (`btc`).
+A merchant qualifies only if it **does commerce** (sells products, services, APIs, or content; pure wallets/exchanges/processors excluded) **and** meets *either* of these:
+
+- **The rail route** — it accepts at least one of Lightning, BOLT12, L402, USDT (any chain), USDC (any chain), or on-chain Bitcoin (`btc`).
+- **The protocol route (added 2026-09-15)** — it accepts an agent-payment protocol listed in `payment_protocols`, currently MPP or x402. **Settlement does not matter on this route: fiat qualifies.** A merchant that takes MPP and settles through Stripe Shared Payment Tokens onto a card is in.
+
+**Why the protocol route exists (ruled by Boyd, 2026-09-15).** "Accepts crypto" stopped being the useful signal. A merchant taking Bitcoin at a human checkout is no more use to an agent than one taking Visa, while a merchant speaking MPP can be paid by an agent over HTTP with no human and no account, whatever lands in its bank. The protocol is what makes the purchase machine-completable; the rail is a property of the record, not a gate on it.
+
+**This does not make `fiat` a qualifying rail on its own.** Card or bank checkout with no protocol still fails, exactly as before. The protocol is what qualifies; fiat merely stops disqualifying once a protocol is present.
 
 **USDC counts on its own (changed 2026-07-25).** A merchant that settles only in USDC — including x402-native merchants whose entire payment surface is an HTTP 402 handshake — qualifies without any BTC/Lightning/USDT rail. This reverses the earlier "x402-only merchants are out of scope by design" rule, which had been the binding constraint since v1.
 
 Two things that did **not** change:
 
-- **`fiat` is not a qualifying rail.** Card, Stripe, or bank checkout alone still doesn't qualify. A merchant whose only crypto option is USDC qualifies; a merchant whose only option is a card does not.
+- **`fiat` is not a qualifying rail on its own.** Card, Stripe, or bank checkout alone still doesn't qualify. A merchant whose only crypto option is USDC qualifies; a merchant whose only option is a card does not, *unless* it qualifies through the protocol route above.
 - **The rail has to actually settle.** A published price in USDC is a claim, not a rail. If a merchant's own docs say settlement is not live yet, it isn't listable — record it in `FOLLOWUPS.md` and add it when it settles. The directory's promise is that an agent can pay these merchants today.
 
-`accepts_usdc` / `accepts_x402` remain supplementary booleans. They describe a merchant that *also* takes USDC or speaks x402; they are not a substitute for the `usdc` rail, and a USDC-settling merchant needs the rail so it survives a `rail: "usdc"` filter.
+`accepts_usdc` remains a supplementary boolean: it describes a merchant that *also* takes USDC, it is not a substitute for the `usdc` rail, and a USDC-settling merchant needs the rail so it survives a `rail: "usdc"` filter. `accepts_x402` is no longer independent — it is the older single-protocol spelling of `payment_protocols`, and the loader fails any record where the two disagree.
+
+**Every record still declares at least one rail**, protocol-route records included: the schema requires it, and a caller filtering by `rail` should still find the merchant. Write what the merchant actually settles in. For an MPP merchant settling to a card through Stripe Shared Payment Tokens that is `fiat` — which is now a rail you may write, because the record qualifies on its protocol. If you cannot establish what it settles in, you do not yet have enough to write the record: say so in `FOLLOWUPS.md` rather than guessing a rail.
 
 ## Code
 

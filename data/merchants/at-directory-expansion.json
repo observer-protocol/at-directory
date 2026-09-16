@@ -2,7 +2,7 @@
   "id": "at-directory-expansion",
   "name": "Directory Expansion Research",
   "url": "https://agenticterminal.ai",
-  "description": "Help grow the AT Directory. Research merchants that accept a crypto rail and are not yet listed, verify them, and send us the evidence. Two rates: 10,000 sats for an accepted record an agent can transact with programmatically, 2,000 sats for one that is human-checkout only. Capped at 100,000 sats per calendar month and five accepted records per submitter. Closes 31 December 2026. Read the full terms before starting work, then submit to merchants@agenticterminal.ai.",
+  "description": "Help grow the AT Directory. Research merchants that are not yet listed, verify them, and send us the evidence. A merchant qualifies if it accepts a crypto rail, or if it accepts an agent-payment protocol such as MPP or x402, in which case what it settles in does not matter and fiat counts. Two rates: 10,000 sats for an accepted record an agent can transact with programmatically, 2,000 sats for one that is human-checkout only. Capped at 100,000 sats per calendar month and five accepted records per submitter. Closes 31 December 2026. Read the full terms before starting work, then submit to merchants@agenticterminal.ai.",
   "category": "marketplace",
   "listing_type": "open-call",
   "is_challenge": false,

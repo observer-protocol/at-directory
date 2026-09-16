@@ -84,6 +84,40 @@ describe('loadMerchant', () => {
 });
 
 describe('loadAllMerchants', () => {
+  it('rejects a record whose accepts_x402 disagrees with payment_protocols', () => {
+    // Two fields for one fact. The gate is the only thing keeping them from
+    // drifting, so it is asserted in both directions.
+    const dir = scratchDir();
+    writeJson(join(dir, 'example.json'), {
+      ...baseMerchant,
+      accepts_x402: true,
+      payment_protocols: [],
+    });
+    expect(() => loadAllMerchants({ dir })).toThrow(/must agree/);
+
+    const dir2 = scratchDir();
+    writeJson(join(dir2, 'example.json'), {
+      ...baseMerchant,
+      accepts_x402: false,
+      payment_protocols: ['x402'],
+    });
+    expect(() => loadAllMerchants({ dir: dir2 })).toThrow(/must agree/);
+  });
+
+  it('accepts a protocol record that settles in fiat', () => {
+    // The 2026-09-15 rule: the protocol qualifies the merchant, the rail is a
+    // property of the record. This record would not have been listable before.
+    const dir = scratchDir();
+    writeJson(join(dir, 'example.json'), {
+      ...baseMerchant,
+      rails: [{ rail: 'fiat', health: 'unknown' }],
+      payment_protocols: ['mpp'],
+    });
+    const [m] = loadAllMerchants({ dir });
+    expect(m!.payment_protocols).toEqual(['mpp']);
+    expect(m!.rails[0]!.rail).toBe('fiat');
+  });
+
   it('rejects duplicate ids', () => {
     const dir = scratchDir();
     mkdirSync(join(dir, 'merchants'));

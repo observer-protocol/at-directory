@@ -13,7 +13,7 @@
     }
   ],
   "op_trust_tier": 1,
-  "agent_callable_tier": "full-api",
+  "agent_callable_tier": "human-checkout",
   "agent_endpoints": {
     "api_docs": "https://www.namecheap.com/support/api/intro/",
     "auth_note": "API key + username + whitelisted IPv4. XML responses. Sandbox available for testing."
@@ -30,5 +30,6 @@
     "hosting",
     "ssl",
     "publicly-traded"
-  ]
+  ],
+  "source_attribution": "agent_callable_tier corrected from 'full-api' to 'human-checkout' on 2026-09-16T02:22:37Z. The tier means \"you complete the purchase end to end programmatically\" (SKILL.md), and this record does not support that: its own description states Bitcoin is accepted via account balance top-up, so the crypto rail requires a human to fund the account before the API can spend it, and agent_endpoints carries only api_docs and auth_note, which are documentation rather than a connection surface. The ordering API is real; what an agent cannot do unaided is pay. LIMIT: namecheap.com's own Bitcoin payment page could not be read to confirm the funding mechanism, as it answers a Cloudflare interstitial to a scripted request, so this correction rests on the record's own text plus the absence of any recorded crypto payment endpoint, not on the merchant's page."
 }

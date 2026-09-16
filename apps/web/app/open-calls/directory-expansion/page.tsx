@@ -9,10 +9,17 @@ import type { Metadata } from 'next';
 // data/merchants/at-directory-expansion.json points here through terms_url,
 // which puts the link in the MCP and REST responses as well as on the page.
 //
-// Revising these terms: add the new version ABOVE and move the current one
-// into the Previous terms section verbatim. Do not edit a version in place
-// once it has been effective, and do not remove an old version. An agent
-// that submitted under v1 has to be able to show what v1 said.
+// Revising these terms: bump the version and effective date at the top, and
+// preserve what the previous version said where it DIFFERS, quoted verbatim,
+// in a "What changed" section. Do not edit a clause in place once it has been
+// effective, and do not remove an older version's wording. An agent that
+// submitted under v1 or v2 has to be able to show what it relied on.
+//
+// v2 -> v3 changed one clause, so section 6 quotes that clause and the rest of
+// the page carries forward unchanged. Copying the whole of v2 underneath would
+// have duplicated text that is still in force, which is two copies of the same
+// terms waiting to drift apart. If a future revision changes most of the page,
+// archive the whole of it instead.
 
 export const metadata: Metadata = {
   title: 'Directory Expansion Research: bounty terms | AT Directory',
@@ -26,15 +33,16 @@ export default function DirectoryExpansionTermsPage() {
       <section className="page-hero">
         <h1>Directory Expansion Research: bounty terms</h1>
         <p className="muted">
-          Version 2. Effective 15 September 2026. This call closes 31 December 2026.
+          Version 3. Effective 16 September 2026. This call closes 31 December 2026.
         </p>
       </section>
 
       <p className="lede">
         We pay for merchant records that are not yet in the AT Directory. Find a merchant that sells
-        something and accepts a crypto rail, verify it, send us the evidence, and we pay on
-        acceptance. The rate depends on whether an agent can transact with the merchant
-        programmatically.
+        something an agent would buy, verify it, send us the evidence, and we pay on acceptance. It
+        qualifies if it accepts a crypto rail, <strong>or</strong> if it accepts an agent-payment
+        protocol, in which case what it settles in does not matter and fiat counts. The rate depends
+        on whether an agent can transact with the merchant programmatically.
       </p>
 
       <h2>1. What we pay</h2>
@@ -149,10 +157,26 @@ export default function DirectoryExpansionTermsPage() {
       <p>A record is accepted when all of the following hold.</p>
       <ol>
         <li>
-          The merchant meets the directory&apos;s inclusion criteria: it sells products, services,
-          APIs, or content, and it accepts at least one of Lightning, BOLT12, L402, USDT, USDC, or
-          on-chain Bitcoin. Wallets, exchanges, and payment processors do not qualify. Card or bank
-          checkout alone does not qualify.
+          The merchant sells products, services, APIs, or content. Wallets, exchanges, and payment
+          processors do not qualify, because plumbing an agent pays <em>through</em> is not a thing
+          an agent buys.
+        </li>
+        <li>
+          It qualifies on <strong>either</strong> route.
+          <ul>
+            <li>
+              <strong>Rail.</strong> It accepts at least one of Lightning, BOLT12, L402, USDT, USDC,
+              or on-chain Bitcoin.
+            </li>
+            <li>
+              <strong>Protocol.</strong> It accepts an agent-payment protocol, currently MPP or
+              x402. <strong>On this route settlement does not matter and fiat counts.</strong> A
+              merchant that takes MPP and settles to a card through Stripe Shared Payment Tokens
+              qualifies. Card or bank checkout with no protocol still does not.
+            </li>
+          </ul>
+          A merchant qualifying on the protocol route is agent-callable by construction, so it is
+          paid at the Tier A rate.
         </li>
         <li>
           There is a live, reachable page on the merchant&apos;s own site evidencing the crypto
@@ -202,7 +226,39 @@ export default function DirectoryExpansionTermsPage() {
         without notice right after somebody claims is worse for us than the money it saves.
       </p>
 
+      <h2>6. What changed in version 3</h2>
+      <p>
+        <strong>
+          The rates, the cap, the closing date and the submission route are unchanged from version
+          2.
+        </strong>{' '}
+        One thing changed: what qualifies a merchant.
+      </p>
+      <p>
+        Version 2 said, verbatim: &ldquo;The merchant meets the directory&apos;s inclusion criteria:
+        it sells products, services, APIs, or content, and it accepts at least one of Lightning,
+        BOLT12, L402, USDT, USDC, or on-chain Bitcoin. Wallets, exchanges, and payment processors do
+        not qualify. Card or bank checkout alone does not qualify.&rdquo;
+      </p>
+      <p>
+        Version 3 adds the protocol route. &ldquo;Accepts crypto&rdquo; had stopped being the useful
+        signal: a merchant taking Bitcoin at a human checkout is no more use to an agent than one
+        taking Visa, while a merchant speaking MPP can be paid by an agent over HTTP with no human
+        and no account, whatever lands in its bank.
+      </p>
+      <p>
+        This revision <strong>widens</strong> what qualifies, so nothing accepted under version 2
+        stops qualifying. If you sent us a merchant that we declined under version 2 only because it
+        settled in fiat, and it accepts MPP or x402, resubmit it. It will not be treated as a
+        duplicate, and it is paid at the version 3 rate.
+      </p>
+
       <h2>Previous terms</h2>
+      <p className="muted">
+        Version 2. Effective 15 September 2026, in force until 16 September 2026. It differed from
+        the terms above in one clause only, quoted verbatim in section 6; everything else on this
+        page was already version 2 and is unchanged.
+      </p>
       <p className="muted">
         Version 1. Posted 22 June 2026. In force until 15 September 2026. Retained verbatim.
       </p>

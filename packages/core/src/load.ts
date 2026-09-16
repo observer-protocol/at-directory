@@ -102,6 +102,20 @@ function assertTierRules(merchants: Merchant[]): void {
         m.id,
       );
     }
+    // Two fields carry "does this merchant speak x402": the older
+    // accepts_x402 boolean and the payment_protocols array that replaces it.
+    // Leaving them to agree by convention is how they diverge, so this is a
+    // gate rather than a note: a record that sets one without the other
+    // fails to load, here and in CI.
+    const declaresX402 = (m.payment_protocols ?? []).includes('x402');
+    if (declaresX402 !== m.accepts_x402) {
+      throw new MerchantLoadError(
+        `accepts_x402 is ${m.accepts_x402} but payment_protocols ${
+          declaresX402 ? 'includes' : 'does not include'
+        } 'x402'; the two describe the same fact and must agree`,
+        m.id,
+      );
+    }
     if (m.op_trust_tier === 3) {
       throw new MerchantLoadError(
         `Tier 3 records are deferred from v1 (see spec §3.3); ingest in v1.x once chain-anchored attestation format is locked`,

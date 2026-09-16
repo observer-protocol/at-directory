@@ -22,6 +22,9 @@
     "openapi_url": "https://instadomain.fly.dev/openapi.json",
     "auth_note": "No auth and no account on the x402 path. Two steps: call buy_domain_crypto (POST /buy/crypto) to get a pay_url, then GET that pay_url with an x402-enabled client, which receives the 402 and auto-pays USDC on Base from a funded wallet. Availability checks and suggestions are free and unauthenticated. Small single-developer service on fly.dev — pricing is wholesale plus markup, and it is not an accredited registrar itself."
   },
+  "payment_protocols": [
+    "x402"
+  ],
   "accepts_usdc": true,
   "accepts_x402": true,
   "pricing_model": "per-product",

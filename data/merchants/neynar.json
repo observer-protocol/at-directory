@@ -20,6 +20,9 @@
     "api_docs": "https://docs.neynar.com/reference/quickstart",
     "auth_note": "No account needed on the x402 path. A request without an API key returns 402 quoting 0.01 USDC on Base; sign EIP-3009 (gasless transferWithAuthorization) and retry. API-key plans remain available for higher volume."
   },
+  "payment_protocols": [
+    "x402"
+  ],
   "accepts_usdc": true,
   "accepts_x402": true,
   "pricing_model": "per-request",
@@ -28,5 +31,13 @@
   "op_attestation_url": null,
   "merchant_did": null,
   "merchant_vc_url": null,
-  "tags": ["farcaster", "social-data", "data-api", "x402", "usdc", "base", "no-account"]
+  "tags": [
+    "farcaster",
+    "social-data",
+    "data-api",
+    "x402",
+    "usdc",
+    "base",
+    "no-account"
+  ]
 }

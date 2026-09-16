@@ -6,6 +6,7 @@ import type {
   MerchantSummary,
   OpTrustTier,
   ParticipantType,
+  PaymentProtocol,
   RailName,
   TokenChain,
 } from './types.ts';
@@ -24,6 +25,11 @@ export interface SearchOptions {
   // two queries and union them, and a caller that issues one gets a
   // silently short answer. true = full-api or structured-handoff.
   agent_callable?: boolean;
+  // Merchants that accept a given agent-payment protocol. Since 2026-09-15
+  // accepting one of these is itself a qualifying property, so this is the
+  // filter for "who can I pay over a protocol I speak", independent of what
+  // the merchant settles in.
+  payment_protocol?: PaymentProtocol;
   trust_tier_min?: OpTrustTier;
   accepts_usdc?: boolean;
   participant_type?: ParticipantType;
@@ -58,6 +64,8 @@ function matches(m: Merchant, opts: SearchOptions): boolean {
     opts.agent_callable !== undefined &&
     isAgentCallable(m.agent_callable_tier) !== opts.agent_callable
   )
+    return false;
+  if (opts.payment_protocol && !(m.payment_protocols ?? []).includes(opts.payment_protocol))
     return false;
   if (opts.trust_tier_min !== undefined && m.op_trust_tier < opts.trust_tier_min) return false;
   if (opts.accepts_usdc !== undefined && m.accepts_usdc !== opts.accepts_usdc) return false;
@@ -97,6 +105,7 @@ function toSummary(m: Merchant): MerchantSummary {
     op_trust_tier: m.op_trust_tier,
     agent_callable_tier: m.agent_callable_tier,
     rails: m.rails.map((r) => (r.chain ? { rail: r.rail, chain: r.chain } : { rail: r.rail })),
+    ...(m.payment_protocols !== undefined && { payment_protocols: m.payment_protocols }),
     accepts_usdc: m.accepts_usdc,
     accepts_x402: m.accepts_x402,
     ...(m.participant_type !== undefined && { participant_type: m.participant_type }),

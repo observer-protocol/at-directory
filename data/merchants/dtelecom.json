@@ -28,6 +28,9 @@
     "api_docs": "https://x402.dtelecom.org/",
     "auth_note": "No API keys, no accounts. Payment is a CREDIT PURCHASE, not per-call: POST https://x402.dtelecom.org/v1/credits/purchase returns 402 with USDC requirements for Base (eip155:8453) and Solana and a body taking wallet_address, wallet_chain and amount_usd (minimum $0.10); the credited microcredits then fund STT/TTS/WebRTC calls. MPP (USDC on Tempo) and USDT on TRON are also offered. MCP server: https://github.com/dTelecom/stt-mcp"
   },
+  "payment_protocols": [
+    "x402"
+  ],
   "accepts_usdc": true,
   "accepts_x402": true,
   "pricing_model": "variable",

@@ -20,6 +20,9 @@
     "api_docs": "https://www.cryptorefills.com/.well-known/mcp.json",
     "auth_note": "Public MCP server, no API key required for catalog or order tools. Required request header: 'User-Agent: Cryptorefills-MCP/1.0'. Direct tools available standalone (no wizard session): listProductsForCountry, getProductPrice, validateOrder, createOrder, getOrderStatus, getCurrencies, getPaymentViasWithCurrencies. User.email is the only required identity field on createOrder. The interactive purchaseElicitation wizard is also offered for small agents but is not needed for agentic clients that can drive the lower-level tools."
   },
+  "payment_protocols": [
+    "x402"
+  ],
   "accepts_usdc": true,
   "accepts_x402": true,
   "pricing_model": "per-product",
