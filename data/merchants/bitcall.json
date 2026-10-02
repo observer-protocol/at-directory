@@ -1,0 +1,54 @@
+{
+  "id": "bitcall",
+  "name": "Bitcall",
+  "url": "https://bitcall.io",
+  "description": "Telecom services: non-VoIP numbers for SMS/OTP verification, travel eSIM data plans, worldwide VoIP calling, and HLR/MNP number lookup. Email-only signup, no KYC. Paid from a prepaid account balance topped up with Bitcoin, USDT (TRC-20, ERC-20), Ethereum, Monero or card. Once funded, OTP activations, eSIM orders and HLR lookups can be placed through a REST API; VoIP calling is not in the API.",
+  "category": "communication",
+  "rails": [
+    {
+      "rail": "btc",
+      "payment_endpoint": null,
+      "health": "unknown",
+      "last_health_check": null
+    },
+    {
+      "rail": "usdt",
+      "chain": "tron",
+      "payment_endpoint": null,
+      "health": "unknown",
+      "last_health_check": null
+    },
+    {
+      "rail": "usdt",
+      "chain": "ethereum",
+      "payment_endpoint": null,
+      "health": "unknown",
+      "last_health_check": null
+    }
+  ],
+  "op_trust_tier": 1,
+  "agent_callable_tier": "human-checkout",
+  "agent_endpoints": {
+    "rest_api": "https://api.bitcall.io",
+    "api_docs": "https://docs.bitcall.io",
+    "auth_note": "Two headers on every request: x-key-id and x-api-secret. Keys are created in the Bitcall web panel; the secret is shown once. Endpoints under /v1/otp, /v1/esim and /v1/hlr spend from one prepaid account balance (GET /v1/balance, EUR). The API cannot fund that balance: a purchase without funds returns 409 INSUFFICIENT_BALANCE, and top-up happens at the web checkout. API is in beta and polling-based (no webhooks)."
+  },
+  "accepts_usdc": false,
+  "accepts_x402": false,
+  "pricing_model": "per-product",
+  "last_verified_at": "2026-10-02T18:36:50Z",
+  "source": "self-registered",
+  "op_attestation_url": null,
+  "tags": [
+    "phone-numbers",
+    "sms",
+    "otp",
+    "esim",
+    "travel",
+    "voip",
+    "hlr-lookup",
+    "monero",
+    "no-kyc"
+  ],
+  "source_attribution": "Submitted by Bitcall and relayed by Boyd on 2026-10-02. Checked against the merchant's own pages at 2026-10-02T18:36:50Z. bitcall.io lists top-up by Bitcoin, USDT (TRC-20, ERC-20), Ethereum and Monero (XMR); docs.bitcall.io documents the gateway at https://api.bitcall.io (OTP, eSIM, HLR), says outright that the eSIM API has no top-up operation, and returns INSUFFICIENT_BALANCE with 'Top up, then send the purchase again'. agent_callable_tier is therefore human-checkout, not full-api: an agent can order but cannot pay unaided, the same reasoning as the namecheap correction of 2026-09-16. Differences from the submission: it says 199 eSIM destinations, while bitcall.io/esim says '195+', so no count is written here. bitcall.io/esim also lists USDC and SOL, which the submission and the homepage top-up list do not, and no chain is named for USDC, so neither is recorded as a rail and accepts_usdc stays false. Ethereum and Monero settle but have no rail value in the schema; they appear in the description only. No payment was made, so every rail health is unknown."
+}
