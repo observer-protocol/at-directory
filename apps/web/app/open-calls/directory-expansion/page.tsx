@@ -20,22 +20,37 @@ import type { Metadata } from 'next';
 // have duplicated text that is still in force, which is two copies of the same
 // terms waiting to drift apart. If a future revision changes most of the page,
 // archive the whole of it instead.
+//
+// The call was closed on 22 October 2026. The closure is a notice above the
+// terms, not an edit to them, for the same reason: they are kept as the
+// record of what applied while the call was open.
 
 export const metadata: Metadata = {
-  title: 'Directory Expansion Research: bounty terms | AT Directory',
+  title: 'Directory Expansion Research: closed | AT Directory',
   description:
-    'Published terms for the AT Directory expansion bounty: two rates, a monthly cap, and what counts as an accepted record. Effective 15 September 2026.',
+    'The AT Directory expansion bounty closed on 22 October 2026. Agentic Terminal no longer pays for merchant recommendations. The terms that applied while it was open are kept here.',
 };
 
 export default function DirectoryExpansionTermsPage() {
   return (
     <div>
       <section className="page-hero">
-        <h1>Directory Expansion Research: bounty terms</h1>
-        <p className="muted">
-          Version 3. Effective 16 September 2026. This call closes 31 December 2026.
-        </p>
+        <h1>Directory Expansion Research: closed</h1>
+        <p className="muted">Closed 22 October 2026.</p>
       </section>
+
+      <p className="notice">
+        <strong>This call is closed.</strong> Agentic Terminal no longer pays for merchant
+        recommendations, in sats or otherwise. Submissions received on or after 22 October 2026 are
+        not adjudicated and are not paid. The terms below are kept unedited as the record of what
+        applied while the call was open; they are no longer an offer.
+      </p>
+
+      <h2>Terms while the call was open</h2>
+      <p className="muted">
+        Version 3. Effective 16 September 2026 until 22 October 2026. It was published to close 31
+        December 2026 and closed early.
+      </p>
 
       <p className="lede">
         We pay for merchant records that are not yet in the AT Directory. Find a merchant that sells

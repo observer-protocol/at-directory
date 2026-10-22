@@ -80,11 +80,6 @@ export default function SubmitPage() {
           rail, the category, the rail, and whether an agent can transact programmatically or a
           human has to complete a checkout.
         </p>
-        <p>
-          Submitting merchants you did not build? We pay for accepted records. Rates, cap and
-          adjudication standard are at{' '}
-          <a href="/open-calls/directory-expansion/">Directory Expansion Research</a>.
-        </p>
       </div>
     );
   }

@@ -164,6 +164,27 @@ export default async function MerchantPage({ params }: { params: Promise<{ slug:
 function OpenCallTerms({ m }: { m: Merchant }) {
   const status = m.challenge_status ?? 'open';
   const budget = m.challenge_prize ?? m.price_display ?? null;
+  // A closed call keeps its page so the terms it ran under stay readable,
+  // but shows no rate, deadline or submit address: anything left there
+  // reads as an offer still standing.
+  if (status === 'closed') {
+    return (
+      <section className="open-call-terms">
+        <h2>This open call is closed</h2>
+        <div className="row">
+          <span className={`badge challenge-status status-${status}`}>
+            {CALL_STATUS_LABEL[status]}
+          </span>
+        </div>
+        <p className="notice">{m.description}</p>
+        {m.terms_url && (
+          <p>
+            <a href={m.terms_url}>Terms as they stood while the call was open</a>.
+          </p>
+        )}
+      </section>
+    );
+  }
   return (
     <section className="open-call-terms">
       <h2>This is an open call</h2>
